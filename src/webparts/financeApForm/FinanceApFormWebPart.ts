@@ -8,14 +8,30 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FinanceApFormWebPartStrings';
-import FinanceApForm from './components/FinanceApForm';
-import { IFinanceApFormProps } from './components/IFinanceApFormProps';
+import {FinanceApForm, IFinanceApFormProps} from './components/FinanceApForm';
+
+// PnP Imports
+import { sp } from "@pnp/sp";
 
 export interface IFinanceApFormWebPartProps {
   description: string;
 }
 
-export default class FinanceApFormWebPart extends BaseClientSideWebPart <IFinanceApFormWebPartProps> {
+export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinanceApFormWebPartProps> {
+
+  protected async onInit(): Promise<void> {
+    await super.onInit().then(() => {
+      sp.setup({
+        spfxContext: this.context,
+        sp: {
+          headers: {
+            "Accept": "application/json; odata=nometadata"
+          },
+          baseUrl: this.context.pageContext.web.absoluteUrl
+        }
+      });
+    });
+  }
 
   public render(): void {
     const element: React.ReactElement<IFinanceApFormProps> = React.createElement(
