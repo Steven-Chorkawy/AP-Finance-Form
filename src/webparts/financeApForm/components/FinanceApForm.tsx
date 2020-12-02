@@ -16,6 +16,7 @@ import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
+import { IInvoice } from '../interfaces/IInvoice';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -117,7 +118,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * @param props List view props.
    */
   private MyListViewItemRender = props => {
-    let item = props.dataItem;
+    let item: IInvoice = props.dataItem;
     return (
       <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px' }}>
         <CardHeader>
