@@ -13,9 +13,11 @@ import {FinanceApForm, IFinanceApFormProps} from './components/FinanceApForm';
 // PnP Imports
 import { sp } from "@pnp/sp";
 
+// Import Bootstrap... This is mostly just used for the 'col' and 'row' classes.
+import './bootstrap.min.css';
+
 // Import Style for Kendo
 import '@progress/kendo-theme-default/dist/all.css';
-
 
 export interface IFinanceApFormWebPartProps {
   description: string;

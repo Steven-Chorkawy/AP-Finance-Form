@@ -13,7 +13,6 @@ import "@pnp/sp/site-users/web";
 // Kendo Imports 
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
 
-
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
 
@@ -28,7 +27,14 @@ export interface IFinanceApFormProps {
  * State interface for FinanceApForm component class.
  */
 interface IFinanceApFormState {
-  invoices: any; // TODO: Make an invoice interface. 
+  // The invoices that we want to render
+  visibleInvoices: any; // TODO: Make an invoice interface. 
+
+  // Invoices that we're queries but do not want to render yet. 
+  availableInvoices: any;
+
+  // The invoices that we have queried.
+  allInvoices: any;
 }
 
 enum ContentTypes {
@@ -40,28 +46,51 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     super(props);
 
     this.state = {
-      invoices: undefined
+      visibleInvoices: undefined,
+      allInvoices: undefined,
+      availableInvoices: undefined
     };
+
 
     this.queryInvoices();
   }
 
-
   //#region Private Methods
   private queryInvoices = () => {
+    console.log('Query Invoices');
     sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq 'To Be Paid'`).getAll().then(value => {
-      
+
       // We only want folder objects. 
       value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
 
-      this.setState({ invoices: value });
+      // Create a new instance of this object.
+      let invoiceHolder = value.slice(0);
+
+      this.setState({
+        visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
+        availableInvoices: invoiceHolder,
+        allInvoices: value
+      });
     }).catch(error => {
       console.log('\n\nERROR! Cannot Load Invoices!');
       console.log(error);
       console.log('\n\n');
-      this.setState({ invoices: [] });
+      this.setState({ visibleInvoices: [], allInvoices: [] });
       alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
     });
+  }
+  //#endregion
+
+  //#region ListView Events
+  public scrollHandler = event => {
+    console.log('scrollHandler');
+    const e = event.nativeEvent;
+    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight) {
+      const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
+      if (moreData.length > 0) {
+        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
+      }
+    }
   }
   //#endregion
 
@@ -69,7 +98,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewHeader = () => {
     return (
       <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
-        Invoice list ({this.state.invoices.length})
+        Invoices {this.state.visibleInvoices.length}/{this.state.allInvoices.length}
       </ListViewHeader>
     );
   }
@@ -90,7 +119,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     let item = props.dataItem;
     return (
       <div className='row p-2 border-bottom align-middle' style={{ margin: 0 }}>
-        <div className='col-sm-2'>hello</div>
+        <div className='col-sm-2'>{props.index}</div>
         <div className='col-sm-6'>
           <h2 style={{ fontSize: 14, color: '#454545', marginBottom: 0 }} className="text-uppercase">{item.Title}</h2>
           <div style={{ fontSize: 12, color: "#a0a0a0" }}>{item.Vendor_x0020_Name}</div>
@@ -111,9 +140,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <div>
         <ListView
-          data={this.state.invoices}
+          onScroll={this.scrollHandler}
+          data={this.state.visibleInvoices}
           item={this.MyListViewItemRender}
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: 530 }}
           header={this.MyListViewHeader}
           footer={this.MyListViewFooter}
         />
@@ -122,9 +152,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
   //#endregion
 
+  private TAKE_N = 50;
+
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
-      this.state.invoices ? this.RenderListView() : <MyLoadingComponent />
+      this.state.visibleInvoices ? this.RenderListView() : <MyLoadingComponent />
     );
   }
 }
