@@ -1,9 +1,29 @@
 import * as React from 'react';
 import styles from './FinanceApForm.module.scss';
-import { IFinanceApFormProps } from './IFinanceApFormProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
+// PnP imports. 
+import { sp } from "@pnp/sp";
+import "@pnp/sp/webs";
+import "@pnp/sp/lists";
+import "@pnp/sp/items";
+import "@pnp/sp/fields";
+import "@pnp/sp/site-users/web";
+
+/**
+ * Props interface for FinanceApForm component class.
+ */
+export interface IFinanceApFormProps {
+  description: string;
+}
+
+
 export default class FinanceApForm extends React.Component<IFinanceApFormProps, {}> {
+  constructor(props) {
+    super(props);
+    
+  }
+
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
       <div className={ styles.financeApForm }>
