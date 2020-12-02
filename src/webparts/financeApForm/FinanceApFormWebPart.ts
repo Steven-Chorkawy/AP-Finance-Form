@@ -8,8 +8,7 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FinanceApFormWebPartStrings';
-import FinanceApForm from './components/FinanceApForm';
-import { IFinanceApFormProps } from './components/IFinanceApFormProps';
+import {FinanceApForm, IFinanceApFormProps} from './components/FinanceApForm';
 
 // PnP Imports
 import { sp } from "@pnp/sp";
