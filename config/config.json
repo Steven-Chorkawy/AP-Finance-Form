@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "finance-ap-form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/financeApForm/FinanceApFormWebPart.js",
+          "manifest": "./src/webparts/financeApForm/FinanceApFormWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "FinanceApFormWebPartStrings": "lib/webparts/financeApForm/loc/{locale}.js"
+  }
+}
