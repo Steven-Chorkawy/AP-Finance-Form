@@ -10,6 +10,9 @@ import "@pnp/sp/items";
 import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
 
+// My Imports 
+import { MyLoadingComponent } from './MyLoadingComponent';
+
 /**
  * Props interface for FinanceApForm component class.
  */
@@ -35,6 +38,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.queryInvoices();
   }
 
+  //#region Private Methods
   private queryInvoices = () => {
     sp.web.lists.getByTitle('Invoices').items.getAll().then(value => {
       this.setState({ invoices: value });
@@ -46,23 +50,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
     });
   }
+  //#endregion
+
+  //#region Render Component Methods
+  private RenderListView = () => {
+    return (
+      <div>
+        <p>{this.state.invoices.length} Invoices Found!</p>
+      </div>
+    );
+  }
+  //#endregion
 
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
-      <div className={styles.financeApForm}>
-        <div className={styles.container}>
-          <div className={styles.row}>
-            <div className={styles.column}>
-              <span className={styles.title}>Welcome to SharePoint!</span>
-              {this.state.invoices ? <p className={styles.subTitle}>{this.state.invoices.length} Invoices found.</p> : <p>... loading ...</p>}
-              <p className={styles.description}>{escape(this.props.description)}</p>
-              <a href="https://aka.ms/spfx" className={styles.button}>
-                <span className={styles.label}>Learn more</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      this.state.invoices ? this.RenderListView() : <MyLoadingComponent />
     );
   }
 }

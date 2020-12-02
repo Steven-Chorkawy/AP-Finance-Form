@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 
 import { Shimmer } from 'office-ui-fabric-react/lib/Shimmer';
 
-
-class MyLoadingComponent extends Component {
+export class MyLoadingComponent extends React.Component {
     render() {
         return (
             <div>
@@ -17,5 +16,3 @@ class MyLoadingComponent extends Component {
         );
     }
 }
-
-export default MyLoadingComponent;
