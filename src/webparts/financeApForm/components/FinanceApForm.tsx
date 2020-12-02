@@ -119,22 +119,26 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewItemRender = props => {
     let item = props.dataItem;
     return (
-      <Card>
+      <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px' }}>
         <CardHeader>
-          <CardTitle>{props.Vendor_x0020_Name}</CardTitle>
-        </CardHeader>
-        <CardBody>
-          <div className='row p-2 border-bottom align-middle' style={{ margin: 0 }}>
-            <div className='col-sm-2'>{props.index}</div>
-            <div className='col-sm-6'>
-              <h2 style={{ fontSize: 14, color: '#454545', marginBottom: 0 }} className="text-uppercase">{item.Title}</h2>
-              <div style={{ fontSize: 12, color: "#a0a0a0" }}>{item.Vendor_x0020_Name}</div>
+          <div className='row'>
+            <div className='col-xs-8 col-sm-10 col-md-10'>
+              <CardTitle><span title='Vendor Name'>{item.Vendor_x0020_Name}</span> | <span title='Vendor ID'>{item.Vendor_x0020_Number}</span></CardTitle>
             </div>
-            <div className='col-sm-4'>
+            <div className='col-xs-4 col-sm-2 col-md-2'>
               <div className='k-chip k-chip-filled'>
                 <div className='k-chip-content'>{item.OData__Status}</div>
               </div>
             </div>
+          </div>
+          <CardSubtitle>
+            <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
+          </CardSubtitle>
+        </CardHeader>
+        <CardBody>
+          <div className='row'>
+            <div className='col-xs-10 col-sm-10'>body</div>
+            <div className='col-xs-2 col-sm-2'>edit</div>
           </div>
         </CardBody>
       </Card>

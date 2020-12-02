@@ -1,0 +1,80 @@
+{
+    "FileSystemObjectType": 1,
+    "Id": 1310,
+    "ServerRedirectedEmbedUri": null,
+    "ServerRedirectedEmbedUrl": "",
+    "ContentTypeId": "0x01200088C42F7CFFB6244DA17EE5E6F15B8D22",
+    "ComplianceAssetId": null,
+    "Title": "2020-AP344",
+    "DocumentSetDescription": null,
+    "OData__Status": "To Be Paid",
+    "MediaServiceKeyPoints": null,
+    "Vendor_x0020_Number": "DESC0003",
+    "Vendor_x0020_Name": "DESCO PLUMBING & HEATING SUPPLY INC",
+    "Invoice_x0020_Number": "8536524",
+    "Invoice_x0020_Date": "2020-04-09T04:00:00Z",
+    "Received_x0020_Date": "2020-04-28T04:00:00Z",
+    "Gross_x0020_Amount": 180.57,
+    "Total_x0020_Tax_x0020_Amount": 20.77,
+    "PO_x0020__x0023_": null,
+    "Close": "NO",
+    "Purchasing": "SG",
+    "Adds_x0020_OK": null,
+    "Prices_x0020_OK": "BS",
+    "ChequeType": "Mailed",
+    "Batch_x0020_Number": "KH 04/24/2020",
+    "Entered": "KH",
+    "Voucher_x0020_Number": "0312821",
+    "Cheque_x0020_Number": null,
+    "DepartmentId": [
+        4
+    ],
+    "HiddenDepartmentId": [
+        4
+    ],
+    "Invoice_x0020_Type": "Credit",
+    "Requires_x0020_Approval_x0020_FromId": [
+        66
+    ],
+    "Requires_x0020_Approval_x0020_FromStringId": [
+        "66"
+    ],
+    "Received_x0020_Approval_x0020_FromId": [
+        66
+    ],
+    "Received_x0020_Approval_x0020_FromStringId": [
+        "66"
+    ],
+    "AccountAmount1": null,
+    "ScannedFileName": "DOC041620-04162020094114.pdf",
+    "SharedWithUsersId": [
+        44,
+        37,
+        38,
+        64,
+        39,
+        90,
+        66
+    ],
+    "SharedWithDetails": "{\"i:0#.f|membership|kr01@clarington.net\":{\"DateTime\":\"\\/Date(1587045088070)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|dc03@clarington.net\":{\"DateTime\":\"\\/Date(1587045089212)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|jh02@clarington.net\":{\"DateTime\":\"\\/Date(1587045090132)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|lm09@clarington.net\":{\"DateTime\":\"\\/Date(1587045091054)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|cb06@clarington.net\":{\"DateTime\":\"\\/Date(1587045092710)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|bs01@clarington.net\":{\"DateTime\":\"\\/Date(1587136290443)\\/\",\"LoginName\":\"sc13@clarington.net\"},\"i:0#.f|membership|rg01@clarington.net\":{\"DateTime\":\"\\/Date(1587136293771)\\/\",\"LoginName\":\"sc13@clarington.net\"}}",
+    "DenyComment": null,
+    "Received_x0020_Deny_x0020_From_x0020_String": null,
+    "HiddenApproversId": 66,
+    "HiddenApproversStringId": "66",
+    "ApprovalNotes": null,
+    "ChequeReturnedNotes": null,
+    "IsApproved": true,
+    "MediaServiceAutoTags": null,
+    "Modified": "2020-04-28T13:52:21Z",
+    "MediaServiceOCR": null,
+    "IsChequeReq": null,
+    "MediaServiceLocation": null,
+    "ID": 1310,
+    "Created": "2020-04-16T13:48:14Z",
+    "AuthorId": 7,
+    "EditorId": 63,
+    "OData__CopySource": null,
+    "CheckoutUserId": null,
+    "OData__UIVersionString": "13.0",
+    "GUID": "8b1dfe7e-9f1d-4e5d-9115-f6b2ae5e2dc9"
+}
