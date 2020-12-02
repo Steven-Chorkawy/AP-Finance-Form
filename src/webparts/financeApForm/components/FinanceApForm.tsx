@@ -18,7 +18,7 @@ export interface IFinanceApFormProps {
 }
 
 
-export default class FinanceApForm extends React.Component<IFinanceApFormProps, {}> {
+export class FinanceApForm extends React.Component<IFinanceApFormProps, {}> {
   constructor(props) {
     super(props);
     
