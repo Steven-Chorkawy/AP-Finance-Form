@@ -11,6 +11,7 @@ import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
+import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
 
 // My Imports 
@@ -118,18 +119,25 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewItemRender = props => {
     let item = props.dataItem;
     return (
-      <div className='row p-2 border-bottom align-middle' style={{ margin: 0 }}>
-        <div className='col-sm-2'>{props.index}</div>
-        <div className='col-sm-6'>
-          <h2 style={{ fontSize: 14, color: '#454545', marginBottom: 0 }} className="text-uppercase">{item.Title}</h2>
-          <div style={{ fontSize: 12, color: "#a0a0a0" }}>{item.Vendor_x0020_Name}</div>
-        </div>
-        <div className='col-sm-4'>
-          <div className='k-chip k-chip-filled'>
-            <div className='k-chip-content'>{item.OData__Status}</div>
+      <Card>
+        <CardHeader>
+          <CardTitle>{props.Vendor_x0020_Name}</CardTitle>
+        </CardHeader>
+        <CardBody>
+          <div className='row p-2 border-bottom align-middle' style={{ margin: 0 }}>
+            <div className='col-sm-2'>{props.index}</div>
+            <div className='col-sm-6'>
+              <h2 style={{ fontSize: 14, color: '#454545', marginBottom: 0 }} className="text-uppercase">{item.Title}</h2>
+              <div style={{ fontSize: 12, color: "#a0a0a0" }}>{item.Vendor_x0020_Name}</div>
+            </div>
+            <div className='col-sm-4'>
+              <div className='k-chip k-chip-filled'>
+                <div className='k-chip-content'>{item.OData__Status}</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </CardBody>
+      </Card>
     );
   }
 
