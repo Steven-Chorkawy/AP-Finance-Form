@@ -14,13 +14,21 @@ import "@pnp/sp/site-users/web";
 import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
 import { Button } from '@progress/kendo-react-buttons';
-import { Form, Field, FormElement } from '@progress/kendo-react-form';
+import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
+import {
+  Input, MaskedTextBox, NumericTextBox,
+  Checkbox, ColorPicker, Switch, RadioGroup,
+  Slider, SliderLabel, TextArea
+} from '@progress/kendo-react-inputs';
+import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
+
 
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
+import { values } from 'office-ui-fabric-react/lib/Utilities';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -41,6 +49,10 @@ interface IFinanceApFormState {
 
   // The invoices that we have queried.
   allInvoices: any;
+
+  departments?: any;
+  invoiceTypes?: string[];
+  invoiceStatus?: string[];
 }
 
 enum ContentTypes {
@@ -57,32 +69,70 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       availableInvoices: undefined
     };
 
-
     this.queryInvoices();
+    this.queryDepartments();
+    this.queryInvoiceTypes();
+    this.queryInvoiceStatus();
   }
 
   //#region Private Methods
   private queryInvoices = () => {
     console.log('Query Invoices');
-    sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq 'To Be Paid'`).getAll().then(value => {
+    sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq 'To Be Paid'`)
+      .select(`*, 
+      Department/Title, 
+      Received_x0020_Approval_x0020_From/Id, 
+      Received_x0020_Approval_x0020_From/Title, 
+      Received_x0020_Approval_x0020_From/EMail,
+      Requires_x0020_Approval_x0020_From/Id, 
+      Requires_x0020_Approval_x0020_From/Title, 
+      Requires_x0020_Approval_x0020_From/EMail
+      `)
+      .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
+      .getAll()
+      .then(value => {
 
-      // We only want folder objects. 
-      value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
+        // We only want folder objects. 
+        value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
 
-      // Create a new instance of this object.
-      let invoiceHolder = value.slice(0);
+        // Create a new instance of this object.
+        let invoiceHolder = value.slice(0);
 
-      this.setState({
-        visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
-        availableInvoices: invoiceHolder,
-        allInvoices: value
+        this.setState({
+          visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
+          availableInvoices: invoiceHolder,
+          allInvoices: value
+        });
+      }).catch(error => {
+        console.log('\n\nERROR! Cannot Load Invoices!');
+        console.log(error);
+        console.log('\n\n');
+        this.setState({ visibleInvoices: [], allInvoices: [] });
+        alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
       });
-    }).catch(error => {
-      console.log('\n\nERROR! Cannot Load Invoices!');
-      console.log(error);
-      console.log('\n\n');
-      this.setState({ visibleInvoices: [], allInvoices: [] });
-      alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
+  }
+
+  private queryDepartments = () => {
+    sp.web.lists.getByTitle('Departments').items.select('Title, ID').getAll().then(value => {
+      this.setState({
+        departments: value
+      });
+    });
+  }
+
+  private queryInvoiceTypes = () => {
+    sp.web.lists.getByTitle('Invoices').fields.getByTitle('Invoice Type').select('Choices').get().then((value: any) => {
+      this.setState({
+        invoiceTypes: value.Choices
+      });
+    });
+  }
+
+  private queryInvoiceStatus = () => {
+    sp.web.lists.getByTitle('Invoices').fields.getByTitle('Status').select('Choices').get().then((value: any) => {
+      this.setState({
+        invoiceStatus: value.Choices
+      });
     });
   }
   //#endregion
@@ -124,46 +174,84 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewItemRender = props => {
     let item: IInvoice = props.dataItem;
     return (
-      <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px' }}>
-        <CardHeader>
-          <div className='row'>
-            <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
-              <CardTitle><span title='Vendor Name'>{item.Vendor_x0020_Name}</span> | <span title='Vendor ID'>{item.Vendor_x0020_Number}</span></CardTitle>
-            </div>
-            <div className='col-xs-2 col-sm-2 col-md-2'>
-              <Button
-                style={{ float: 'right' }}
-                primary={true}
-                look='flat'
-                icon='edit'
-                title='Edit Invoice'
-                onClick={e => console.log(e)}
-              />
-            </div>
-          </div>
-          <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-            <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
-          </CardSubtitle>
-        </CardHeader>
-        <CardBody>
-          <div className='row'>
-            <div className='col-xs-8 col-sm-10'>
-                  
-            </div>
-            <div className='col-xs-4 col-sm-2'>
-              <div className='k-chip k-chip-filled'>
-                <div className='k-chip-content'>{item.OData__Status}</div>
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+      <Form
+        onSubmit={e => console.log(e)}
+
+        initialValues={item}
+
+        render={(formRenderProps) => (
+          <FormElement style={{ marginTop: '0px' }}>
+            <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem' }}>
+              <CardHeader>
+                <div className='row'>
+                  <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
+                    <CardTitle><span title='Vendor Name'>{item.Vendor_x0020_Name}</span> | <span title='Vendor ID'>{item.Vendor_x0020_Number}</span></CardTitle>
+                  </div>
+                  <div className='col-xs-2 col-sm-2 col-md-2'>
+                    <Button
+                      style={{ float: 'right' }}
+                      primary={true}
+                      look='flat'
+                      icon='edit'
+                      title='Edit Invoice'
+                      onClick={e => console.log(e)}
+                    />
+                  </div>
+                </div>
+                <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
+                  <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
+                </CardSubtitle>
+              </CardHeader>
+              <CardBody>
+                <div className='row'>
+                  <div className='col-xs-12 col-sm-4'>
+                    <FieldWrapper>
+                      <Label editorId={'OData__Status'}>Invoice Status:</Label>
+                      <Field name='OData__Status' component={DropDownList} data={this.state.invoiceStatus ? this.state.invoiceStatus : []} />
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-4'>
+                    <FieldWrapper>
+                      <Label editorId={'Department'}>Departments:</Label>
+                      <Field name='Department' component={MultiSelect} textField='Title' dataItemKey='ID' data={this.state.departments ? [...this.state.departments] : []} />
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-4'>
+                    <FieldWrapper>
+                      <Label editorId={'Invoice_x0020_Type'}>Invoice Type:</Label>
+                      <Field name='Invoice_x0020_Type' component={DropDownList} data={this.state.invoiceTypes ? this.state.invoiceTypes : []} />
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label>Requires Approval From:</Label>
+                      {item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                        return <div>{user.Title}</div>;
+                      })}
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label>Received Approval From:</Label>
+                      {item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                        return <div>{user.Title}</div>;
+                      })}
+                    </FieldWrapper>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+          </ FormElement>
+        )}
+      />
     );
   }
 
   /**
-   * Render the entire list view.
-   */
+  * Render the entire list view.
+  */
   private RenderListView = () => {
     return (
       <div>

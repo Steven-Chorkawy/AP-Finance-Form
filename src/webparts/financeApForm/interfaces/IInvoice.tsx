@@ -1,3 +1,10 @@
+interface ISPUser {
+    Id: number;
+    EMail: string;
+    Title: string;
+}
+
+
 export interface IInvoice {
     ID: number;
     Id: number;
@@ -22,9 +29,12 @@ export interface IInvoice {
     Voucher_x0020_Number: string;
     Cheque_x0020_Number: any;
     DepartmentId: number[];
+    Department: any;
     Invoice_x0020_Type: string;
     Requires_x0020_Approval_x0020_FromId: number[];
+    Requires_x0020_Approval_x0020_From: ISPUser[];
     Received_x0020_Approval_x0020_FromId: number[];
+    Received_x0020_Approval_x0020_From: ISPUser[];
     SharedWithUsersId: number[];
     DenyComment: string;
 
@@ -38,3 +48,4 @@ export interface IInvoice {
     GUID: string;
 
 }
+
