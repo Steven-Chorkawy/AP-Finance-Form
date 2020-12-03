@@ -125,23 +125,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px' }}>
         <CardHeader>
           <div className='row'>
-            <div className='col-xs-8 col-sm-10 col-md-10'>
+            <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
               <CardTitle><span title='Vendor Name'>{item.Vendor_x0020_Name}</span> | <span title='Vendor ID'>{item.Vendor_x0020_Number}</span></CardTitle>
             </div>
-            <div className='col-xs-4 col-sm-2 col-md-2'>
-              <div className='k-chip k-chip-filled'>
-                <div className='k-chip-content'>{item.OData__Status}</div>
-              </div>
-            </div>
-          </div>
-          <CardSubtitle>
-            <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
-          </CardSubtitle>
-        </CardHeader>
-        <CardBody>
-          <div className='row'>
-            <div className='col-xs-10 col-sm-10'>body</div>
-            <div className='col-xs-2 col-sm-2'>
+            <div className='col-xs-2 col-sm-2 col-md-2'>
               <Button
                 style={{ float: 'right' }}
                 primary={true}
@@ -150,6 +137,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                 title='Edit Invoice'
                 onClick={e => console.log(e)}
               />
+            </div>
+          </div>
+          <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
+            <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
+          </CardSubtitle>
+        </CardHeader>
+        <CardBody>
+          <div className='row'>
+            <div className='col-xs-8 col-sm-10'>
+                            
+            </div>
+            <div className='col-xs-4 col-sm-2'>
+              <div className='k-chip k-chip-filled'>
+                <div className='k-chip-content'>{item.OData__Status}</div>
+              </div>
             </div>
           </div>
         </CardBody>
