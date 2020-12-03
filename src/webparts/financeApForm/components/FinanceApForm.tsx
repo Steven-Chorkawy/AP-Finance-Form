@@ -16,11 +16,7 @@ import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-
 import { Button } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import {
-  Input, MaskedTextBox, NumericTextBox,
-  Checkbox, ColorPicker, Switch, RadioGroup,
-  Slider, SliderLabel, TextArea
-} from '@progress/kendo-react-inputs';
+import { Input } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 
 
@@ -181,11 +177,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
         render={(formRenderProps) => (
           <FormElement style={{ marginTop: '0px' }}>
-            <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem' }}>
+            <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
               <CardHeader>
                 <div className='row'>
                   <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
-                    <CardTitle><span title='Vendor Name'>{item.Vendor_x0020_Name}</span> | <span title='Vendor ID'>{item.Vendor_x0020_Number}</span></CardTitle>
+                    <CardTitle><span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span></CardTitle>
                   </div>
                   <div className='col-xs-2 col-sm-2 col-md-2'>
                     <Button
@@ -199,17 +195,25 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   </div>
                 </div>
                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-                  <span title='Invoice Number'>{item.Invoice_x0020_Number}</span> | <span title='Invoice Title'>{item.Title}</span> | <span title='Invoice Type'>{item.Invoice_x0020_Type}</span>
+                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> | <span title='Invoice Title'>{formRenderProps.valueGetter('Title')}</span> | <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
                 </CardSubtitle>
               </CardHeader>
               <CardBody>
                 <div className='row'>
-                  <div className='col-xs-12 col-sm-4'>
+                  <div className='col-xs-12 col-sm-6'>
                     <FieldWrapper>
                       <Label editorId={'OData__Status'}>Invoice Status:</Label>
                       <Field name='OData__Status' component={DropDownList} data={this.state.invoiceStatus ? this.state.invoiceStatus : []} />
                     </FieldWrapper>
                   </div>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Invoice_x0020_Type'}>Invoice Type:</Label>
+                      <Field name='Invoice_x0020_Type' component={DropDownList} data={this.state.invoiceTypes ? this.state.invoiceTypes : []} />
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
                   <div className='col-xs-12 col-sm-4'>
                     <FieldWrapper>
                       <Label editorId={'Department'}>Departments:</Label>
@@ -218,26 +222,32 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   </div>
                   <div className='col-xs-12 col-sm-4'>
                     <FieldWrapper>
-                      <Label editorId={'Invoice_x0020_Type'}>Invoice Type:</Label>
-                      <Field name='Invoice_x0020_Type' component={DropDownList} data={this.state.invoiceTypes ? this.state.invoiceTypes : []} />
-                    </FieldWrapper>
-                  </div>
-                </div>
-                <div className='row'>
-                  <div className='col-xs-12 col-sm-6'>
-                    <FieldWrapper>
                       <Label>Requires Approval From:</Label>
                       {item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                         return <div>{user.Title}</div>;
                       })}
                     </FieldWrapper>
                   </div>
-                  <div className='col-xs-12 col-sm-6'>
+                  <div className='col-xs-12 col-sm-4'>
                     <FieldWrapper>
                       <Label>Received Approval From:</Label>
                       {item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                         return <div>{user.Title}</div>;
                       })}
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Invoice_x0020_Number'}>Invoice Number:</Label>
+                      <Field name='Invoice_x0020_Number' component={Input} />
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'PO_x0020__x0023_'}>PO #:</Label>
+                      <Field name='PO_x0020__x0023_' component={Input} />
                     </FieldWrapper>
                   </div>
                 </div>
