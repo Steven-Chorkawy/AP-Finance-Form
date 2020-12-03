@@ -21,6 +21,7 @@
     "@pnp/graph": "^2.0.12",
     "@pnp/sp": "^2.0.12",
     "@progress/kendo-licensing": "^1.1.0",
+    "@progress/kendo-react-buttons": "^4.1.0",
     "@progress/kendo-react-intl": "^4.1.0",
     "@progress/kendo-react-listview": "^4.1.0",
     "@progress/kendo-react-progressbars": "^4.1.0",
