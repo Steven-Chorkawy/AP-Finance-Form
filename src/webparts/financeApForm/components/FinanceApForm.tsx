@@ -14,11 +14,13 @@ import "@pnp/sp/site-users/web";
 import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
 import { Button } from '@progress/kendo-react-buttons';
-import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-form';
+import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input } from '@progress/kendo-react-inputs';
+import { Input, NumericTextBox } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
+import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
+
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -52,6 +54,22 @@ interface IFinanceApFormState {
 
 enum ContentTypes {
   Folder = '0x01200088C42F7CFFB6244DA17EE5E6F15B8D22'
+}
+
+const AccountFieldComponent = (fieldArrayRenderProps) => {
+  return (
+    <Grid
+      data={fieldArrayRenderProps.value}
+    >
+      <GridToolbar>
+        <Button title="Add new" primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
+      </GridToolbar>
+      <GridColumn field="Title" title="Title" />
+      <GridColumn field="AmountIncludingTaxes" title="AmountIncludingTaxes" />
+      {/* <GridColumn field="name" title="Name" cell={nameCell} /> */}
+      {/* <GridColumn cell={commandCell(onRemove)} width="240px" /> */}
+    </Grid>
+  );
 }
 
 export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinanceApFormState> {
@@ -186,6 +204,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Render Component Methods
+
+
   private MyListViewHeader = () => {
     return (
       <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
@@ -315,10 +335,33 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   </div>
                 </div>
                 <div className='row'>
-                  {
-                    item.Accounts ? item.Accounts.map(a => { return <div>{JSON.stringify(a)}</div> }) : 'No Accounts...'
-                  }
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Gross_x0020_Amount'}>Gross Amount:</Label>
+                      <Field name='Gross_x0020_Amount' component={NumericTextBox} format="c2" min={0} />
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Total_x0020_Tax_x0020_Amount'}>Total Tax Amount:</Label>
+                      <Field name='Total_x0020_Tax_x0020_Amount' component={NumericTextBox} format="c2" min={0} />
+                    </FieldWrapper>
+                  </div>
                 </div>
+                {
+                  item.Accounts &&
+                  <div className='row'>
+                    <div className='col-sm-12'>
+                      <FieldWrapper>
+                        <FieldArray
+                          name="Accounts"
+                          component={AccountFieldComponent}
+                          value={item.Accounts}
+                        />
+                      </FieldWrapper>
+                    </div>
+                  </div>
+                }
               </CardBody>
             </Card>
           </ FormElement>
