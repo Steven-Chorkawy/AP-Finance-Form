@@ -14,10 +14,6 @@ import { FinanceApForm, IFinanceApFormProps } from './components/FinanceApForm';
 // PnP Imports
 import { sp } from "@pnp/sp";
 
-
-// // Import Style for Kendo
-// import '@progress/kendo-theme-default/dist/all.css';
-
 // Import Bootstrap theme for kendo. 
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 
