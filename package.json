@@ -22,6 +22,7 @@
     "@pnp/sp": "^2.0.12",
     "@progress/kendo-licensing": "^1.1.0",
     "@progress/kendo-react-buttons": "^4.1.0",
+    "@progress/kendo-react-form": "^4.1.0",
     "@progress/kendo-react-intl": "^4.1.0",
     "@progress/kendo-react-labels": "^4.1.0",
     "@progress/kendo-react-listview": "^4.1.0",
