@@ -142,7 +142,14 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           <div className='row'>
             <div className='col-xs-10 col-sm-10'>body</div>
             <div className='col-xs-2 col-sm-2'>
-              <Button primary={true} look='flat' icon='edit' title='Edit Invoice' />
+              <Button
+                style={{ float: 'right' }}
+                primary={true}
+                look='flat'
+                icon='edit'
+                title='Edit Invoice'
+                onClick={e => console.log(e)}
+              />
             </div>
           </div>
         </CardBody>
