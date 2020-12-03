@@ -18,8 +18,7 @@ import { Form, Field, FormElement, FieldWrapper } from '@progress/kendo-react-fo
 import { Label, Error } from '@progress/kendo-react-labels';
 import { Input } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
-
-
+import { DatePicker } from '@progress/kendo-react-dateinputs';
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -90,6 +89,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
+        value = value.map(v => {
+          return {
+            ...v,
+            Invoice_x0020_Date: new Date(v.Invoice_x0020_Date),
+            Received_x0020_Date: new Date(v.Received_x0020_Date)
+          };
+        });
 
         // Create a new instance of this object.
         let invoiceHolder = value.slice(0);
@@ -99,6 +105,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           availableInvoices: invoiceHolder,
           allInvoices: value
         });
+
+        this.queryAccountForInvoices(this.state.visibleInvoices);
+
       }).catch(error => {
         console.log('\n\nERROR! Cannot Load Invoices!');
         console.log(error);
@@ -108,7 +117,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       });
   }
 
-  private queryDepartments = () => {
+  private queryDepartments = async () => {
     sp.web.lists.getByTitle('Departments').items.select('Title, ID').getAll().then(value => {
       this.setState({
         departments: value
@@ -116,7 +125,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     });
   }
 
-  private queryInvoiceTypes = () => {
+  private queryInvoiceTypes = async () => {
     sp.web.lists.getByTitle('Invoices').fields.getByTitle('Invoice Type').select('Choices').get().then((value: any) => {
       this.setState({
         invoiceTypes: value.Choices
@@ -124,12 +133,41 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     });
   }
 
-  private queryInvoiceStatus = () => {
+  private queryInvoiceStatus = async () => {
     sp.web.lists.getByTitle('Invoices').fields.getByTitle('Status').select('Choices').get().then((value: any) => {
       this.setState({
         invoiceStatus: value.Choices
       });
     });
+  }
+
+  /**
+   * 
+   * @param visibleInvoices The invoices that have been rendered. 
+   */
+  private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
+    let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+
+    debugger;
+
+    for (let index = 0; index < visibleInvoices.length; index++) {
+      debugger;
+      const invoice = visibleInvoices[index];
+
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${invoice.ID}`).select('ID, Title, AmountIncludingTaxes').get();
+
+      let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
+
+      let indexOfVisibleInvoice: number = visibleInvoicesState.findIndex(f => f.ID === invoice.ID);
+
+      if (indexOfVisibleInvoice >= 0) {
+        visibleInvoicesState[indexOfVisibleInvoice].Accounts = [...accounts];
+        debugger;
+        this.setState({
+          visibleInvoices: [...visibleInvoicesState]
+        });
+      }
+    }
   }
   //#endregion
 
@@ -141,6 +179,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
         this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
+        this.queryAccountForInvoices(moreData);
       }
     }
   }
@@ -192,6 +231,16 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                       title='Edit Invoice'
                       onClick={e => console.log(e)}
                     />
+                    {
+                      formRenderProps.modified &&
+                      <Button
+                        style={{ float: 'right' }}
+                        look='flat'
+                        icon='cancel'
+                        title='Cancel Changes'
+                        onClick={formRenderProps.onFormReset}
+                      />
+                    }
                   </div>
                 </div>
                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
@@ -251,6 +300,25 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                     </FieldWrapper>
                   </div>
                 </div>
+                <div className='row'>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Invoice_x0020_Date'}>Invoice Date:</Label>
+                      <Field name='Invoice_x0020_Date' component={DatePicker} />
+                    </FieldWrapper>
+                  </div>
+                  <div className='col-xs-12 col-sm-6'>
+                    <FieldWrapper>
+                      <Label editorId={'Received_x0020_Date'}>Received Date:</Label>
+                      <Field name='Received_x0020_Date' component={DatePicker} />
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
+                  {
+                    item.Accounts ? item.Accounts.map(a => { return <div>{JSON.stringify(a)}</div> }) : 'No Accounts...'
+                  }
+                </div>
               </CardBody>
             </Card>
           </ FormElement>
@@ -278,7 +346,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
   //#endregion
 
-  private TAKE_N = 50;
+  private TAKE_N = 25;
 
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (

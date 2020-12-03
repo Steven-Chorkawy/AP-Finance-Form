@@ -14,8 +14,8 @@ export interface IInvoice {
     Vendor_x0020_Number: string;
     Vendor_x0020_Name: string;
     Invoice_x0020_Number: string;
-    Invoice_x0020_Date: string;
-    Received_x0020_Date: string;
+    Invoice_x0020_Date: Date;
+    Received_x0020_Date: Date;
     Gross_x0020_Amount: number;
     Total_x0020_Tax_x0020_Amount: number;
     PO_x0020__x0023_: any; // TODO: What type is this? 
@@ -37,6 +37,9 @@ export interface IInvoice {
     Received_x0020_Approval_x0020_From: ISPUser[];
     SharedWithUsersId: number[];
     DenyComment: string;
+    
+    Accounts?: any[];
+
 
     // TODO: Get the ID version of this.
     //Received_x0020_Deny_x0020_From_x0020_String
