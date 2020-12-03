@@ -13,6 +13,8 @@ import "@pnp/sp/site-users/web";
 // Kendo Imports 
 import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
+import { Button } from '@progress/kendo-react-buttons';
+
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -139,7 +141,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         <CardBody>
           <div className='row'>
             <div className='col-xs-10 col-sm-10'>body</div>
-            <div className='col-xs-2 col-sm-2'>edit</div>
+            <div className='col-xs-2 col-sm-2'>
+              <Button primary={true} look='flat' icon='edit' title='Edit Invoice' />
+            </div>
           </div>
         </CardBody>
       </Card>
