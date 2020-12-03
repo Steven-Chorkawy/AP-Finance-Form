@@ -25,6 +25,7 @@
     "@progress/kendo-react-intl": "^4.1.0",
     "@progress/kendo-react-listview": "^4.1.0",
     "@progress/kendo-react-progressbars": "^4.1.0",
+    "@progress/kendo-theme-bootstrap": "^4.24.0",
     "@progress/kendo-theme-default": "^4.26.0",
     "@types/es6-promise": "0.0.33",
     "@types/react": "16.8.8",
