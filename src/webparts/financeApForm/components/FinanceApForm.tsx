@@ -65,7 +65,7 @@ const AccountFieldComponent = (fieldArrayRenderProps) => {
         <Button title="Add new" primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
       </GridToolbar>
       <GridColumn field="Title" title="Title" />
-      <GridColumn field="AmountIncludingTaxes" title="AmountIncludingTaxes" />
+      <GridColumn field="AmountIncludingTaxes" title="Amount Including Taxes" />
       {/* <GridColumn field="name" title="Name" cell={nameCell} /> */}
       {/* <GridColumn cell={commandCell(onRemove)} width="240px" /> */}
     </Grid>
