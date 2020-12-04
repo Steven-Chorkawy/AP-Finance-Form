@@ -238,7 +238,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
               <CardHeader>
                 <div className='row'>
                   <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
-                    <CardTitle><span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span></CardTitle>
+                    <CardTitle>
+                      <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                    </CardTitle>
                   </div>
                   <div className='col-xs-2 col-sm-2 col-md-2'>
                     <Button
@@ -262,7 +264,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   </div>
                 </div>
                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> | <span title='Invoice Title'>{formRenderProps.valueGetter('Title')}</span> | <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
+                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> | 
+                  <span title='Invoice_x0020_Date'>{formRenderProps.valueGetter('Invoice_x0020_Date').toString()}</span> | 
+                  <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span> | 
+                  
                 </CardSubtitle>
               </CardHeader>
               <CardBody>
