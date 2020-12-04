@@ -102,9 +102,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       Requires_x0020_Approval_x0020_From/EMail
       `)
       .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
-      .getAll()
-      .then(value => {
-
+      .getAll().then(value => {
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
         value = value.map(v => {
@@ -362,18 +360,30 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                     </div>
                   </div>
                 }
-                <FieldWrapper>
-                  <Label>Approval Notes</Label>
-                  <Field name='ApprovalNotes' component={TextArea} />
-                </FieldWrapper>
-                <FieldWrapper>
-                  <Label>Deny Comment</Label>
-                  <Field name='DenyComment' component={TextArea} />
-                </FieldWrapper>
-                <FieldWrapper>
-                  <Label>Cheque Returned Notes</Label>
-                  <Field name='ChequeReturnedNotes' component={TextArea} />
-                </FieldWrapper>
+                <div className='row'>
+                  <div className='col-sm-12'>
+                    <FieldWrapper>
+                      <Label>Approval Notes</Label>
+                      <Field name='ApprovalNotes' component={TextArea} />
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-sm-12'>
+                    <FieldWrapper>
+                      <Label>Deny Comment</Label>
+                      <Field name='DenyComment' component={TextArea} />
+                    </FieldWrapper>
+                  </div>
+                </div>
+                <div className='row'>
+                  <div className='col-sm-12'>
+                    <FieldWrapper>
+                      <Label>Cheque Returned Notes</Label>
+                      <Field name='ChequeReturnedNotes' component={TextArea} />
+                    </FieldWrapper>
+                  </div>
+                </div>
               </CardBody>
             </Card>
           </ FormElement>
