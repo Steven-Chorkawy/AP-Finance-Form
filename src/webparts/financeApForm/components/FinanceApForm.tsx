@@ -26,6 +26,7 @@ import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
 import { values } from 'office-ui-fabric-react/lib/Utilities';
+import Moment from 'react-moment';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -264,10 +265,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   </div>
                 </div>
                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> | 
-                  <span title='Invoice_x0020_Date'>{formRenderProps.valueGetter('Invoice_x0020_Date').toString()}</span> | 
-                  <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span> | 
-                  
+                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> |
+                  <span title='Invoice_x0020_Date'><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span> |
+                  <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span> |
+
                 </CardSubtitle>
               </CardHeader>
               <CardBody>
