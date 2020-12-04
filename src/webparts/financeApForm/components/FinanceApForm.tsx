@@ -57,18 +57,29 @@ enum ContentTypes {
   Folder = '0x01200088C42F7CFFB6244DA17EE5E6F15B8D22'
 }
 
+const SumAccounts = (accounts): string => {
+  if (!accounts) {
+    return FormatCurrency(0);
+  }
+  return FormatCurrency(accounts.reduce((a, b) => a + (b['AmountIncludingTaxes'] || 0), 0));
+};
+
+const FormatCurrency = (n: number): string => {
+  return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+};
+
+/**
+ * Renders the Accounts Grid.
+ * @param fieldArrayRenderProps Props from form
+ */
 const AccountFieldComponent = (fieldArrayRenderProps) => {
   return (
-    <Grid
-      data={fieldArrayRenderProps.value}
-    >
+    <Grid data={fieldArrayRenderProps.value}>
       <GridToolbar>
         <Button title="Add new" icon='plus' primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
       </GridToolbar>
-      <GridColumn field="Title" title="Title" />
-      <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${fieldArrayRenderProps.value.reduce((a, b) => a + (b['AmountIncludingTaxes'] || 0), 0)})`} />
-      {/* <GridColumn field="name" title="Name" cell={nameCell} /> */}
-      {/* <GridColumn cell={commandCell(onRemove)} width="240px" /> */}
+      <GridColumn field="Title" title="Account Code" />
+      <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${SumAccounts(fieldArrayRenderProps.value)})`} />
     </Grid>
   );
 }
@@ -238,12 +249,38 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
             <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
               <CardHeader>
                 <div className='row'>
-                  <div className='col-xs-10 col-sm-10 col-md-10' style={{ paddingLeft: '0px' }}>
-                    <CardTitle>
-                      <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
-                    </CardTitle>
+                  <div className='col-xs-10 col-sm-10'>
+                    <div className='row'>
+                      <div className='col-xs-12 col-sm-8'>
+                        <CardTitle>
+                          <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                        </CardTitle>
+                        <CardTitle>
+                          <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
+                        </CardTitle>
+                        <CardTitle>
+                          <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>Amount Assigned: {SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
+                        </CardTitle>
+                      </div>
+                      <div className='col-xs-12 col-sm-4'>
+                        <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
+                          <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Date:</span><span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                          </div>
+                          <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
+                          </div>
+                          <div title='Invoice Status' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Status:</span><span>{formRenderProps.valueGetter('OData__Status')}</span>
+                          </div>
+                          <div title='Batch #' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <span>Batch:</span><span>{formRenderProps.valueGetter('Batch_x0020_Number')}</span>
+                          </div>
+                        </CardSubtitle>
+                      </div>
+                    </div>
                   </div>
-                  <div className='col-xs-2 col-sm-2 col-md-2'>
+                  <div className='col-xs-2 col-sm-2'>
                     <Button
                       style={{ float: 'right' }}
                       primary={true}
@@ -264,12 +301,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                     }
                   </div>
                 </div>
-                <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-                  <span title='Invoice Number'>{formRenderProps.valueGetter('Invoice_x0020_Number')}</span> |
-                  <span title='Invoice_x0020_Date'><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span> |
-                  <span title='Invoice Type'>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span> |
-
-                </CardSubtitle>
               </CardHeader>
               <CardBody>
                 <div className='row'>
