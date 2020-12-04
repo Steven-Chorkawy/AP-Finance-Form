@@ -16,7 +16,7 @@ import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-
 import { Button } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, NumericTextBox } from '@progress/kendo-react-inputs';
+import { Input, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -362,6 +362,18 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                     </div>
                   </div>
                 }
+                <FieldWrapper>
+                  <Label>Approval Notes</Label>
+                  <Field name='ApprovalNotes' component={TextArea} />
+                </FieldWrapper>
+                <FieldWrapper>
+                  <Label>Deny Comment</Label>
+                  <Field name='DenyComment' component={TextArea} />
+                </FieldWrapper>
+                <FieldWrapper>
+                  <Label>Cheque Returned Notes</Label>
+                  <Field name='ChequeReturnedNotes' component={TextArea} />
+                </FieldWrapper>
               </CardBody>
             </Card>
           </ FormElement>
