@@ -162,6 +162,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       let indexOfVisibleInvoice: number = visibleInvoicesState.findIndex(f => f.ID === invoice.ID);
 
       if (indexOfVisibleInvoice >= 0) {
+        // If no accounts were found this will be an empty array. 
         visibleInvoicesState[indexOfVisibleInvoice].Accounts = [...accounts];
         this.setState({
           visibleInvoices: [...visibleInvoicesState]
