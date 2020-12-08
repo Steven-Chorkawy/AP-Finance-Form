@@ -89,7 +89,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     </CardTitle>
                                                     <CardTitle>
                                                         <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>
-                                                            <span>Amount Assigned:</span> {item.Accounts ? <span>{MyHelper.SumAccounts(item.Accounts)}</span> : <span>$---.--</span>}
+                                                            <span>Amount Assigned:</span> {item.Accounts ? <span>{MyHelper.SumAccounts(item.Accounts)}</span> : <span title='Loading Account Details...'>$---.--</span>}
                                                         </span>
                                                     </CardTitle>
                                                 </div>
