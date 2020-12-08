@@ -152,10 +152,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
-    debugger;
-
     for (let index = 0; index < visibleInvoices.length; index++) {
-      debugger;
       const invoice = visibleInvoices[index];
 
       let accounts = await accountList.items.filter(`InvoiceFolderID eq ${invoice.ID}`).select('ID, Title, AmountIncludingTaxes').get();
@@ -166,7 +163,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       if (indexOfVisibleInvoice >= 0) {
         visibleInvoicesState[indexOfVisibleInvoice].Accounts = [...accounts];
-        debugger;
         this.setState({
           visibleInvoices: [...visibleInvoicesState]
         });
