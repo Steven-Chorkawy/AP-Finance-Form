@@ -50,14 +50,24 @@ export class APItemComponent extends React.Component<any, any> {
             showMore: false
         };
     }
+
+    public componentDidUpdate(prevProps, prevState, snapshot) {
+        let s = this.state.item;
+        debugger;
+        if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
+            debugger;
+            this.setState({
+                item: this.props.dataItem
+            });
+        }
+    }
+
     public render() {
         let item: IInvoice = this.state.item;
         return (
             <Form
                 onSubmit={e => console.log(e)}
-
                 initialValues={item}
-
                 render={(formRenderProps) => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
@@ -74,7 +84,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                         <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                     </CardTitle>
                                                     <CardTitle>
-                                                        <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>Amount Assigned: {MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
+                                                        <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>Amount Assigned: {MyHelper.SumAccounts(item.Accounts)}</span>
                                                     </CardTitle>
                                                 </div>
                                                 <div className='col-xs-12 col-sm-4'>
