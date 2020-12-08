@@ -23,6 +23,10 @@ import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 import { IInvoice } from '../interfaces/IInvoice';
+import { MyLoadingComponent } from './MyLoadingComponent';
+
+// Fluent UI Imports
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 
 /**
@@ -84,7 +88,9 @@ export class APItemComponent extends React.Component<any, any> {
                                                         <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                     </CardTitle>
                                                     <CardTitle>
-                                                        <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>Amount Assigned: {MyHelper.SumAccounts(item.Accounts)}</span>
+                                                        <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>
+                                                            <span>Amount Assigned:</span> {item.Accounts ? <span>{MyHelper.SumAccounts(item.Accounts)}</span> : <span>$---.--</span>}
+                                                        </span>
                                                     </CardTitle>
                                                 </div>
                                                 <div className='col-xs-12 col-sm-4'>
@@ -211,20 +217,22 @@ export class APItemComponent extends React.Component<any, any> {
                                             </FieldWrapper>
                                         </div>
                                     </div>
-                                    {
-                                        item.Accounts &&
-                                        <div className='row'>
-                                            <div className='col-sm-12'>
-                                                <FieldWrapper>
-                                                    <FieldArray
-                                                        name="Accounts"
-                                                        component={AccountFieldComponent}
-                                                        value={item.Accounts}
-                                                    />
-                                                </FieldWrapper>
-                                            </div>
+                                    <div className='row'>
+                                        <div className='col-sm-12'>
+                                            <FieldWrapper>
+                                                <Label>Accounts:</Label>
+                                                {
+                                                    item.Accounts ?
+                                                        <FieldArray
+                                                            name="Accounts"
+                                                            component={AccountFieldComponent}
+                                                            value={item.Accounts}
+                                                        /> :
+                                                        <Spinner size={SpinnerSize.medium} />
+                                                }
+                                            </FieldWrapper>
                                         </div>
-                                    }
+                                    </div>
                                     <div className='row'>
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
