@@ -76,6 +76,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.queryInvoiceStatus();
   }
 
+  //#region CONSTS (Kinda)
+  private TAKE_N = 25;
+  //#endregion
+
   //#region Private Methods
   private queryInvoices = () => {
     console.log('Query Invoices');
@@ -175,6 +179,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region ListView Events
   public scrollHandler = event => {
     console.log('scrollHandler');
+    console.log(event);
     const e = event.nativeEvent;
     if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight) {
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
@@ -187,8 +192,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Render Component Methods
-
-
   private MyListViewHeader = () => {
     return (
       <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
@@ -205,18 +208,16 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     );
   }
 
-  /**
-  * Render the entire list view.
-  */
+  private APItemComponentRender = props => <APItemComponent {...props} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
+
   private RenderListView = () => {
     return (
       <div>
         <ListView
           onScroll={this.scrollHandler}
-          // TODO: Pass Departments, Invoice Types, and Status' to the component item. 
           data={this.state.visibleInvoices}
-          item={APItemComponent}
-          style={{ width: "100%", height: 800 }}
+          item={this.APItemComponentRender}
+          style={{ width: "100%", height: 780 }}
           header={this.MyListViewHeader}
           footer={this.MyListViewFooter}
         />
@@ -224,8 +225,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     );
   }
   //#endregion
-
-  private TAKE_N = 25;
 
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
