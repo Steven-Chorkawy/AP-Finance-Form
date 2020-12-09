@@ -21,6 +21,8 @@ import { Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/ken
 import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
+import { filterBy } from '@progress/kendo-data-query';
+
 
 
 // My Imports 
@@ -29,6 +31,7 @@ import { IInvoice } from '../interfaces/IInvoice';
 import { values } from 'office-ui-fabric-react/lib/Utilities';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
+import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
 
 
 /**
@@ -55,6 +58,7 @@ interface IFinanceApFormState {
   invoiceTypes?: string[];
   invoiceStatus?: string[];
   myFilter: IFinanceAPFormFilterState;
+  filter?: any;
 }
 
 enum ContentTypes {
@@ -95,8 +99,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * This method converts the String date to a correct Date object. 
    * This method queries accounts only for invoice that are being rendered. 
    * @param invoices Invoice after we have filtered the results down.
+   * @param allInvoices Optional.  If set this will hold the exising invocies for later. 
    */
-  private parseInvoiceFolders = invoices => {
+  private parseInvoiceFolders = (invoices, allInvoices?) => {
     invoices = invoices.map(v => {
       return {
         ...v,
@@ -112,7 +117,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.setState({
       visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
       availableInvoices: invoiceHolder,
-      allInvoices: invoices
+      allInvoices: allInvoices ? allInvoices : invoices
     }, () => this.queryAccountForInvoices(this.state.visibleInvoices));
   }
 
@@ -239,10 +244,26 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   public statusDropDownChange = (event: DropDownListChangeEvent) => { this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices()); }
 
+  // ! This does not work as expected. 
   public searchBoxChange = (event: InputChangeEvent) => {
     console.log(event);
     console.log(event.value);
-    
+    let filterInvoices = filterBy(
+      this.state.allInvoices,
+      {
+        logic: 'or',
+        filters: [
+          // { field: 'Title', operator: 'contains', value: event.value },
+          // { field: 'Vendor_x0020_Number', operator: 'contains', value: event.value },
+          { field: 'Vendor_x0020_Name', operator: 'contains', value: event.value },
+          // { field: 'Invoice_x0020_Number', operator: 'contains', value: event.value },
+          // { field: 'PO_x0020__x0023_', operator: 'contains', value: event.value },
+          // { field: 'Batch_x0020_Number', operator: 'contains', value: event.value },
+        ]
+      });
+    debugger;
+
+    this.parseInvoiceFolders(filterInvoices, this.state.allInvoices);
   }
   //#endregion
 

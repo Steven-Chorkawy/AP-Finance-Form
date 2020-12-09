@@ -57,6 +57,7 @@ export class APItemComponent extends React.Component<any, any> {
     }
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
+        debugger;
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
             this.setState({
                 item: this.props.dataItem
