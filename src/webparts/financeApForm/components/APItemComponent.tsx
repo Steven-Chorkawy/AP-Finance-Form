@@ -62,7 +62,7 @@ export class APItemComponent extends React.Component<any, any> {
                 item: this.props.dataItem
             });
         }
-    };
+    }
 
     public render() {
         let item: IInvoice = this.state.item;
