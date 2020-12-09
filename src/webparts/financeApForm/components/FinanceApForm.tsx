@@ -199,16 +199,16 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region Render Component Methods
   private MyListViewHeader = () => {
     return (
-      <ListViewHeader style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
-        Invoices {this.state.visibleInvoices.length}/{this.state.allInvoices.length}
+      <ListViewHeader style={{ padding: '5px' }}>
+        Header Goes Here.
       </ListViewHeader>
     );
   }
 
   private MyListViewFooter = () => {
     return (
-      <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14 }} className='pl-3 pb-2 pt-2'>
-        25 unread messages in total
+      <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
+        Displaying {this.state.visibleInvoices.length}/{this.state.allInvoices.length} Invoices.
       </ListViewFooter>
     );
   }
