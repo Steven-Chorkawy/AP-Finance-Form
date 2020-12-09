@@ -178,10 +178,15 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   //#region ListView Events
   public scrollHandler = event => {
-    console.log('scrollHandler');
-    console.log(event);
     const e = event.nativeEvent;
-    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight) {
+    /**
+     * If we do not check that e.target.className === 'k-listview-content' 
+     * then this scroll event will run for any (Drop Down, Calendar, Combo Box)
+     * scroll bar that is nested within the List View.  
+     * 
+     * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
+     */
+    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.className === 'k-listview-content') {
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
         this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
