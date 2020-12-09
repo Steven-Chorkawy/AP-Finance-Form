@@ -13,12 +13,12 @@ import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
 import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
-import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
+import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
 import { Button } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
-import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
+import { Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
+import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 
@@ -219,7 +219,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region ListView Events
-  public scrollHandler = event => {
+  public scrollHandler = (event: ListViewEvent) => {
     const e = event.nativeEvent;
     /**
      * If we do not check that e.target.className === 'k-listview-content' 
@@ -236,6 +236,14 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
     }
   }
+
+  public statusDropDownChange = (event: DropDownListChangeEvent) => { this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices()); }
+
+  public searchBoxChange = (event: InputChangeEvent) => {
+    console.log(event);
+    console.log(event.value);
+    
+  }
   //#endregion
 
   //#region Render Component Methods
@@ -243,15 +251,18 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <ListViewHeader style={{ padding: '5px' }}>
         <div className='row'>
-          <div className='col-sm-4'>
-            <DropDownList
-              data={this.state.invoiceStatus}
-              value={this.state.myFilter.status}
-              onChange={e => { this.setState({ myFilter: { status: e.value } }, () => this.queryInvoices()); }}
-              style={{ width: '100%' }}
-            />
+          <div className='col-sm-3'>
+            <DropDownList data={this.state.invoiceStatus} value={this.state.myFilter.status} onChange={this.statusDropDownChange} style={{ width: '100%' }} />
           </div>
-          <div className='col-sm-8'>right side.</div>
+          <div className='col-sm-1'>
+            1
+          </div>
+          <div className='col-sm-1'>
+            2
+          </div>
+          <div className='col-sm-7'>
+            <Input onChange={this.searchBoxChange} placeholder='Search for Invoices' style={{ width: '100%' }} />
+          </div>
         </div>
       </ListViewHeader>
     );
