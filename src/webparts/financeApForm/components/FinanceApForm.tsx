@@ -89,14 +89,40 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Private Methods
+
+  /**
+   * Parse through the invoice that we will be sending to the user. 
+   * This method converts the String date to a correct Date object. 
+   * This method queries accounts only for invoice that are being rendered. 
+   * @param invoices Invoice after we have filtered the results down.
+   */
+  private parseInvoiceFolders = invoices => {
+    invoices = invoices.map(v => {
+      return {
+        ...v,
+        Invoice_x0020_Date: new Date(v.Invoice_x0020_Date),
+        Received_x0020_Date: new Date(v.Received_x0020_Date),
+        Created: new Date(v.Created),
+        Modified: new Date(v.Modified)
+      };
+    });
+
+    // Create a new instance of this object.
+    let invoiceHolder = invoices.slice(0);
+    this.setState({
+      visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
+      availableInvoices: invoiceHolder,
+      allInvoices: invoices
+    }, () => this.queryAccountForInvoices(this.state.visibleInvoices));
+  }
+
   private queryInvoices = () => {
     console.log('Query Invoices');
     this.setState({
-      visibleInvoices: [],
-      availableInvoices: [],
-      allInvoices: []
+      visibleInvoices: undefined,
+      availableInvoices: undefined,
+      allInvoices: undefined
     });
-    console.log(this.state);
     sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
       .select(`*, 
       Department/Title, 
@@ -108,35 +134,36 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       Requires_x0020_Approval_x0020_From/EMail
       `)
       .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
+      .top(2000)
       .getAll().then(value => {
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
-        value = value.map(v => {
-          return {
-            ...v,
-            Invoice_x0020_Date: new Date(v.Invoice_x0020_Date),
-            Received_x0020_Date: new Date(v.Received_x0020_Date)
-          };
-        });
-
-        // Create a new instance of this object.
-        let invoiceHolder = value.slice(0);
-        debugger;
-        this.setState({
-          visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
-          availableInvoices: invoiceHolder,
-          allInvoices: value
-        });
-        console.log(this.state);
-
-        this.queryAccountForInvoices(this.state.visibleInvoices);
-
+        this.parseInvoiceFolders(value);
       }).catch(error => {
-        console.log('\n\nERROR! Cannot Load Invoices!');
-        console.log(error);
-        console.log('\n\n');
-        this.setState({ visibleInvoices: [], allInvoices: [] });
-        alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
+        // If you fail at first, try try again.
+        sp.web.lists.getByTitle('Invoices').items
+          .select(`*, 
+        Department/Title, 
+        Received_x0020_Approval_x0020_From/Id, 
+        Received_x0020_Approval_x0020_From/Title, 
+        Received_x0020_Approval_x0020_From/EMail,
+        Requires_x0020_Approval_x0020_From/Id, 
+        Requires_x0020_Approval_x0020_From/Title, 
+        Requires_x0020_Approval_x0020_From/EMail
+        `)
+          .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
+          .getAll().then(value => {
+            value = value.filter(f => f.ContentTypeId === ContentTypes.Folder && f.OData__Status === this.state.myFilter.status);
+            debugger;
+            this.parseInvoiceFolders(value);
+          }).catch(error2 => {
+            console.log('\n\nERROR! Cannot Load Invoices!');
+            console.log(error);
+            console.log(error2);
+            console.log('\n\n');
+            this.setState({ visibleInvoices: [], allInvoices: [] });
+            alert('Something went wrong! Cannot load Invoices.  Please contact helpdesk@clarington.net');
+          });
       });
   }
 
@@ -220,10 +247,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
             <DropDownList
               data={this.state.invoiceStatus}
               value={this.state.myFilter.status}
-              onChange={e => {
-                this.setState({ myFilter: { status: e.value } });
-                this.queryInvoices();
-              }}
+              onChange={e => { this.setState({ myFilter: { status: e.value } }, () => this.queryInvoices()); }}
               style={{ width: '100%' }}
             />
           </div>
@@ -236,26 +260,26 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewFooter = () => {
     return (
       <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
-        Displaying {this.state.visibleInvoices.length}/{this.state.allInvoices.length} Invoices.
+        {this.state.visibleInvoices ? `Displaying ${this.state.visibleInvoices.length}/${this.state.allInvoices.length} Invoices.` : 'Loading...'}
       </ListViewFooter>
     );
   }
 
   private APItemComponentRender = props => <APItemComponent {...props} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
+  private APItemLoadingComponentRender = () => <div style={{ paddingLeft: '10px', paddingRight: '10px' }}><MyLoadingComponent /><hr /></div>;
   //#endregion
 
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
-      this.state.visibleInvoices ?
-        <ListView
-          onScroll={this.scrollHandler}
-          data={this.state.visibleInvoices}
-          item={this.APItemComponentRender}
-          style={{ width: "100%", height: 780 }}
-          header={this.MyListViewHeader}
-          footer={this.MyListViewFooter}
-        /> :
-        <MyLoadingComponent />
+      <ListView
+        onScroll={this.scrollHandler}
+        // [1, 2, 3] is just Shimmer components that we want to load. 
+        data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
+        item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
+        style={{ width: "100%", height: 780 }}
+        header={this.MyListViewHeader}
+        footer={this.MyListViewFooter}
+      />
     );
   }
 }
