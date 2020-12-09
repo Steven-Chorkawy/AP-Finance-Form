@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
+
 import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
@@ -8,10 +9,16 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FinanceApFormWebPartStrings';
-import {FinanceApForm, IFinanceApFormProps} from './components/FinanceApForm';
+import { FinanceApForm, IFinanceApFormProps } from './components/FinanceApForm';
 
 // PnP Imports
 import { sp } from "@pnp/sp";
+
+// Import Bootstrap theme for kendo. 
+import "@progress/kendo-theme-bootstrap/dist/all.css";
+
+// Import Bootstrap
+import './bootstrap.min.css';
 
 export interface IFinanceApFormWebPartProps {
   description: string;
