@@ -54,10 +54,15 @@ interface IFinanceApFormState {
   departments?: any;
   invoiceTypes?: string[];
   invoiceStatus?: string[];
+  myFilter: IFinanceAPFormFilterState;
 }
 
 enum ContentTypes {
   Folder = '0x01200088C42F7CFFB6244DA17EE5E6F15B8D22'
+}
+
+interface IFinanceAPFormFilterState {
+  status: string;   // The Status selected status.
 }
 
 export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinanceApFormState> {
@@ -67,7 +72,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.state = {
       visibleInvoices: undefined,
       allInvoices: undefined,
-      availableInvoices: undefined
+      availableInvoices: undefined,
+      myFilter: {
+        status: 'Approved' // TODO: Get default status from the web part settings. 
+      }
     };
 
     this.queryInvoices();
@@ -83,7 +91,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region Private Methods
   private queryInvoices = () => {
     console.log('Query Invoices');
-    sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq 'To Be Paid'`)
+    this.setState({
+      visibleInvoices: [],
+      availableInvoices: [],
+      allInvoices: []
+    });
+    console.log(this.state);
+    sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
       .select(`*, 
       Department/Title, 
       Received_x0020_Approval_x0020_From/Id, 
@@ -107,12 +121,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
         // Create a new instance of this object.
         let invoiceHolder = value.slice(0);
-
+        debugger;
         this.setState({
           visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
           availableInvoices: invoiceHolder,
           allInvoices: value
         });
+        console.log(this.state);
 
         this.queryAccountForInvoices(this.state.visibleInvoices);
 
@@ -200,7 +215,20 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewHeader = () => {
     return (
       <ListViewHeader style={{ padding: '5px' }}>
-        Header Goes Here.
+        <div className='row'>
+          <div className='col-sm-4'>
+            <DropDownList
+              data={this.state.invoiceStatus}
+              value={this.state.myFilter.status}
+              onChange={e => {
+                this.setState({ myFilter: { status: e.value } });
+                this.queryInvoices();
+              }}
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className='col-sm-8'>right side.</div>
+        </div>
       </ListViewHeader>
     );
   }
@@ -214,10 +242,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private APItemComponentRender = props => <APItemComponent {...props} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
+  //#endregion
 
-  private RenderListView = () => {
+  public render(): React.ReactElement<IFinanceApFormProps> {
     return (
-      <div>
+      this.state.visibleInvoices ?
         <ListView
           onScroll={this.scrollHandler}
           data={this.state.visibleInvoices}
@@ -225,15 +254,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           style={{ width: "100%", height: 780 }}
           header={this.MyListViewHeader}
           footer={this.MyListViewFooter}
-        />
-      </div>
-    );
-  }
-  //#endregion
-
-  public render(): React.ReactElement<IFinanceApFormProps> {
-    return (
-      this.state.visibleInvoices ? this.RenderListView() : <MyLoadingComponent />
+        /> :
+        <MyLoadingComponent />
     );
   }
 }
