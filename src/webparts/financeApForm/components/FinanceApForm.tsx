@@ -147,7 +147,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
           .getAll().then(value => {
             value = value.filter(f => f.ContentTypeId === ContentTypes.Folder && f.OData__Status === this.state.myFilter.status);
-            debugger;
             this.parseInvoiceFolders(value);
           }).catch(error2 => {
             console.log('\n\nERROR! Cannot Load Invoices!');
@@ -230,7 +229,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }
   }
 
-  public statusDropDownChange = (event: DropDownListChangeEvent) => { this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices()); }
+  public statusDropDownChange = (event: DropDownListChangeEvent) => {
+    this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices());
+  }
 
   // ! This does not work as expected. 
   public searchBoxChange = (event: InputChangeEvent) => {
@@ -249,8 +250,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           // { field: 'Batch_x0020_Number', operator: 'contains', value: event.value },
         ]
       });
-    debugger;
-
+    
     this.parseInvoiceFolders(filterInvoices, this.state.allInvoices);
   }
   //#endregion
