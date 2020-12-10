@@ -47,7 +47,7 @@ export interface IInvoice {
     ChequeReturnedNotes: any;
     Modified: string;
     Created: string;
-    IsChequeReq: any;
+    IsChequeReq: boolean;
     GUID: string;
 
 }
