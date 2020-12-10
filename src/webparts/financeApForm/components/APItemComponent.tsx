@@ -159,7 +159,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Requires Approval From:</Label>
-                                                {item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {item.Requires_x0020_Approval_x0020_From && item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
@@ -167,7 +167,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Received Approval From:</Label>
-                                                {item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {item.Received_x0020_Approval_x0020_From && item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
