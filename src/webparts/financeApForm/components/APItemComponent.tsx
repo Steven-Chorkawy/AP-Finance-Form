@@ -13,8 +13,7 @@ import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
-import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
-import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
+import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/kendo-react-layout';
 import { Button } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
@@ -23,11 +22,9 @@ import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 import { IInvoice } from '../interfaces/IInvoice';
-import { MyLoadingComponent } from './MyLoadingComponent';
 
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-
 
 /**
  * Renders the Accounts Grid.
@@ -57,7 +54,6 @@ export class APItemComponent extends React.Component<any, any> {
     }
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
-        debugger;
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
             this.setState({
                 item: this.props.dataItem
@@ -69,9 +65,10 @@ export class APItemComponent extends React.Component<any, any> {
         let item: IInvoice = this.state.item;
         return (
             <Form
+                key={item.ID}
                 onSubmit={e => console.log(e)}
                 initialValues={item}
-                render={(formRenderProps) => (
+                render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <div style={{ cursor: 'pointer' }} onClick={() => this.setState({ showMore: !this.state.showMore })}>
