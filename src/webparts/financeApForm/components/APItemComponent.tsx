@@ -84,6 +84,9 @@ export class APItemComponent extends React.Component<any, any> {
                                                         <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                     </CardTitle>
                                                     <CardTitle>
+                                                        <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                    </CardTitle>
+                                                    <CardTitle>
                                                         <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>
                                                             <span>Amount Assigned:</span> {item.Accounts ? <span>{MyHelper.SumAccounts(item.Accounts)}</span> : <span title='Loading Account Details...'>$---.--</span>}
                                                         </span>
