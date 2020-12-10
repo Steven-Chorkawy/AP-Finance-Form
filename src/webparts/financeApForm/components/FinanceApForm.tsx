@@ -1,7 +1,4 @@
 import * as React from 'react';
-import styles from './FinanceApForm.module.scss';
-import { escape } from '@microsoft/sp-lodash-subset';
-import Moment from 'react-moment';
 
 // PnP imports. 
 import { sp } from "@pnp/sp";
@@ -12,23 +9,14 @@ import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
-import { Card, CardTitle, CardHeader, CardImage, CardBody, CardSubtitle, CardActions } from '@progress/kendo-react-layout';
 import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
-import { Button } from '@progress/kendo-react-buttons';
-import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
-import { Label, Error } from '@progress/kendo-react-labels';
 import { Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
-import { DatePicker } from '@progress/kendo-react-dateinputs';
-import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
 import { filterBy } from '@progress/kendo-data-query';
-
-
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
-import { values } from 'office-ui-fabric-react/lib/Utilities';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
 import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
@@ -227,13 +215,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   public scrollHandler = (event: ListViewEvent) => {
     const e = event.nativeEvent;
     /**
-     * If we do not check that e.target.className === 'k-listview-content' 
+     * If we do not check that e.target.classList.contains('k-listview-content')
      * then this scroll event will run for any (Drop Down, Calendar, Combo Box)
      * scroll bar that is nested within the List View.  
      * 
      * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
      */
-    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.className === 'k-listview-content') {
+    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
         this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
