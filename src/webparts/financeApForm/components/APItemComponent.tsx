@@ -14,7 +14,7 @@ import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
 import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/kendo-react-layout';
-import { Button } from '@progress/kendo-react-buttons';
+import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
 import { Input, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
@@ -85,10 +85,24 @@ export class APItemComponent extends React.Component<any, any> {
                                                     <CardTitle>
                                                         <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                     </CardTitle>
-                                                    <CardTitle>
+                                                    <CardTitle style={{ height: '22px' }}>
                                                         <span title={`Sum of ${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 0} Accounts`}>
-                                                            <span>Amount Assigned:</span> {this.props.dataItem.Accounts ? <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span> : <span title='Loading Account Details...'>$---.--</span>}
+                                                            <span>Amount Assigned:</span> {
+                                                                this.props.dataItem.Accounts
+                                                                    ? MyHelper.SumAccounts(this.props.dataItem.Accounts) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
+                                                                        ? <Chip
+                                                                            style={{ fontSize: '1.25rem', height: '20px' }}
+                                                                            text={MyHelper.SumAccounts(this.props.dataItem.Accounts)}
+                                                                            // icon={'warning'}
+                                                                            type={'error'}
+                                                                        />
+                                                                        : <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span>
+                                                                    : <span title='Loading Account Details...'>$---.--</span>
+                                                            }
                                                         </span>
+                                                    </CardTitle>
+                                                    <CardTitle>
+                                                        <span>Gross Amount: {MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span>
                                                     </CardTitle>
                                                 </div>
                                                 <div className='col-xs-12 col-sm-4'>
