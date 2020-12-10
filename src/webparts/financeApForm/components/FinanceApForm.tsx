@@ -193,7 +193,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     for (let index = 0; index < visibleInvoices.length; index++) {
       const invoice = visibleInvoices[index];
 
+      // If the invoice Accounts property is already set we can skip this loop to avoid running extra queries. 
+      if (invoice.Accounts && invoice.Accounts.length > 0) {
+        continue;
+      }
+
       let accounts = await accountList.items.filter(`InvoiceFolderID eq ${invoice.ID}`).select('ID, Title, AmountIncludingTaxes').get();
+
 
       let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
       let allInvoicesState: IInvoice[] = this.state.allInvoices;
@@ -242,10 +248,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices());
   }
 
-  // ! This does not work as expected. 
   public searchBoxChange = (event: InputChangeEvent) => {
-    console.log(event);
-    console.log(event.value);
     let filterInvoices = filterBy(
       this.state.allInvoices,
       {
