@@ -139,13 +139,13 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-6'>
                                             <FieldWrapper>
                                                 <Label editorId={'OData__Status'}>Invoice Status:</Label>
-                                                <Field name='OData__Status' component={DropDownList} data={this.state.invoiceStatus ? this.state.invoiceStatus : []} />
+                                                <Field name='OData__Status' component={DropDownList} data={this.props.invoiceStatus ? this.props.invoiceStatus : []} />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-6'>
                                             <FieldWrapper>
                                                 <Label editorId={'Invoice_x0020_Type'}>Invoice Type:</Label>
-                                                <Field name='Invoice_x0020_Type' component={DropDownList} data={this.state.invoiceTypes ? this.state.invoiceTypes : []} />
+                                                <Field name='Invoice_x0020_Type' component={DropDownList} data={this.props.invoiceTypes ? this.props.invoiceTypes : []} />
                                             </FieldWrapper>
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label editorId={'Department'}>Departments:</Label>
-                                                <Field name='Department' component={MultiSelect} textField='Title' dataItemKey='ID' data={this.state.departments ? [...this.state.departments] : []} />
+                                                <Field name='Department' component={MultiSelect} textField='Title' dataItemKey='ID' data={this.props.departments ? [...this.props.departments] : []} />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-4'>

@@ -10,17 +10,17 @@ import "@pnp/sp/site-users/web";
 
 // Kendo Imports 
 import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
-import { Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
+import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
+import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
+
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
-import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
-
 
 /**
  * Props interface for FinanceApForm component class.
@@ -54,7 +54,9 @@ enum ContentTypes {
 }
 
 interface IFinanceAPFormFilterState {
-  status: string;   // The Status selected status.
+  status: string;           // The Status selected status.
+  showChequeReq: boolean;   // If we want to show cheque reqs or not. 
+  searchBoxFilterObject?: any;
 }
 
 export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinanceApFormState> {
@@ -66,7 +68,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       allInvoices: undefined,
       availableInvoices: undefined,
       myFilter: {
-        status: 'Approved' // TODO: Get default status from the web part settings. 
+        status: 'Approved',   // TODO: Get default status from the web part settings. 
+        showChequeReq: false
       }
     };
 
@@ -131,7 +134,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       .getAll().then(value => {
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
-        this.parseInvoiceFolders(value);
+        //this.parseInvoiceFolders(value);
+        this.applyNewFilter(value);
       }).catch(error => {
         // If you fail at first, try try again.
         sp.web.lists.getByTitle('Invoices').items
@@ -147,7 +151,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
           .getAll().then(value => {
             value = value.filter(f => f.ContentTypeId === ContentTypes.Folder && f.OData__Status === this.state.myFilter.status);
-            this.parseInvoiceFolders(value);
+            this.applyNewFilter(value);
+            // this.parseInvoiceFolders(value);
           }).catch(error2 => {
             console.log('\n\nERROR! Cannot Load Invoices!');
             console.log(error);
@@ -243,27 +248,58 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
     }
   }
+  //#endregion
 
+  //#region Filter Methods
   public statusDropDownChange = (event: DropDownListChangeEvent) => {
-    this.setState({ myFilter: { status: event.value } }, () => this.queryInvoices());
+    this.setState({ myFilter: { ...this.state.myFilter, status: event.value } }, () => this.queryInvoices());
+  }
+
+  public onChequeReqChange = (event: CheckboxChangeEvent) => {
+    this.setState({ myFilter: { ...this.state.myFilter, showChequeReq: event.value } }, () => this.applyNewFilter(this.state.allInvoices));
   }
 
   public searchBoxChange = (event: InputChangeEvent) => {
-    let filterInvoices = filterBy(
-      this.state.allInvoices,
-      {
-        logic: 'or',
+    this.applyNewFilter(this.state.allInvoices, { searchBoxValue: event.value });
+  }
+
+  private applyNewFilter = (allInvoices: any[], event?: any) => {
+    debugger;
+    // Always apply this filter.
+    const defaultFilter: any = {
+      logic: "and",
+      filters: [
+        { field: 'IsChequeReq', operator: 'eq', value: this.state.myFilter.showChequeReq },
+      ]
+    };
+
+    let finalFilterObj: any = defaultFilter;
+
+    if (event && event.searchBoxValue !== "") {
+      let searchBoxFilterObj = {
+        logic: "or",
         filters: [
           // { field: 'Title', operator: 'contains', value: event.value },
-          // { field: 'Vendor_x0020_Number', operator: 'contains', value: event.value },
-          { field: 'Vendor_x0020_Name', operator: 'contains', value: event.value },
-          // { field: 'Invoice_x0020_Number', operator: 'contains', value: event.value },
+          { field: 'Vendor_x0020_Number', operator: 'startswith', value: event.searchBoxValue },
+          { field: 'Vendor_x0020_Name', operator: 'startswith', value: event.searchBoxValue },
+          { field: 'Invoice_x0020_Number', operator: 'startswith', value: event.searchBoxValue },
           // { field: 'PO_x0020__x0023_', operator: 'contains', value: event.value },
           // { field: 'Batch_x0020_Number', operator: 'contains', value: event.value },
         ]
-      });
+      };
 
-    this.parseInvoiceFolders(filterInvoices, this.state.allInvoices);
+      this.setState({ myFilter: { ...this.state.myFilter, searchBoxFilterObject: searchBoxFilterObj } });
+      finalFilterObj.filters.push(searchBoxFilterObj);
+    }
+    else if (event && event.searchBoxValue === "") {
+      this.setState({ myFilter: { ...this.state.myFilter, searchBoxFilterObject: undefined } });
+    }
+    else if (!event && this.state.myFilter.searchBoxFilterObject) {
+      finalFilterObj.filters.push(this.state.myFilter.searchBoxFilterObject);
+    }
+
+    let filterInvoices = filterBy(allInvoices, finalFilterObj);
+    this.parseInvoiceFolders(filterInvoices, allInvoices);
   }
   //#endregion
 
@@ -272,17 +308,19 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <ListViewHeader style={{ padding: '5px' }}>
         <div className='row'>
-          <div className='col-sm-3'>
+          <div className='col-sm-4'>
             <DropDownList data={this.state.invoiceStatus} value={this.state.myFilter.status} onChange={this.statusDropDownChange} style={{ width: '100%' }} />
           </div>
-          <div className='col-sm-1'>
-            1
-          </div>
-          <div className='col-sm-1'>
-            2
-          </div>
-          <div className='col-sm-7'>
+          <div className='col-sm-8'>
             <Input onChange={this.searchBoxChange} placeholder='Search for Invoices' style={{ width: '100%' }} />
+            <div className='row'>
+              <div className='col-sm-6'>
+                <Checkbox label={'Show Cheque Reqs'} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
+              </div>
+              <div className='col-sm-6'>
+                sort by date.
+              </div>
+            </div>
           </div>
         </div>
       </ListViewHeader>
