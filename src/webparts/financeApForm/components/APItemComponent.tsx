@@ -48,8 +48,7 @@ export class APItemComponent extends React.Component<any, any> {
         this.state = {
             item: this.props.dataItem,
             inEdit: false,
-            showMore: false,
-            ...props
+            showMore: false
         };
     }
 
@@ -87,8 +86,8 @@ export class APItemComponent extends React.Component<any, any> {
                                                         <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                     </CardTitle>
                                                     <CardTitle>
-                                                        <span title={`Sum of ${item.Accounts ? item.Accounts.length : 0} Accounts`}>
-                                                            <span>Amount Assigned:</span> {item.Accounts ? <span>{MyHelper.SumAccounts(item.Accounts)}</span> : <span title='Loading Account Details...'>$---.--</span>}
+                                                        <span title={`Sum of ${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 0} Accounts`}>
+                                                            <span>Amount Assigned:</span> {this.props.dataItem.Accounts ? <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span> : <span title='Loading Account Details...'>$---.--</span>}
                                                         </span>
                                                     </CardTitle>
                                                 </div>
@@ -221,11 +220,11 @@ export class APItemComponent extends React.Component<any, any> {
                                             <FieldWrapper>
                                                 <Label>Accounts:</Label>
                                                 {
-                                                    item.Accounts ?
+                                                    this.props.dataItem.Accounts ?
                                                         <FieldArray
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
-                                                            value={item.Accounts}
+                                                            value={this.props.dataItem.Accounts}
                                                         /> :
                                                         <Spinner size={SpinnerSize.medium} />
                                                 }
