@@ -65,6 +65,11 @@ export class APItemComponent extends React.Component<any, any> {
         console.log('APInvoiceSubmitEvent');
         console.log(values);
         console.log(event);
+        let saveWorked = false;
+        // 50% chance that the save will work. 
+        Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
+
+        
     }
     //#region 
 
@@ -139,7 +144,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             onClick={() => this.setState({ showMore: !this.state.showMore })}
                                         />
                                         {
-                                            !this.state.showMore &&
+                                            !this.state.showMore && !formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
                                                 primary={true}
@@ -150,7 +155,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             />
                                         }
                                         {
-                                            this.state.showMore && formRenderProps.modified && 
+                                            formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
                                                 look='flat'
