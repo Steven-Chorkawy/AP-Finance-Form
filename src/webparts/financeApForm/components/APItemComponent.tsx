@@ -17,7 +17,7 @@ import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/k
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
+import { Input, MaskedTextBox, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -31,6 +31,44 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
  * @param fieldArrayRenderProps Props from form
  */
 const AccountFieldComponent = (fieldArrayRenderProps) => {
+    // const onAdd = React.useCallback(
+    //     (e) => {
+    //         e.preventDefault();
+    //         debugger;
+    //         fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
+    //     },
+    //     [fieldArrayRenderProps.onUnshift]
+    // );
+
+    const onAdd = event => {
+        event.preventDefault();
+        fieldArrayRenderProps.value.push({ Title: '', AmountIncludingTaxes: 0 });
+        debugger;
+    };
+
+    const glCodeCell = props => {
+        return (
+            <td>
+                <Field
+                    component={MaskedTextBox} mask="000-00-000-00000-0000"
+                    value={fieldArrayRenderProps.valueGetter(`Accounts[${props.dataIndex}].${props.field}`)}
+                    name={`Accounts[${props.dataIndex}].${props.field}`}
+                />
+            </td>
+        );
+    };
+
+    const amountCell = props => {
+        return (
+            <td>
+                <Field
+                    component={() => { return <NumericTextBox format="c2" min={0} />; }}
+                    name={`Accounts[${props.dataIndex}].${props.field}`}
+                />
+            </td>
+        );
+    };
+
     return (
         <div>
             {
@@ -39,10 +77,10 @@ const AccountFieldComponent = (fieldArrayRenderProps) => {
             }
             <Grid data={fieldArrayRenderProps.value}>
                 <GridToolbar>
-                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
+                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={onAdd} >Add Account</Button>
                 </GridToolbar>
-                <GridColumn field="Title" title="Account Code" />
-                <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} />
+                <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
+                <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
             </Grid>
         </div>
 
@@ -73,12 +111,12 @@ export class APItemComponent extends React.Component<any, any> {
         console.log(values);
         console.log(event);
         let saveWorked = false;
-        // 50% chance that the save will work. 
+        // 50% chance that the save will work.
         Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
 
 
     }
-    //#region 
+    //#region
 
     public render() {
         let item: IInvoice = this.state.item;
