@@ -32,13 +32,20 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
  */
 const AccountFieldComponent = (fieldArrayRenderProps) => {
     return (
-        <Grid data={fieldArrayRenderProps.value}>
-            <GridToolbar>
-                <Button title="Add new" icon='plus' primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
-            </GridToolbar>
-            <GridColumn field="Title" title="Account Code" />
-            <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} />
-        </Grid>
+        <div>
+            {
+                fieldArrayRenderProps.visited && fieldArrayRenderProps.validationMessage &&
+                (<Error>{fieldArrayRenderProps.validationMessage}</Error>)
+            }
+            <Grid data={fieldArrayRenderProps.value}>
+                <GridToolbar>
+                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
+                </GridToolbar>
+                <GridColumn field="Title" title="Account Code" />
+                <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} />
+            </Grid>
+        </div>
+
     );
 };
 
@@ -69,7 +76,7 @@ export class APItemComponent extends React.Component<any, any> {
         // 50% chance that the save will work. 
         Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
 
-        
+
     }
     //#region 
 
@@ -271,8 +278,20 @@ export class APItemComponent extends React.Component<any, any> {
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
                                                             value={this.props.dataItem.Accounts}
-                                                            validator={MyHelper.AccountsArrayLengthValidator}
-                                                        /> :
+                                                            validator={value => {
+                                                                switch (formRenderProps.valueGetter('OData__Status')) {
+                                                                    case 'Received':
+                                                                    case 'Awaiting Approval':
+                                                                    case 'VOID':
+                                                                    case 'Cancelled':
+                                                                    case 'On Hold':
+                                                                        return "";
+                                                                    default:
+                                                                        return ((value && value.length) ? "" : "Please add at least one account.");
+                                                                }
+                                                            }}
+                                                        />
+                                                        :
                                                         <Spinner size={SpinnerSize.medium} />
                                                 }
                                             </FieldWrapper>
