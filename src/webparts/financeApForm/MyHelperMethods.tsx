@@ -16,5 +16,5 @@ export const AccountsArrayLengthValidator = (value) => {
     console.log('AccountsArrayLengthValidator');
     console.log(value);
     return (value && value.length ? "" : "Please add at least one record.");
-}
+};
 //#endregion
