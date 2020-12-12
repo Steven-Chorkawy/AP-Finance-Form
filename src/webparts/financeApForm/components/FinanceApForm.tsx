@@ -249,8 +249,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
      * 
      * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
      */
-    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content') && this.state.availableInvoices) {
+    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
+
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
+
+      if (!this.state.availableInvoices) {
+        debugger;
+      }
       if (moreData.length > 0) {
         this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { debugger; this.queryAccountForInvoices(moreData); });
       }
@@ -306,6 +311,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }
 
     let filterInvoices = filterBy(allInvoices, finalFilterObj);
+
+    // I always want to show these. 
+    filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
+
     this.parseInvoiceFolders(filterInvoices, allInvoices);
   }
   //#endregion
@@ -338,6 +347,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
         {this.state.visibleInvoices ? `Displaying ${this.state.visibleInvoices.length}/${this.state.allInvoices.length} Invoices.` : 'Loading...'}
+        {/* {
+          this.state.myFilter.status === 'Received' && 
+          <span onClick={() => {
+            this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { debugger; this.queryAccountForInvoices(moreData); });
+          }}>Show All</span>
+        } */}
       </ListViewFooter>
     );
   }
