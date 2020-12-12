@@ -135,6 +135,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
         //this.parseInvoiceFolders(value);
+
         this.applyNewFilter(value);
       }).catch(error => {
         // If you fail at first, try try again.
@@ -252,12 +253,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
 
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
-
-      if (!this.state.availableInvoices) {
-        debugger;
-      }
       if (moreData.length > 0) {
-        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { debugger; this.queryAccountForInvoices(moreData); });
+        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { this.queryAccountForInvoices(moreData); });
       }
     }
   }
@@ -315,6 +312,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     // I always want to show these. 
     filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
 
+    filterInvoices = filterInvoices.sort((a, b) => {
+      return b.ID - a.ID;
+    });
+    
     this.parseInvoiceFolders(filterInvoices, allInvoices);
   }
   //#endregion
