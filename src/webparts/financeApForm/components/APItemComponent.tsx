@@ -60,92 +60,119 @@ export class APItemComponent extends React.Component<any, any> {
         }
     }
 
+    //#region Form CRUD Events
+    private APInvoiceSubmitEvent = (values, event) => {
+        console.log('APInvoiceSubmitEvent');
+        console.log(values);
+        console.log(event);
+    }
+    //#region 
+
     public render() {
         let item: IInvoice = this.state.item;
         return (
             <Form
                 key={item.ID}
-                onSubmit={e => console.log(e)}
+                onSubmit={this.APInvoiceSubmitEvent}
                 initialValues={item}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
-                            <div style={{ cursor: 'pointer' }} onClick={() => this.setState({ showMore: !this.state.showMore })}>
-                                <CardHeader>
-                                    <div className='row'>
-                                        <div className='col-xs-10 col-sm-10'>
-                                            <div className='row'>
-                                                <div className='col-xs-12 col-sm-8'>
-                                                    <CardTitle>
-                                                        <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
-                                                    </CardTitle>
-                                                    <CardTitle>
-                                                        <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
-                                                    </CardTitle>
-                                                    <CardTitle>
-                                                        <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
-                                                    </CardTitle>
-                                                    <CardTitle style={{ height: '22px' }}>
-                                                        <span title={`Sum of ${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 0} Accounts`}>
-                                                            <span>Amount Assigned:</span> {
-                                                                this.props.dataItem.Accounts
-                                                                    ? MyHelper.SumAccounts(this.props.dataItem.Accounts) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
-                                                                        ? <Chip
-                                                                            style={{ fontSize: '1.25rem', height: '20px' }}
-                                                                            text={MyHelper.SumAccounts(this.props.dataItem.Accounts)}
-                                                                            // icon={'warning'}
-                                                                            type={'error'}
-                                                                        />
-                                                                        : <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span>
-                                                                    : <span title='Loading Account Details...'>$---.--</span>
-                                                            }
-                                                        </span>
-                                                    </CardTitle>
-                                                    <CardTitle>
-                                                        <span>Gross Amount: {MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span>
-                                                    </CardTitle>
-                                                </div>
-                                                <div className='col-xs-12 col-sm-4'>
-                                                    <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
-                                                        <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>Date:</span><span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
-                                                        </div>
-                                                        <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
-                                                        </div>
-                                                        <div title='Invoice Status' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>Status:</span><span>{formRenderProps.valueGetter('OData__Status')}</span>
-                                                        </div>
-                                                        <div title='Batch #' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                            <span>Batch:</span><span>{formRenderProps.valueGetter('Batch_x0020_Number')}</span>
-                                                        </div>
-                                                    </CardSubtitle>
-                                                </div>
+                            <CardHeader>
+                                <div className='row'>
+                                    <div className='col-xs-10 col-sm-10'>
+                                        <div className='row'>
+                                            <div className='col-xs-12 col-sm-8'>
+                                                <CardTitle>
+                                                    <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                </CardTitle>
+                                                <CardTitle>
+                                                    <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
+                                                </CardTitle>
+                                                <CardTitle>
+                                                    <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                </CardTitle>
+                                                <CardTitle style={{ height: '22px' }}>
+                                                    <span title={`Sum of ${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 0} Accounts`}>
+                                                        <span>Amount Assigned:</span> {
+                                                            this.props.dataItem.Accounts
+                                                                ? MyHelper.SumAccounts(this.props.dataItem.Accounts) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
+                                                                    ? <Chip
+                                                                        style={{ fontSize: '1.25rem', height: '20px' }}
+                                                                        text={MyHelper.SumAccounts(this.props.dataItem.Accounts)}
+                                                                        // icon={'warning'}
+                                                                        type={'error'}
+                                                                    />
+                                                                    : <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span>
+                                                                : <span title='Loading Account Details...'>$---.--</span>
+                                                        }
+                                                    </span>
+                                                </CardTitle>
+                                                <CardTitle>
+                                                    <span>Gross Amount: {MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span>
+                                                </CardTitle>
+                                            </div>
+                                            <div className='col-xs-12 col-sm-4'>
+                                                <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
+                                                    <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Date:</span><span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                    </div>
+                                                    <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
+                                                    </div>
+                                                    <div title='Invoice Status' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Status:</span><span>{formRenderProps.valueGetter('OData__Status')}</span>
+                                                    </div>
+                                                    <div title='Batch #' style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                        <span>Batch:</span><span>{formRenderProps.valueGetter('Batch_x0020_Number')}</span>
+                                                    </div>
+                                                </CardSubtitle>
                                             </div>
                                         </div>
-                                        <div className='col-xs-2 col-sm-2'>
+                                    </div>
+                                    <div className='col-xs-2 col-sm-2'>
+                                        <Button
+                                            style={{ float: 'right' }}
+                                            look='flat'
+                                            icon={this.state.showMore ? 'minus' : 'plus'}
+                                            title={this.state.showMore ? 'Show Less' : 'Show More'}
+                                            onClick={() => this.setState({ showMore: !this.state.showMore })}
+                                        />
+                                        {
+                                            !this.state.showMore &&
                                             <Button
                                                 style={{ float: 'right' }}
                                                 primary={true}
                                                 look='flat'
                                                 icon='edit'
                                                 title='Edit Invoice'
-                                                onClick={e => { console.log(e); e.preventDefault(); }}
+                                                onClick={() => this.setState({ showMore: !this.state.showMore })}
                                             />
-                                            {
-                                                formRenderProps.modified &&
-                                                <Button
-                                                    style={{ float: 'right' }}
-                                                    look='flat'
-                                                    icon='cancel'
-                                                    title='Cancel Changes'
-                                                    onClick={formRenderProps.onFormReset}
-                                                />
-                                            }
-                                        </div>
+                                        }
+                                        {
+                                            this.state.showMore && formRenderProps.modified && 
+                                            <Button
+                                                style={{ float: 'right' }}
+                                                look='flat'
+                                                icon='cancel'
+                                                title='Cancel Changes'
+                                                onClick={formRenderProps.onFormReset}
+                                            />
+                                        }
+                                        {
+                                            formRenderProps.modified &&
+                                            <Button
+                                                style={{ float: 'right' }}
+                                                look='flat'
+                                                icon='save'
+                                                primary={true}
+                                                title='Save Changes'
+                                                type='submit'
+                                            />
+                                        }
                                     </div>
-                                </CardHeader>
-                            </div>
+                                </div>
+                            </CardHeader>
                             {
                                 this.state.showMore &&
                                 <CardBody>
