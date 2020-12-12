@@ -271,6 +271,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
                                                             value={this.props.dataItem.Accounts}
+                                                            validator={MyHelper.AccountsArrayLengthValidator}
                                                         /> :
                                                         <Spinner size={SpinnerSize.medium} />
                                                 }

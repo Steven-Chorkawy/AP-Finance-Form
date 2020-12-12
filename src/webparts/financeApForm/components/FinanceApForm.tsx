@@ -109,7 +109,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
       availableInvoices: invoiceHolder,
       allInvoices: allInvoices ? allInvoices : invoices
-    }, () => this.queryAccountForInvoices(this.state.visibleInvoices));
+    }, () => { this.queryAccountForInvoices(this.state.visibleInvoices); });
   }
 
   private queryInvoices = () => {
@@ -195,6 +195,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
+
     for (let index = 0; index < visibleInvoices.length; index++) {
       const invoice = visibleInvoices[index];
 
@@ -208,6 +209,14 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
       let allInvoicesState: IInvoice[] = this.state.allInvoices;
+
+      // Shit is changing, stop querying.
+      // I think this is happening because I'm changing status filter before this method is done.
+      if (!this.state.visibleInvoices || !this.state.availableInvoices) {
+        console.log('Stopping query:');
+        console.log(visibleInvoices);
+        break;
+      }
 
       // The index of the visibleInvoice array.  These are the invoices that have been rendered. 
       let indexOfVisibleInvoice: number = visibleInvoicesState.findIndex(f => f.ID === invoice.ID);
@@ -240,11 +249,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
      * 
      * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
      */
-    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
+    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content') && this.state.availableInvoices) {
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
-        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
-        this.queryAccountForInvoices(moreData);
+        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { debugger; this.queryAccountForInvoices(moreData); });
       }
     }
   }
@@ -264,7 +272,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private applyNewFilter = (allInvoices: any[], event?: any) => {
-    debugger;
     // Always apply this filter.
     const defaultFilter: any = {
       logic: "and",

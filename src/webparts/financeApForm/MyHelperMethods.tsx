@@ -9,3 +9,12 @@ export const SumAccounts = (accounts): string => {
     }
     return FormatCurrency(accounts.reduce((a, b) => a + (b['AmountIncludingTaxes'] || 0), 0));
 };
+
+
+//#region Form Validation. 
+export const AccountsArrayLengthValidator = (value) => {
+    console.log('AccountsArrayLengthValidator');
+    console.log(value);
+    return (value && value.length ? "" : "Please add at least one record.");
+}
+//#endregion
