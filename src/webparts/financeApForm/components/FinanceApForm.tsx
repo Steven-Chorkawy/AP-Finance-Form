@@ -196,6 +196,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
+    let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
+    let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
     for (let index = 0; index < visibleInvoices.length; index++) {
       const invoice = visibleInvoices[index];
@@ -206,10 +208,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
 
       let accounts = await accountList.items.filter(`InvoiceFolderID eq ${invoice.ID}`).select('ID, Title, AmountIncludingTaxes').get();
-
-
-      let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
-      let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
       // Shit is changing, stop querying.
       // I think this is happening because I'm changing status filter before this method is done.
@@ -230,13 +228,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         // If no accounts were found this will be an empty array. 
         visibleInvoicesState[indexOfVisibleInvoice].Accounts = [...accounts];
         allInvoicesState[indexOfAllInvoice].Accounts = [...accounts];
-
-        this.setState({
-          visibleInvoices: [...visibleInvoicesState],
-          allInvoices: [...allInvoicesState]
-        });
       }
-    }
+    } // End of For loop.
+
+    this.setState({
+      visibleInvoices: [...visibleInvoicesState],
+      allInvoices: [...allInvoicesState]
+    });
   }
   //#endregion
 
@@ -315,7 +313,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     filterInvoices = filterInvoices.sort((a, b) => {
       return b.ID - a.ID;
     });
-    
+
     this.parseInvoiceFolders(filterInvoices, allInvoices);
   }
   //#endregion
@@ -348,12 +346,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
         {this.state.visibleInvoices ? `Displaying ${this.state.visibleInvoices.length}/${this.state.allInvoices.length} Invoices.` : 'Loading...'}
-        {/* {
-          this.state.myFilter.status === 'Received' && 
-          <span onClick={() => {
-            this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) }, () => { debugger; this.queryAccountForInvoices(moreData); });
-          }}>Show All</span>
-        } */}
       </ListViewFooter>
     );
   }

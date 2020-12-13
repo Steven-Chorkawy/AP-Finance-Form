@@ -26,49 +26,41 @@ import { IInvoice } from '../interfaces/IInvoice';
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
+const glCodeCell = props => {
+    return (
+        <td>
+            <Field component={MaskedTextBox} mask="000-00-000-00000-0000" name={`Accounts[${props.dataIndex}].${props.field}`} />
+        </td>
+    );
+};
+
+const amountCell = props => {
+    return (
+        <td>
+            <Field component={NumericTextBox} format="c2" min={0} name={`Accounts[${props.dataIndex}].${props.field}`} />
+        </td>
+    );
+};
+
 /**
  * Renders the Accounts Grid.
  * @param fieldArrayRenderProps Props from form
  */
 const AccountFieldComponent = (fieldArrayRenderProps) => {
-    // const onAdd = React.useCallback(
-    //     (e) => {
-    //         e.preventDefault();
-    //         debugger;
-    //         fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
-    //     },
-    //     [fieldArrayRenderProps.onUnshift]
-    // );
+    const onAdd = React.useCallback(
+        (e) => {
+            e.preventDefault();
+            debugger;
+            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
+        },
+        [fieldArrayRenderProps.onUnshift]
+    );
 
-    const onAdd = event => {
-        event.preventDefault();
-        fieldArrayRenderProps.value.push({ Title: '', AmountIncludingTaxes: 0 });
-        debugger;
-    };
-
-    const glCodeCell = props => {
-        return (
-            <td>
-                {console.log('gl Code Cell')}
-                {console.log(props)}
-                <Field
-                    component={MaskedTextBox} mask="000-00-000-00000-0000"
-                    name={'Accounts.Title'}
-                />
-            </td>
-        );
-    };
-
-    const amountCell = props => {
-        return (
-            <td>
-                <Field
-                    component={() => { return <NumericTextBox format="c2" min={0} />; }}
-                    name={'Accounts.AmountIncludingTaxes'}
-                />
-            </td>
-        );
-    };
+    // const onAdd = event => {
+    //     event.preventDefault();
+    //     fieldArrayRenderProps.value.push({ Title: '', AmountIncludingTaxes: 0 });
+    //     debugger;
+    // };
 
     return (
         <div>
@@ -100,10 +92,20 @@ export class APItemComponent extends React.Component<any, any> {
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
+            console.log(`componentDidUpdate: ${this.props.dataItem.ID}`);
             this.setState({
                 item: this.props.dataItem
             });
         }
+    }
+
+    public shouldComponentUpdate(nextProp, nextState) {
+        if (this.props.dataItem.ID === 28090) {
+            console.log(`\nShould component Update: ${this.props.dataItem.ID}`);
+            console.log(this.state);
+            console.log(nextState);
+        }
+        return true;
     }
 
     //#region Form CRUD Events
@@ -119,8 +121,21 @@ export class APItemComponent extends React.Component<any, any> {
     }
     //#region
 
+    private _LogForDebugging = (item) => {
+        if (item.ID === 28090) {
+            console.log(`Form Render: ${item.ID}`);
+            console.log(item);
+            console.log(this.state);
+        }
+    }
+
     public render() {
         let item: IInvoice = this.state.item;
+
+        if (item.ID === 28090) {
+            console.log('Setting Item');
+            console.log(item);
+        }
         return (
             <Form
                 key={item.ID}
@@ -128,6 +143,7 @@ export class APItemComponent extends React.Component<any, any> {
                 initialValues={item}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
+                        {this._LogForDebugging(item)}
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
@@ -311,24 +327,27 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
                                                 <Label>Accounts:</Label>
+                                                {console.log(formRenderProps.valueGetter('OData__Status'))}
+                                                {console.log(formRenderProps.valueGetter('Accounts'))}
+                                                {console.log(formRenderProps.valueGetter('Requires_x0020_Approval_x0020_From'))}
                                                 {
-                                                    this.props.dataItem.Accounts ?
+                                                    item.Accounts ?
                                                         <FieldArray
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
-                                                            value={this.props.dataItem.Accounts}
-                                                            validator={value => {
-                                                                switch (formRenderProps.valueGetter('OData__Status')) {
-                                                                    case 'Received':
-                                                                    case 'Awaiting Approval':
-                                                                    case 'VOID':
-                                                                    case 'Cancelled':
-                                                                    case 'On Hold':
-                                                                        return "";
-                                                                    default:
-                                                                        return ((value && value.length) ? "" : "Please add at least one account.");
-                                                                }
-                                                            }}
+                                                        //value={item.Accounts}
+                                                        // validator={value => {
+                                                        //     switch (formRenderProps.valueGetter('OData__Status')) {
+                                                        //         case 'Received':
+                                                        //         case 'Awaiting Approval':
+                                                        //         case 'VOID':
+                                                        //         case 'Cancelled':
+                                                        //         case 'On Hold':
+                                                        //             return "";
+                                                        //         default:
+                                                        //             return ((value && value.length) ? "" : "Please add at least one account.");
+                                                        //     }
+                                                        // }}
                                                         />
                                                         :
                                                         <Spinner size={SpinnerSize.medium} />
