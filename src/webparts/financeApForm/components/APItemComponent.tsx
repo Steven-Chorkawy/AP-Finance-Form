@@ -49,10 +49,11 @@ const AccountFieldComponent = (fieldArrayRenderProps) => {
     const glCodeCell = props => {
         return (
             <td>
+                {console.log('gl Code Cell')}
+                {console.log(props)}
                 <Field
                     component={MaskedTextBox} mask="000-00-000-00000-0000"
-                    value={fieldArrayRenderProps.valueGetter(`Accounts[${props.dataIndex}].${props.field}`)}
-                    name={`Accounts[${props.dataIndex}].${props.field}`}
+                    name={'Accounts.Title'}
                 />
             </td>
         );
@@ -63,7 +64,7 @@ const AccountFieldComponent = (fieldArrayRenderProps) => {
             <td>
                 <Field
                     component={() => { return <NumericTextBox format="c2" min={0} />; }}
-                    name={`Accounts[${props.dataIndex}].${props.field}`}
+                    name={'Accounts.AmountIncludingTaxes'}
                 />
             </td>
         );
