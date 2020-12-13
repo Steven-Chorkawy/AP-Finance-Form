@@ -29,7 +29,9 @@ import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 const glCodeCell = props => {
     return (
         <td>
-            <Field component={MaskedTextBox} mask="000-00-000-00000-0000" name={`Accounts[${props.dataIndex}].${props.field}`} />
+            {console.log('glCodeCell')}
+            {console.log(props)}
+            <Field component={MaskedTextBox} mask="000-00-000-00000-0000" name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.Title} />
         </td>
     );
 };
@@ -37,7 +39,7 @@ const glCodeCell = props => {
 const amountCell = props => {
     return (
         <td>
-            <Field component={NumericTextBox} format="c2" min={0} name={`Accounts[${props.dataIndex}].${props.field}`} />
+            <Field component={NumericTextBox} format="c2" min={0} name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.AmountIncludingTaxes} />
         </td>
     );
 };
