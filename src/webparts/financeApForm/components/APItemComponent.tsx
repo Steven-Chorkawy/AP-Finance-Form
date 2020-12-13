@@ -130,20 +130,20 @@ export class APItemComponent extends React.Component<any, any> {
     }
 
     public render() {
-        let item: IInvoice = this.state.item;
+        //let item: IInvoice = this.state.item;
 
-        if (item.ID === 28090) {
+        if (this.state.item.ID === 28090) {
             console.log('Setting Item');
-            console.log(item);
+            console.log(this.state.item);
         }
         return (
             <Form
-                key={item.ID}
+                key={this.state.item.ID}
                 onSubmit={this.APInvoiceSubmitEvent}
-                initialValues={item}
+                initialValues={this.state.item}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        {this._LogForDebugging(item)}
+                        {this._LogForDebugging(this.state.item)}
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
@@ -267,7 +267,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Requires Approval From:</Label>
-                                                {item.Requires_x0020_Approval_x0020_From && item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {this.state.item.Requires_x0020_Approval_x0020_From && this.state.item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
@@ -275,7 +275,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Received Approval From:</Label>
-                                                {item.Received_x0020_Approval_x0020_From && item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {this.state.item.Received_x0020_Approval_x0020_From && this.state.item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
@@ -331,11 +331,11 @@ export class APItemComponent extends React.Component<any, any> {
                                                 {console.log(formRenderProps.valueGetter('Accounts'))}
                                                 {console.log(formRenderProps.valueGetter('Requires_x0020_Approval_x0020_From'))}
                                                 {
-                                                    item.Accounts ?
+                                                    this.state.item.Accounts ?
                                                         <FieldArray
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
-                                                        //value={item.Accounts}
+                                                            value={this.state.item.Accounts}
                                                         // validator={value => {
                                                         //     switch (formRenderProps.valueGetter('OData__Status')) {
                                                         //         case 'Received':
