@@ -90,7 +90,7 @@ const commandCell = (onRemove) => (props) => {
         [onRemove]
     );
     return (
-        <td>
+        <td style={{ minHeight: '43px' }}>
             <Button
                 className="k-button k-grid-remove-command"
                 icon='trash'
@@ -132,7 +132,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 </GridToolbar>
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
-                <GridColumn cell={commandCell(onRemove)} width="240px" />
+                <GridColumn cell={commandCell(onRemove)} width="50px" />
 
             </Grid>
         </div>

@@ -28,8 +28,6 @@ import { IInvoice } from '../interfaces/IInvoice';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 const formValidator = value => {
-    console.log('testV');
-    console.log(value);
     let output = {};
     switch (value.OData__Status) {
         case 'Received':
@@ -45,7 +43,7 @@ const formValidator = value => {
             break;
     }
     return output;
-}
+};
 
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
