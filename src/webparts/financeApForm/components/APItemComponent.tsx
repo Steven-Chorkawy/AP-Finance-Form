@@ -91,10 +91,12 @@ export class APItemComponent extends React.Component<any, any> {
                                 <div className='row'>
                                     <div className='col-xs-10 col-sm-10'>
                                         <div className='row'>
-                                            <div className='col-xs-12 col-sm-8'>
+                                            <div className='col-xs-12 col-sm-12'>
                                                 <CardTitle style={{ marginBottom: '7px' }}>
                                                     <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
                                                 </CardTitle>
+                                            </div>
+                                            <div className='col-xs-12 col-sm-8'>
                                                 <CardTitle>
                                                     <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                 </CardTitle>

@@ -278,9 +278,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         logic: "or",
         filters: [
           // { field: 'Title', operator: 'contains', value: event.value },
-          { field: 'Vendor_x0020_Number', operator: 'startswith', value: event.searchBoxValue },
-          { field: 'Vendor_x0020_Name', operator: 'startswith', value: event.searchBoxValue },
-          { field: 'Invoice_x0020_Number', operator: 'startswith', value: event.searchBoxValue },
+          { field: 'Vendor_x0020_Number', operator: 'contains', value: event.searchBoxValue },
+          { field: 'Vendor_x0020_Name', operator: 'contains', value: event.searchBoxValue },
+          { field: 'Invoice_x0020_Number', operator: 'contains', value: event.searchBoxValue },
           // { field: 'PO_x0020__x0023_', operator: 'contains', value: event.value },
           // { field: 'Batch_x0020_Number', operator: 'contains', value: event.value },
         ]
