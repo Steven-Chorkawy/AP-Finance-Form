@@ -78,6 +78,7 @@ export class APItemComponent extends React.Component<any, any> {
     //#region
 
     public render() {
+        let cardTitleTextAlignSyle = { display: 'inline-block', width: '110px' };
         return (
             <Form
                 key={this.state.item.ID}
@@ -98,26 +99,26 @@ export class APItemComponent extends React.Component<any, any> {
                                             </div>
                                             <div className='col-xs-12 col-sm-8'>
                                                 <CardTitle>
-                                                    <span title='Invoice Number'>Invoice Number: {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
+                                                    <span title='Invoice Number'><span style={cardTitleTextAlignSyle}>Invoice Number:</span> {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span>Invoice Title: <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                    <span><span style={cardTitleTextAlignSyle}>Invoice Title:</span> <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span>Gross Amount: {MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span>
+                                                    <span><span style={cardTitleTextAlignSyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span></span>
                                                 </CardTitle>
                                                 <CardTitle style={{ height: '22px' }}>
-                                                    <span title={`Sum of ${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 0} Accounts`}>
-                                                        <span>Amount Assigned:</span> {
-                                                            this.props.dataItem.Accounts
-                                                                ? MyHelper.SumAccounts(this.props.dataItem.Accounts) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
+                                                    <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>
+                                                        <span style={cardTitleTextAlignSyle}>Amount Assigned:</span> {
+                                                            formRenderProps.valueGetter('Accounts')
+                                                                ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
                                                                     ? <Chip
                                                                         style={{ fontSize: '1.25rem', height: '20px' }}
-                                                                        text={MyHelper.SumAccounts(this.props.dataItem.Accounts)}
+                                                                        text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
                                                                         // icon={'warning'}
                                                                         type={'error'}
                                                                     />
-                                                                    : <span>{MyHelper.SumAccounts(this.props.dataItem.Accounts)}</span>
+                                                                    : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
                                                                 : <span title='Loading Account Details...'>$---.--</span>
                                                         }
                                                     </span>
