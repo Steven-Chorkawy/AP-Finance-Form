@@ -111,7 +111,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       availableInvoices: invoiceHolder,
       allInvoices: allInvoices ? allInvoices : invoices
     }, () => this.queryAccountForInvoices(visibleInvoices));
-
   }
 
   private queryInvoices = () => {
@@ -124,6 +123,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
       .select(`*, 
       Department/Title, 
+      Department/ID,
       Received_x0020_Approval_x0020_From/Id, 
       Received_x0020_Approval_x0020_From/Title, 
       Received_x0020_Approval_x0020_From/EMail,

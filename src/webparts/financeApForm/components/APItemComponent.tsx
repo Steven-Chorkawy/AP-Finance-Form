@@ -79,39 +79,98 @@ export class APItemComponent extends React.Component<any, any> {
         delete invoice.Received_x0020_Approval_x0020_From;
         delete invoice.Requires_x0020_Approval_x0020_FromStringId;
         delete invoice.Received_x0020_Approval_x0020_FromStringId;
+        delete invoice.Received_x0020_Deny_x0020_From_x0020_String;
+        delete invoice.HiddenApproversId;
+        delete invoice.HiddenApproversStringId;
         delete invoice.SharedWithUsersId;
-        delete invoice.Modified;
-        delete invoice.Created;
         delete invoice.GUID;
         delete invoice.CheckoutUserId;
         delete invoice.ComplianceAssetId;
+        delete invoice.IsApproved;
+        delete invoice.MediaServiceKeyPoints;
+        delete invoice.MediaServiceAutoTags;
+        delete invoice.MediaServiceLocation;
+        delete invoice.MediaServiceOCR;
+        delete invoice.OData__CopySource;
+        delete invoice.ServerRedirectedEmbedUri;
+        delete invoice.ServerRedirectedEmbedUrl;
+        delete invoice.SharedWithDetails;
+        delete invoice.AccountAmount1;
+        delete invoice.AuthorId;
+        delete invoice.Created;
+        delete invoice.DocumentSetDescription;
         delete invoice.EditorId;
+        delete invoice.FileSystemObjectType;
+        delete invoice.Modified;
+        delete invoice.OData__UIVersionString;
+        delete invoice.ScannedFileName;
+        delete invoice.Title;
+
         return invoice;
     }
 
+    /**
+     * 
+     * @param invoiceID ID of the invoice we want to add these accounts to.
+     * @param accounts The current accounts of the invoice. 
+     */
+    private APInvoiceSubmit_SaveAccounts = async (invoiceID: number, accounts: any[]) => {
+        debugger;
+        let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+
+        let output = [];
+        let response;
+
+        for (let index = 0; index < accounts.length; index++) {
+            const account = accounts[index];
+            if (account.ID) {
+                // Update this account.
+                response = await (await accountList.items.getById(account.ID).update(account)).item.get();
+                debugger;
+            } else {
+                // Create a new account. 
+                response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
+                debugger;
+            }
+            output.push(response);
+        }
+
+        debugger;
+        return output;
+    }
     private APInvoiceSubmitEvent = (invoice: IInvoice, event) => {
         console.log('APInvoiceSubmitEvent');
         console.log(invoice);
         console.log('\n');
 
         let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
-
+        debugger;
         invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
         invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
+        if (!invoiceSaveObj.IsChequeReq) {
+            invoiceSaveObj.IsChequeReq = false;
+        }
+
+        debugger;
         sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID)
-            .update(invoiceSaveObj).then(value => {
+            .update({ ...invoiceSaveObj }).then(value => {
                 console.log('Save worked!');
                 console.log(value);
-                this.setState({
-                    saveWorked: true
+                this.APInvoiceSubmit_SaveAccounts(invoice.ID, invoice.Accounts).then(accountRes => {
+                    debugger;
+                    this.setState({
+                        saveWorked: true
+                    });
                 });
-            }).catch(reason => {
+            })
+            .catch(reason => {
                 this.setState({
                     saveWorked: false
                 });
                 console.log('Save did not work!');
-                console.log(reason);                
+                console.log(reason);
+                console.log(invoiceSaveObj);
             });
     }
     //#region
@@ -144,13 +203,13 @@ export class APItemComponent extends React.Component<any, any> {
                                                     <span><span style={cardTitleTextAlignSyle}>Invoice Title:</span> <a title='Click to View or Upload Documents.' target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span><span style={cardTitleTextAlignSyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span></span>
+                                                    <span><span style={cardTitleTextAlignSyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))}</span></span>
                                                 </CardTitle>
                                                 <CardTitle style={{ height: '22px' }}>
                                                     <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>
                                                         <span style={cardTitleTextAlignSyle}>Amount Assigned:</span> {
                                                             formRenderProps.valueGetter('Accounts')
-                                                                ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)
+                                                                ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))
                                                                     ? <Chip
                                                                         style={{ fontSize: '1.25rem', height: '20px' }}
                                                                         text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
