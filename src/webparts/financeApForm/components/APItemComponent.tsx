@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 
 // My Imports
 import * as MyHelper from '../MyHelperMethods';
+import {AccountFieldComponent} from './AccountFieldComponent';
 
 // PnP imports. 
 import { sp } from "@pnp/sp";
@@ -26,62 +27,6 @@ import { IInvoice } from '../interfaces/IInvoice';
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
-const glCodeCell = props => {
-    return (
-        <td>
-            {console.log('glCodeCell')}
-            {console.log(props)}
-            <Field component={MaskedTextBox} mask="000-00-000-00000-0000" name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.Title} />
-        </td>
-    );
-};
-
-const amountCell = props => {
-    return (
-        <td>
-            <Field component={NumericTextBox} format="c2" min={0} name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.AmountIncludingTaxes} />
-        </td>
-    );
-};
-
-/**
- * Renders the Accounts Grid.
- * @param fieldArrayRenderProps Props from form
- */
-const AccountFieldComponent = (fieldArrayRenderProps) => {
-    const onAdd = React.useCallback(
-        (e) => {
-            e.preventDefault();
-            debugger;
-            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
-        },
-        [fieldArrayRenderProps.onUnshift]
-    );
-
-    // const onAdd = event => {
-    //     event.preventDefault();
-    //     fieldArrayRenderProps.value.push({ Title: '', AmountIncludingTaxes: 0 });
-    //     debugger;
-    // };
-
-    return (
-        <div>
-            {
-                fieldArrayRenderProps.visited && fieldArrayRenderProps.validationMessage &&
-                (<Error>{fieldArrayRenderProps.validationMessage}</Error>)
-            }
-            <Grid data={fieldArrayRenderProps.value}>
-                <GridToolbar>
-                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={onAdd} >Add Account</Button>
-                </GridToolbar>
-                <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
-                <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
-            </Grid>
-        </div>
-
-    );
-};
-
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -94,20 +39,10 @@ export class APItemComponent extends React.Component<any, any> {
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
-            console.log(`componentDidUpdate: ${this.props.dataItem.ID}`);
             this.setState({
                 item: this.props.dataItem
             });
         }
-    }
-
-    public shouldComponentUpdate(nextProp, nextState) {
-        if (this.props.dataItem.ID === 28090) {
-            console.log(`\nShould component Update: ${this.props.dataItem.ID}`);
-            console.log(this.state);
-            console.log(nextState);
-        }
-        return true;
     }
 
     //#region Form CRUD Events
@@ -115,6 +50,7 @@ export class APItemComponent extends React.Component<any, any> {
         console.log('APInvoiceSubmitEvent');
         console.log(values);
         console.log(event);
+        console.log('\n');
         let saveWorked = false;
         // 50% chance that the save will work.
         Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
@@ -123,21 +59,7 @@ export class APItemComponent extends React.Component<any, any> {
     }
     //#region
 
-    private _LogForDebugging = (item) => {
-        if (item.ID === 28090) {
-            console.log(`Form Render: ${item.ID}`);
-            console.log(item);
-            console.log(this.state);
-        }
-    }
-
     public render() {
-        //let item: IInvoice = this.state.item;
-
-        if (this.state.item.ID === 28090) {
-            console.log('Setting Item');
-            console.log(this.state.item);
-        }
         return (
             <Form
                 key={this.state.item.ID}
@@ -145,7 +67,6 @@ export class APItemComponent extends React.Component<any, any> {
                 initialValues={this.state.item}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        {this._LogForDebugging(this.state.item)}
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
@@ -329,31 +250,23 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
                                                 <Label>Accounts:</Label>
-                                                {console.log(formRenderProps.valueGetter('OData__Status'))}
-                                                {console.log(formRenderProps.valueGetter('Accounts'))}
-                                                {console.log(formRenderProps.valueGetter('Requires_x0020_Approval_x0020_From'))}
-                                                {
-                                                    this.state.item.Accounts ?
-                                                        <FieldArray
-                                                            name="Accounts"
-                                                            component={AccountFieldComponent}
-                                                            value={this.state.item.Accounts}
-                                                        // validator={value => {
-                                                        //     switch (formRenderProps.valueGetter('OData__Status')) {
-                                                        //         case 'Received':
-                                                        //         case 'Awaiting Approval':
-                                                        //         case 'VOID':
-                                                        //         case 'Cancelled':
-                                                        //         case 'On Hold':
-                                                        //             return "";
-                                                        //         default:
-                                                        //             return ((value && value.length) ? "" : "Please add at least one account.");
-                                                        //     }
-                                                        // }}
-                                                        />
-                                                        :
-                                                        <Spinner size={SpinnerSize.medium} />
-                                                }
+                                                <FieldArray
+                                                    name="Accounts"
+                                                    component={AccountFieldComponent}
+                                                    value={formRenderProps.valueGetter('Accounts')}
+                                                    validator={value => {
+                                                        switch (formRenderProps.valueGetter('OData__Status')) {
+                                                            case 'Received':
+                                                            case 'Awaiting Approval':
+                                                            case 'VOID':
+                                                            case 'Cancelled':
+                                                            case 'On Hold':
+                                                                return "";
+                                                            default:
+                                                                return ((value && value.length) ? "" : "Please add at least one account.");
+                                                        }
+                                                    }}
+                                                />
                                             </FieldWrapper>
                                         </div>
                                     </div>
