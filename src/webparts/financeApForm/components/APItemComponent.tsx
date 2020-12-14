@@ -325,8 +325,8 @@ export class APItemComponent extends React.Component<any, any> {
                                         </div>
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
-                                                <Label editorId={'Batch_x0020_Number'}>Batch #:</Label>
-                                                <Field name='Batch_x0020_Number' component={Input} />
+                                                <Label editorId={'Invoice_x0020_Number'}>Invoice Number:</Label>
+                                                <Field name='Invoice_x0020_Number' component={Input} />
                                             </FieldWrapper>
                                         </div>
                                     </div>
@@ -357,8 +357,8 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='row'>
                                         <div className='col-xs-12 col-sm-6'>
                                             <FieldWrapper>
-                                                <Label editorId={'Invoice_x0020_Number'}>Invoice Number:</Label>
-                                                <Field name='Invoice_x0020_Number' component={Input} />
+                                                <Label editorId={'Batch_x0020_Number'}>Batch #:</Label>
+                                                <Field name='Batch_x0020_Number' component={Input} />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-6'>
