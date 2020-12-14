@@ -138,7 +138,7 @@ export class APItemComponent extends React.Component<any, any> {
         debugger;
         return output;
     }
-    
+
     private APInvoiceSubmitEvent = (invoice: IInvoice, event) => {
         console.log('APInvoiceSubmitEvent');
         console.log(invoice);
@@ -399,7 +399,6 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='row'>
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
-                                                <Label>Accounts:</Label>
                                                 <FieldArray
                                                     name="Accounts"
                                                     component={AccountFieldComponent}
