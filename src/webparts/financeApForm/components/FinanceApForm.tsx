@@ -105,11 +105,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
     // Create a new instance of this object.
     let invoiceHolder = invoices.slice(0);
+    let visibleInvoices = invoiceHolder.splice(0, this.TAKE_N);
+    // We are not setting the visibleInvoices state here.  Instead we will do it in the queryaccountForInvoices method. 
     this.setState({
-      visibleInvoices: invoiceHolder.splice(0, this.TAKE_N),
       availableInvoices: invoiceHolder,
       allInvoices: allInvoices ? allInvoices : invoices
-    }, () => this.queryAccountForInvoices(this.state.visibleInvoices));
+    }, () => this.queryAccountForInvoices(visibleInvoices));
   }
 
   // TODO: fix this.. 
@@ -135,7 +136,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       .getAll().then(value => {
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
-        //this.parseInvoiceFolders(value);
         this.applyNewFilter(value);
       }).catch(error => {
         // If you fail at first, try try again.
@@ -153,7 +153,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           .getAll().then(value => {
             value = value.filter(f => f.ContentTypeId === ContentTypes.Folder && f.OData__Status === this.state.myFilter.status);
             this.applyNewFilter(value);
-            // this.parseInvoiceFolders(value);
           }).catch(error2 => {
             console.log('\n\nERROR! Cannot Load Invoices!');
             console.log(error);
@@ -190,44 +189,41 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   /**
-   * 
+   * Gets the accounts for each invoice & sets the visible invoice state property. 
+   * This method must be called when loading new invoices. 
    * @param visibleInvoices The invoices that have been rendered. 
    */
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+    let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
     for (let index = 0; index < visibleInvoices.length; index++) {
-      const invoice = visibleInvoices[index];
+      //const invoice = visibleInvoices[index];
 
       // If the invoice Accounts property is already set we can skip this loop to avoid running extra queries. 
-      if (invoice.Accounts && invoice.Accounts.length > 0) {
+      if (visibleInvoices[index].Accounts && visibleInvoices[index].Accounts.length > 0) {
         continue;
       }
 
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${invoice.ID}`).select('ID, Title, AmountIncludingTaxes').get();
+      // If there are not accounts present this will return an empty array.
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes').get();
 
-
-      let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
-      let allInvoicesState: IInvoice[] = this.state.allInvoices;
-
-      // The index of the visibleInvoice array.  These are the invoices that have been rendered. 
-      let indexOfVisibleInvoice: number = visibleInvoicesState.findIndex(f => f.ID === invoice.ID);
+      // This will allow the accounts to be rendered. 
+      visibleInvoices[index].Accounts = [...accounts];
 
       // The index of the allInvoices array.  These are the invoices that may or may not have been rendered. 
       // By setting the account in the allInvoices array this prevents us from having to rerun this query again.
-      let indexOfAllInvoice: number = allInvoicesState.findIndex(f => f.ID === invoice.ID);
-
-      if (indexOfVisibleInvoice >= 0 && indexOfAllInvoice >= 0) {
-        // If no accounts were found this will be an empty array. 
-        visibleInvoicesState[indexOfVisibleInvoice].Accounts = [...accounts];
+      let indexOfAllInvoice: number = allInvoicesState.findIndex(f => f.ID === visibleInvoices[index].ID);
+      if (indexOfAllInvoice >= 0) {
+        // This will hold the same account for later if needed. 
         allInvoicesState[indexOfAllInvoice].Accounts = [...accounts];
-
-        this.setState({
-          visibleInvoices: [...visibleInvoicesState],
-          allInvoices: [...allInvoicesState]
-        });
       }
-    }
+    } // End of For loop. 
+
+    this.setState({
+      visibleInvoices: [...visibleInvoices],
+      allInvoices: [...allInvoicesState]
+    });
   }
   //#endregion
 
@@ -244,8 +240,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
-        this.setState({ visibleInvoices: this.state.visibleInvoices.concat(moreData) });
-        this.queryAccountForInvoices(moreData);
+        this.queryAccountForInvoices(this.state.visibleInvoices.concat(moreData));
       }
     }
   }
