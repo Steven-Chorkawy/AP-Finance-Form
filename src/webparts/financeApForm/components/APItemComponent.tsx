@@ -102,7 +102,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     <span title='Invoice Number'><span style={cardTitleTextAlignSyle}>Invoice Number:</span> {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span><span style={cardTitleTextAlignSyle}>Invoice Title:</span> <a target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                    <span><span style={cardTitleTextAlignSyle}>Invoice Title:</span> <a title='Click to View or Upload Documents.' target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                 </CardTitle>
                                                 <CardTitle>
                                                     <span><span style={cardTitleTextAlignSyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(this.props.dataItem.Gross_x0020_Amount)}</span></span>
