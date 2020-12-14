@@ -110,7 +110,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
     const onAdd = React.useCallback(
         (e) => {
             e.preventDefault();
-            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
+            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: null } });
         },
         [fieldArrayRenderProps.onUnshift]
     );
@@ -132,7 +132,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 </GridToolbar>
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
-                <GridColumn cell={commandCell(onRemove)} width="50px" />
+                {/* <GridColumn cell={commandCell(onRemove)} width="50px" /> */}
 
             </Grid>
         </div>

@@ -138,6 +138,7 @@ export class APItemComponent extends React.Component<any, any> {
         debugger;
         return output;
     }
+    
     private APInvoiceSubmitEvent = (invoice: IInvoice, event) => {
         console.log('APInvoiceSubmitEvent');
         console.log(invoice);
@@ -246,7 +247,10 @@ export class APItemComponent extends React.Component<any, any> {
                                             look='flat'
                                             icon={this.state.showMore ? 'minus' : 'plus'}
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
-                                            onClick={() => this.setState({ showMore: !this.state.showMore })}
+                                            onClick={e => {
+                                                e.preventDefault();
+                                                this.setState({ showMore: !this.state.showMore });
+                                            }}
                                         />
                                         {
                                             !this.state.showMore && !formRenderProps.modified &&
@@ -295,14 +299,34 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='row'>
                                         <div className='col-xs-12 col-sm-6'>
                                             <FieldWrapper>
-                                                <Label editorId={'OData__Status'}>Invoice Status:</Label>
-                                                <Field name='OData__Status' component={DropDownList} data={this.props.invoiceStatus ? this.props.invoiceStatus : []} />
+                                                <Label editorId={'Vendor_x0020_Name'}>Vendor Name:</Label>
+                                                <Field name='Vendor_x0020_Name' component={Input} />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-6'>
                                             <FieldWrapper>
+                                                <Label editorId={'Vendor_x0020_Number'}>Vendor ID:</Label>
+                                                <Field name='Vendor_x0020_Number' component={Input} />
+                                            </FieldWrapper>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-xs-12 col-sm-4'>
+                                            <FieldWrapper>
+                                                <Label editorId={'OData__Status'}>Invoice Status:</Label>
+                                                <Field name='OData__Status' component={DropDownList} data={this.props.invoiceStatus ? this.props.invoiceStatus : []} />
+                                            </FieldWrapper>
+                                        </div>
+                                        <div className='col-xs-12 col-sm-4'>
+                                            <FieldWrapper>
                                                 <Label editorId={'Invoice_x0020_Type'}>Invoice Type:</Label>
                                                 <Field name='Invoice_x0020_Type' component={DropDownList} data={this.props.invoiceTypes ? this.props.invoiceTypes : []} />
+                                            </FieldWrapper>
+                                        </div>
+                                        <div className='col-xs-12 col-sm-4'>
+                                            <FieldWrapper>
+                                                <Label editorId={'Batch_x0020_Number'}>Batch #:</Label>
+                                                <Field name='Batch_x0020_Number' component={Input} />
                                             </FieldWrapper>
                                         </div>
                                     </div>

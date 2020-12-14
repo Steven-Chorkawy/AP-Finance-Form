@@ -45,6 +45,9 @@ interface IFinanceApFormState {
   departments?: any;
   invoiceTypes?: string[];
   invoiceStatus?: string[];
+
+  loadingMoreAccounts: boolean; // Indicate that we're running a query.
+
   myFilter: IFinanceAPFormFilterState;
   filter?: any;
 }
@@ -67,6 +70,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       visibleInvoices: undefined,
       allInvoices: undefined,
       availableInvoices: undefined,
+      loadingMoreAccounts: true, // Disable right away so users cannot change.
       myFilter: {
         status: 'Approved',   // TODO: Get default status from the web part settings. 
         showChequeReq: false
@@ -194,8 +198,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * @param visibleInvoices The invoices that have been rendered. 
    */
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
+    this.setState({ loadingMoreAccounts: true });
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
- 
+
     let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
     for (let index = 0; index < visibleInvoices.length; index++) {
@@ -222,6 +227,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     } // End of For loop.
 
     this.setState({
+      loadingMoreAccounts: false,
       visibleInvoices: [...visibleInvoices],
       allInvoices: [...allInvoicesState]
     });
@@ -250,7 +256,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   //#region Filter Methods
   public statusDropDownChange = (event: DropDownListChangeEvent) => {
-    this.setState({ myFilter: { ...this.state.myFilter, status: event.value } }, () => this.queryInvoices());
+    this.setState({ myFilter: { ...this.state.myFilter, status: event.value }, loadingMoreAccounts: true }, () => this.queryInvoices());
   }
 
   public onChequeReqChange = (event: CheckboxChangeEvent) => {
@@ -314,13 +320,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       <ListViewHeader style={{ padding: '5px' }}>
         <div className='row'>
           <div className='col-sm-4'>
-            <DropDownList data={this.state.invoiceStatus} value={this.state.myFilter.status} onChange={this.statusDropDownChange} style={{ width: '100%' }} />
+            <DropDownList data={this.state.invoiceStatus} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.status} onChange={this.statusDropDownChange} style={{ width: '100%' }} />
           </div>
           <div className='col-sm-8'>
-            <Input onChange={this.searchBoxChange} placeholder='Search for Invoices' style={{ width: '100%' }} />
+            <Input onChange={this.searchBoxChange} disabled={this.state.loadingMoreAccounts} placeholder='Search for Invoices' style={{ width: '100%' }} />
             <div className='row'>
               <div className='col-sm-6'>
-                <Checkbox label={'Show Cheque Reqs'} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
+                <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
               </div>
               <div className='col-sm-6'>
                 sort by date.
