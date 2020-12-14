@@ -51,7 +51,8 @@ export class APItemComponent extends React.Component<any, any> {
         this.state = {
             item: this.props.dataItem,
             inEdit: false,
-            showMore: false
+            showMore: false,
+            saveWorked: undefined
         };
     }
 
@@ -64,16 +65,54 @@ export class APItemComponent extends React.Component<any, any> {
     }
 
     //#region Form CRUD Events
-    private APInvoiceSubmitEvent = (values, event) => {
+    /**
+     * Delete properties that we either cannot modify or do not want to modify in SharePoint.
+     * @param invoice Invoice to save.
+     */
+    private _DeletePropertiesBeforeSave = (invoice): IInvoice => {
+        delete invoice.Accounts;
+        delete invoice.Department;
+        delete invoice.ContentTypeId;
+        delete invoice.Requires_x0020_Approval_x0020_FromId;
+        delete invoice.Received_x0020_Approval_x0020_FromId;
+        delete invoice.Requires_x0020_Approval_x0020_From;
+        delete invoice.Received_x0020_Approval_x0020_From;
+        delete invoice.Requires_x0020_Approval_x0020_FromStringId;
+        delete invoice.Received_x0020_Approval_x0020_FromStringId;
+        delete invoice.SharedWithUsersId;
+        delete invoice.Modified;
+        delete invoice.Created;
+        delete invoice.GUID;
+        delete invoice.CheckoutUserId;
+        delete invoice.ComplianceAssetId;
+        delete invoice.EditorId;
+        return invoice;
+    }
+
+    private APInvoiceSubmitEvent = (invoice: IInvoice, event) => {
         console.log('APInvoiceSubmitEvent');
-        console.log(values);
-        console.log(event);
+        console.log(invoice);
         console.log('\n');
-        let saveWorked = false;
-        // 50% chance that the save will work.
-        Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
 
+        let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
 
+        invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
+        invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
+
+        sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID)
+            .update(invoiceSaveObj).then(value => {
+                console.log('Save worked!');
+                console.log(value);
+                this.setState({
+                    saveWorked: true
+                });
+            }).catch(reason => {
+                this.setState({
+                    saveWorked: false
+                });
+                console.log('Save did not work!');
+                console.log(reason);                
+            });
     }
     //#region
 
@@ -87,7 +126,7 @@ export class APItemComponent extends React.Component<any, any> {
                 validator={formValidator}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
+                        <Card type={'error'} style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
                                     <div className='col-xs-10 col-sm-10'>
@@ -184,6 +223,12 @@ export class APItemComponent extends React.Component<any, any> {
                                         }
                                     </div>
                                 </div>
+                                {
+                                    this.state.saveWorked !== undefined && this.state.saveWorked === false &&
+                                    <div className='k-card-body k-state-error'>
+                                        <p>Something went wrong.  Could not save your changes at this time.</p>
+                                    </div>
+                                }
                             </CardHeader>
                             {
                                 this.state.showMore &&

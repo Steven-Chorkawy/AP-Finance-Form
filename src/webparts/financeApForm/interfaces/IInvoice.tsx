@@ -28,16 +28,22 @@ export interface IInvoice {
     Entered: string;
     Voucher_x0020_Number: string;
     Cheque_x0020_Number: any;
-    DepartmentId: number[];
+    DepartmentId: any;
+    HiddenDepartmentId: any;
     Department: any;
     Invoice_x0020_Type: string;
+
     Requires_x0020_Approval_x0020_FromId: number[];
+    Requires_x0020_Approval_x0020_FromStringId: any;
     Requires_x0020_Approval_x0020_From: ISPUser[];
+    
     Received_x0020_Approval_x0020_FromId: number[];
     Received_x0020_Approval_x0020_From: ISPUser[];
+    Received_x0020_Approval_x0020_FromStringId: any;
+    
     SharedWithUsersId: number[];
     DenyComment: string;
-    
+
     Accounts?: any[];
 
 
