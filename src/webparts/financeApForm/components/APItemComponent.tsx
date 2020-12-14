@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 
 // My Imports
 import * as MyHelper from '../MyHelperMethods';
-import {AccountFieldComponent} from './AccountFieldComponent';
+import { AccountFieldComponent } from './AccountFieldComponent';
 
 // PnP imports. 
 import { sp } from "@pnp/sp";
@@ -26,6 +26,26 @@ import { IInvoice } from '../interfaces/IInvoice';
 
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+
+const formValidator = value => {
+    console.log('testV');
+    console.log(value);
+    let output = {};
+    switch (value.OData__Status) {
+        case 'Received':
+        case 'Awaiting Approval':
+        case 'VOID':
+        case 'Cancelled':
+        case 'On Hold':
+            break;
+        default:
+            if (value.Accounts && value.Accounts.length === 0) {
+                output = { Accounts: "Please add at least one account." };
+            }
+            break;
+    }
+    return output;
+}
 
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
@@ -65,6 +85,7 @@ export class APItemComponent extends React.Component<any, any> {
                 key={this.state.item.ID}
                 onSubmit={this.APInvoiceSubmitEvent}
                 initialValues={this.state.item}
+                validator={formValidator}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
@@ -254,18 +275,6 @@ export class APItemComponent extends React.Component<any, any> {
                                                     name="Accounts"
                                                     component={AccountFieldComponent}
                                                     value={formRenderProps.valueGetter('Accounts')}
-                                                    validator={value => {
-                                                        switch (formRenderProps.valueGetter('OData__Status')) {
-                                                            case 'Received':
-                                                            case 'Awaiting Approval':
-                                                            case 'VOID':
-                                                            case 'Cancelled':
-                                                            case 'On Hold':
-                                                                return "";
-                                                            default:
-                                                                return ((value && value.length) ? "" : "Please add at least one account.");
-                                                        }
-                                                    }}
                                                 />
                                             </FieldWrapper>
                                         </div>

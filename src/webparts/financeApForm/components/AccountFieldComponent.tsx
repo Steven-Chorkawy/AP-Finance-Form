@@ -80,6 +80,26 @@ const amountCell = props => {
         </td>
     );
 };
+
+const commandCell = (onRemove) => (props) => {
+    const onClick = React.useCallback(
+        (e) => {
+            e.preventDefault();
+            onRemove(props);
+        },
+        [onRemove]
+    );
+    return (
+        <td>
+            <Button
+                className="k-button k-grid-remove-command"
+                icon='trash'
+                title='Delete Account'
+                onClick={onClick}
+            />
+        </td>
+    );
+};
 //#endregion
 
 /**
@@ -95,6 +115,11 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
         [fieldArrayRenderProps.onUnshift]
     );
 
+    const onRemove = React.useCallback(
+        (cellProps) => fieldArrayRenderProps.onRemove({ index: cellProps.dataIndex }),
+        [fieldArrayRenderProps.onRemove]
+    );
+
     return (
         <div>
             {
@@ -107,6 +132,8 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 </GridToolbar>
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
+                <GridColumn cell={commandCell(onRemove)} width="240px" />
+
             </Grid>
         </div>
     );
