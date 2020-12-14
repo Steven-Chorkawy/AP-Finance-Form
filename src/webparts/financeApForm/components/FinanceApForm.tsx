@@ -112,6 +112,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }, () => this.queryAccountForInvoices(this.state.visibleInvoices));
   }
 
+  // TODO: fix this.. 
   private queryInvoices = () => {
     console.log('Query Invoices');
     this.setState({
