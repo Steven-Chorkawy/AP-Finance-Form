@@ -17,7 +17,7 @@ import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/k
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
+import { Input, MaskedTextBox, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -26,19 +26,59 @@ import { IInvoice } from '../interfaces/IInvoice';
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
+const glCodeCell = props => {
+    return (
+        <td>
+            {console.log('glCodeCell')}
+            {console.log(props)}
+            <Field component={MaskedTextBox} mask="000-00-000-00000-0000" name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.Title} />
+        </td>
+    );
+};
+
+const amountCell = props => {
+    return (
+        <td>
+            <Field component={NumericTextBox} format="c2" min={0} name={`Accounts[${props.dataIndex}].${props.field}`} defaultValue={props.dataItem.AmountIncludingTaxes} />
+        </td>
+    );
+};
+
 /**
  * Renders the Accounts Grid.
  * @param fieldArrayRenderProps Props from form
  */
 const AccountFieldComponent = (fieldArrayRenderProps) => {
+    const onAdd = React.useCallback(
+        (e) => {
+            e.preventDefault();
+            debugger;
+            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: 0 } });
+        },
+        [fieldArrayRenderProps.onUnshift]
+    );
+
+    // const onAdd = event => {
+    //     event.preventDefault();
+    //     fieldArrayRenderProps.value.push({ Title: '', AmountIncludingTaxes: 0 });
+    //     debugger;
+    // };
+
     return (
-        <Grid data={fieldArrayRenderProps.value}>
-            <GridToolbar>
-                <Button title="Add new" icon='plus' primary={true} look='flat' onClick={e => console.log(e)} >Add Account</Button>
-            </GridToolbar>
-            <GridColumn field="Title" title="Account Code" />
-            <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} />
-        </Grid>
+        <div>
+            {
+                fieldArrayRenderProps.visited && fieldArrayRenderProps.validationMessage &&
+                (<Error>{fieldArrayRenderProps.validationMessage}</Error>)
+            }
+            <Grid data={fieldArrayRenderProps.value}>
+                <GridToolbar>
+                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={onAdd} >Add Account</Button>
+                </GridToolbar>
+                <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
+                <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
+            </Grid>
+        </div>
+
     );
 };
 
@@ -54,10 +94,20 @@ export class APItemComponent extends React.Component<any, any> {
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
+            console.log(`componentDidUpdate: ${this.props.dataItem.ID}`);
             this.setState({
                 item: this.props.dataItem
             });
         }
+    }
+
+    public shouldComponentUpdate(nextProp, nextState) {
+        if (this.props.dataItem.ID === 28090) {
+            console.log(`\nShould component Update: ${this.props.dataItem.ID}`);
+            console.log(this.state);
+            console.log(nextState);
+        }
+        return true;
     }
 
     //#region Form CRUD Events
@@ -66,22 +116,36 @@ export class APItemComponent extends React.Component<any, any> {
         console.log(values);
         console.log(event);
         let saveWorked = false;
-        // 50% chance that the save will work. 
+        // 50% chance that the save will work.
         Math.random() < 0.5 ? saveWorked = true : saveWorked = false;
 
-        
+
     }
-    //#region 
+    //#region
+
+    private _LogForDebugging = (item) => {
+        if (item.ID === 28090) {
+            console.log(`Form Render: ${item.ID}`);
+            console.log(item);
+            console.log(this.state);
+        }
+    }
 
     public render() {
-        let item: IInvoice = this.state.item;
+        //let item: IInvoice = this.state.item;
+
+        if (this.state.item.ID === 28090) {
+            console.log('Setting Item');
+            console.log(this.state.item);
+        }
         return (
             <Form
-                key={item.ID}
+                key={this.state.item.ID}
                 onSubmit={this.APInvoiceSubmitEvent}
-                initialValues={item}
+                initialValues={this.state.item}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
+                        {this._LogForDebugging(this.state.item)}
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
@@ -205,7 +269,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Requires Approval From:</Label>
-                                                {item.Requires_x0020_Approval_x0020_From && item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {this.state.item.Requires_x0020_Approval_x0020_From && this.state.item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
@@ -213,7 +277,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
                                                 <Label>Received Approval From:</Label>
-                                                {item.Received_x0020_Approval_x0020_From && item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
+                                                {this.state.item.Received_x0020_Approval_x0020_From && this.state.item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
                                             </FieldWrapper>
@@ -265,13 +329,29 @@ export class APItemComponent extends React.Component<any, any> {
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
                                                 <Label>Accounts:</Label>
+                                                {console.log(formRenderProps.valueGetter('OData__Status'))}
+                                                {console.log(formRenderProps.valueGetter('Accounts'))}
+                                                {console.log(formRenderProps.valueGetter('Requires_x0020_Approval_x0020_From'))}
                                                 {
-                                                    this.props.dataItem.Accounts ?
+                                                    this.state.item.Accounts ?
                                                         <FieldArray
                                                             name="Accounts"
                                                             component={AccountFieldComponent}
-                                                            value={this.props.dataItem.Accounts}
-                                                        /> :
+                                                            value={this.state.item.Accounts}
+                                                        // validator={value => {
+                                                        //     switch (formRenderProps.valueGetter('OData__Status')) {
+                                                        //         case 'Received':
+                                                        //         case 'Awaiting Approval':
+                                                        //         case 'VOID':
+                                                        //         case 'Cancelled':
+                                                        //         case 'On Hold':
+                                                        //             return "";
+                                                        //         default:
+                                                        //             return ((value && value.length) ? "" : "Please add at least one account.");
+                                                        //     }
+                                                        // }}
+                                                        />
+                                                        :
                                                         <Spinner size={SpinnerSize.medium} />
                                                 }
                                             </FieldWrapper>

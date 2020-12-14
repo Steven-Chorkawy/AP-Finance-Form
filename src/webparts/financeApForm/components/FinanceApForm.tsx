@@ -111,6 +111,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       availableInvoices: invoiceHolder,
       allInvoices: allInvoices ? allInvoices : invoices
     }, () => this.queryAccountForInvoices(visibleInvoices));
+
   }
 
   // TODO: fix this.. 
@@ -197,6 +198,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
     let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
+    let visibleInvoicesState: IInvoice[] = this.state.visibleInvoices;
+    let allInvoicesState: IInvoice[] = this.state.allInvoices;
+
     for (let index = 0; index < visibleInvoices.length; index++) {
       //const invoice = visibleInvoices[index];
 
@@ -218,10 +222,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         // This will hold the same account for later if needed. 
         allInvoicesState[indexOfAllInvoice].Accounts = [...accounts];
       }
-    } // End of For loop. 
+    } // End of For loop.
 
     this.setState({
-      visibleInvoices: [...visibleInvoices],
+      visibleInvoices: [...visibleInvoicesState],
       allInvoices: [...allInvoicesState]
     });
   }
@@ -238,6 +242,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
      * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
      */
     if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
+
       const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
       if (moreData.length > 0) {
         this.queryAccountForInvoices(this.state.visibleInvoices.concat(moreData));
@@ -260,7 +265,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private applyNewFilter = (allInvoices: any[], event?: any) => {
-    debugger;
     // Always apply this filter.
     const defaultFilter: any = {
       logic: "and",
@@ -295,6 +299,14 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }
 
     let filterInvoices = filterBy(allInvoices, finalFilterObj);
+
+    // I always want to show these. 
+    filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
+
+    filterInvoices = filterInvoices.sort((a, b) => {
+      return b.ID - a.ID;
+    });
+
     this.parseInvoiceFolders(filterInvoices, allInvoices);
   }
   //#endregion
