@@ -21,7 +21,7 @@
     "description": { "default": "Finance AP Form description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "Finance AP Form"
+      "description": "Approved"
     }
   }]
 }
