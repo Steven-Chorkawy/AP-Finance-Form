@@ -101,6 +101,16 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Private Methods
+  private formatInvoiceDates = (invoice: IInvoice) => {
+    return {
+      ...invoice,
+      Invoice_x0020_Date: new Date(invoice.Invoice_x0020_Date),
+      Received_x0020_Date: new Date(invoice.Received_x0020_Date),
+      Created: new Date(invoice.Created),
+      Modified: new Date(invoice.Modified)
+    };
+  }
+
   /**
    * Parse through the invoice that we will be sending to the user. 
    * This method converts the String date to a correct Date object. 
@@ -109,15 +119,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * @param allInvoices Optional.  If set this will hold the exising invocies for later. 
    */
   private parseInvoiceFolders = (invoices, allInvoices?) => {
-    invoices = invoices.map(v => {
-      return {
-        ...v,
-        Invoice_x0020_Date: new Date(v.Invoice_x0020_Date),
-        Received_x0020_Date: new Date(v.Received_x0020_Date),
-        Created: new Date(v.Created),
-        Modified: new Date(v.Modified)
-      };
-    });
+    invoices = invoices.map(v => this.formatInvoiceDates(v));
 
     // Create a new instance of this object.
     let invoiceHolder = invoices.slice(0);
@@ -494,13 +496,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     let visibleInvoiceIndex = visibleInvoices.findIndex(f => f.ID === invoice.ID);
     let allInvoiceIndex = allInvoices.findIndex(f => f.ID === invoice.ID);
 
-    if(visibleInvoiceIndex < 0 || allInvoiceIndex < 0) {
+    if (visibleInvoiceIndex < 0 || allInvoiceIndex < 0) {
       throw 'Could not insert new invoice.';
     }
-    
+
     debugger;
-    visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...invoice };
-    allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...invoice };
+    visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
+    allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...this.formatInvoiceDates(invoice) };
 
     this.setState({
       visibleInvoices: visibleInvoices,

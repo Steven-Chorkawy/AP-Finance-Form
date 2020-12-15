@@ -71,7 +71,7 @@ export class APItemComponent extends React.Component<any, any> {
             <Form
                 key={this.state.item.ID}
                 onSubmit={this.props.onSave}
-                initialValues={this.state.item}
+                initialValues={this.props.dataItem}
                 validator={formValidator}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
