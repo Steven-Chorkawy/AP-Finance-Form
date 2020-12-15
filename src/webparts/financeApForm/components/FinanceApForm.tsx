@@ -373,8 +373,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       invoiceUpdateResponse.Accounts = accountUpdateResponse;
 
-      this.InsertNewInvoice(invoiceUpdateResponse);
+      this.InsertNewInvoice({ ...invoiceUpdateResponse, saveSuccess: true });
     } catch (error) {
+      this.InsertNewInvoice({ ...invoice, saveSuccess: false });
       throw error;
     }
   }
@@ -452,6 +453,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.OData__UIVersionString;
     delete invoice.ScannedFileName;
     delete invoice.Title;
+    delete invoice.saveSuccess;
 
     return invoice;
   }

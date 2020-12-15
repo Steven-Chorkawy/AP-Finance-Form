@@ -50,8 +50,7 @@ export class APItemComponent extends React.Component<any, any> {
         super(props);
         this.state = {
             item: this.props.dataItem,
-            showMore: false,
-            saveWorked: undefined
+            showMore: false
         };
     }
 
@@ -174,8 +173,8 @@ export class APItemComponent extends React.Component<any, any> {
                                     </div>
                                 </div>
                                 {
-                                    this.state.saveWorked !== undefined && this.state.saveWorked === false &&
-                                    <div className='k-card-body k-state-error'>
+                                    this.props.dataItem && this.props.dataItem.saveSuccess === false &&
+                                    <div style={{ marginTop: '5px' }} className='k-card-body k-state-error'>
                                         <p>Something went wrong.  Could not save your changes at this time.</p>
                                     </div>
                                 }

@@ -36,11 +36,11 @@ export interface IInvoice {
     Requires_x0020_Approval_x0020_FromId: number[];
     Requires_x0020_Approval_x0020_FromStringId: any;
     Requires_x0020_Approval_x0020_From: ISPUser[];
-    
+
     Received_x0020_Approval_x0020_FromId: number[];
     Received_x0020_Approval_x0020_From: ISPUser[];
     Received_x0020_Approval_x0020_FromStringId: any;
-    
+
     SharedWithUsersId: number[];
     DenyComment: string;
 
@@ -55,6 +55,6 @@ export interface IInvoice {
     Created: string;
     IsChequeReq: boolean;
     GUID: string;
-
+    saveSuccess?: boolean;  // indicates if this record was successfully saved or not.
 }
 
