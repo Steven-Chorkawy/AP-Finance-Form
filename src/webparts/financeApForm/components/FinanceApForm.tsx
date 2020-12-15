@@ -60,6 +60,7 @@ interface IFinanceAPFormFilterState {
   status: string;           // The Status selected status.
   showChequeReq: boolean;   // If we want to show cheque reqs or not. 
   searchBoxFilterObject?: any;
+  invoiceDateDesc: boolean; // default to newest to oldest. 
 }
 
 const INVOICE_SELECT_STRING = `*, 
@@ -86,7 +87,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       loadingMoreAccounts: true, // Disable right away so users cannot change.
       myFilter: {
         status: this.props.description ? this.props.description : 'Approved',
-        showChequeReq: false
+        showChequeReq: false,
+        invoiceDateDesc: true
       }
     };
 
@@ -224,7 +226,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       // The index of the allInvoices array.  These are the invoices that may or may not have been rendered. 
       // By setting the account in the allInvoices array this prevents us from having to rerun this query again.
       let indexOfAllInvoice: number = allInvoicesState.findIndex(f => f.ID === visibleInvoices[index].ID);
-      
+
       if (indexOfAllInvoice >= 0) {
         // This will hold the same account for later if needed. 
         allInvoicesState[indexOfAllInvoice].Accounts = accounts;
@@ -272,6 +274,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     this.applyNewFilter(this.state.allInvoices, { searchBoxValue: event.value });
   }
 
+  public dateOrderChange = () => {
+    this.setState({ myFilter: { ...this.state.myFilter, invoiceDateDesc: !this.state.myFilter.invoiceDateDesc } }, () => this.applyNewFilter(this.state.allInvoices));
+  }
+
   private applyNewFilter = (allInvoices: any[], event?: any) => {
     // Always apply this filter.
     const defaultFilter: any = {
@@ -312,7 +318,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
 
     filterInvoices = filterInvoices.sort((a, b) => {
-      return b.ID - a.ID;
+      //return b.ID - a.ID;
+      let aDate: any = new Date(a.Invoice_x0020_Date);
+      let bDate: any = new Date(b.Invoice_x0020_Date);
+      return this.state.myFilter.invoiceDateDesc ? (bDate - aDate) : (aDate - bDate);
     });
 
     this.parseInvoiceFolders(filterInvoices, allInvoices);
@@ -335,12 +344,14 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           </div>
           <div className='col-sm-8'>
             <Input onChange={this.searchBoxChange} placeholder='Search by Title, Vendor, Invoice #, PO #, Batch #' style={{ width: '100%' }} />
-            <div className='row'>
+            <div className='row' style={{ marginTop: '2px' }}>
               <div className='col-sm-6'>
                 <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
               </div>
               <div className='col-sm-6'>
-                sort by date.
+                <div onClick={e => { !this.state.loadingMoreAccounts && this.dateOrderChange() }} style={{ cursor: !this.state.loadingMoreAccounts && 'pointer' }}>
+                  <span className={`k-icon ${this.state.myFilter.invoiceDateDesc ? 'k-i-arrow-chevron-down' : 'k-i-arrow-chevron-up'}`}></span><span>Order By Invoice Date.</span>
+                </div>
               </div>
             </div>
           </div>
