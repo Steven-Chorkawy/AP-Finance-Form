@@ -346,8 +346,117 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     );
   }
 
-  private APItemComponentRender = props => <APItemComponent {...props} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
+  private APItemComponentRender = props => <APItemComponent {...props} onSave={this.onSave} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
   private APItemLoadingComponentRender = () => <div style={{ paddingLeft: '10px', paddingRight: '10px' }}><MyLoadingComponent /><hr /></div>;
+  //#endregion
+
+  //#region Invoice Save Methods
+  public onSave = (invoice: IInvoice, event) => {
+    console.log('APInvoiceSubmitEvent');
+    console.log(invoice);
+
+    console.log('\n');
+
+    let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
+    debugger;
+    invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
+    invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
+
+    // TODO: Try removing this, it was from debugging.
+    if (!invoiceSaveObj.IsChequeReq) {
+      invoiceSaveObj.IsChequeReq = false;
+    }
+
+    sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj }).then(value => {
+      console.log('Save worked!');
+      console.log(value);
+      this.APInvoiceAccountSave(invoice.ID, invoice.Accounts).then(accountRes => {
+        // this.setState({
+        //   saveWorked: true
+        // });
+      });
+    }).catch(reason => {
+      // this.setState({
+      //   saveWorked: false
+      // });
+    });
+  }
+
+  /**
+     * 
+     * @param invoiceID ID of the invoice we want to add these accounts to.
+     * @param accounts The current accounts of the invoice. 
+     */
+  private APInvoiceAccountSave = async (invoiceID: number, accounts: any[]) => {
+    debugger;
+    let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+
+    let output = [];
+    let response;
+
+    for (let index = 0; index < accounts.length; index++) {
+      const account = accounts[index];
+      if (account.ID) {
+        // Update this account.
+        response = await (await accountList.items.getById(account.ID).update(account)).item.get();
+        debugger;
+      } else {
+        // Create a new account. 
+        response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
+        debugger;
+      }
+      output.push(response);
+    }
+
+    debugger;
+    return output;
+  }
+  //#endregion
+
+  //#region Invoice Save Helper Methods
+  /**
+     * Delete properties that we either cannot modify or do not want to modify in SharePoint.
+     * @param invoice Invoice to save.
+     */
+  private _DeletePropertiesBeforeSave = (invoice): IInvoice => {
+    delete invoice.Accounts;
+    delete invoice.Department;
+    delete invoice.ContentTypeId;
+    delete invoice.Requires_x0020_Approval_x0020_FromId;
+    delete invoice.Received_x0020_Approval_x0020_FromId;
+    delete invoice.Requires_x0020_Approval_x0020_From;
+    delete invoice.Received_x0020_Approval_x0020_From;
+    delete invoice.Requires_x0020_Approval_x0020_FromStringId;
+    delete invoice.Received_x0020_Approval_x0020_FromStringId;
+    delete invoice.Received_x0020_Deny_x0020_From_x0020_String;
+    delete invoice.HiddenApproversId;
+    delete invoice.HiddenApproversStringId;
+    delete invoice.SharedWithUsersId;
+    delete invoice.GUID;
+    delete invoice.CheckoutUserId;
+    delete invoice.ComplianceAssetId;
+    delete invoice.IsApproved;
+    delete invoice.MediaServiceKeyPoints;
+    delete invoice.MediaServiceAutoTags;
+    delete invoice.MediaServiceLocation;
+    delete invoice.MediaServiceOCR;
+    delete invoice.OData__CopySource;
+    delete invoice.ServerRedirectedEmbedUri;
+    delete invoice.ServerRedirectedEmbedUrl;
+    delete invoice.SharedWithDetails;
+    delete invoice.AccountAmount1;
+    delete invoice.AuthorId;
+    delete invoice.Created;
+    delete invoice.DocumentSetDescription;
+    delete invoice.EditorId;
+    delete invoice.FileSystemObjectType;
+    delete invoice.Modified;
+    delete invoice.OData__UIVersionString;
+    delete invoice.ScannedFileName;
+    delete invoice.Title;
+
+    return invoice;
+  }
   //#endregion
 
   public render(): React.ReactElement<IFinanceApFormProps> {

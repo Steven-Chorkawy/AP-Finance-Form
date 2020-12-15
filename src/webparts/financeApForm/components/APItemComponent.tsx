@@ -64,124 +64,13 @@ export class APItemComponent extends React.Component<any, any> {
         }
     }
 
-    //#region Form CRUD Events
-    /**
-     * Delete properties that we either cannot modify or do not want to modify in SharePoint.
-     * @param invoice Invoice to save.
-     */
-    private _DeletePropertiesBeforeSave = (invoice): IInvoice => {
-        delete invoice.Accounts;
-        delete invoice.Department;
-        delete invoice.ContentTypeId;
-        delete invoice.Requires_x0020_Approval_x0020_FromId;
-        delete invoice.Received_x0020_Approval_x0020_FromId;
-        delete invoice.Requires_x0020_Approval_x0020_From;
-        delete invoice.Received_x0020_Approval_x0020_From;
-        delete invoice.Requires_x0020_Approval_x0020_FromStringId;
-        delete invoice.Received_x0020_Approval_x0020_FromStringId;
-        delete invoice.Received_x0020_Deny_x0020_From_x0020_String;
-        delete invoice.HiddenApproversId;
-        delete invoice.HiddenApproversStringId;
-        delete invoice.SharedWithUsersId;
-        delete invoice.GUID;
-        delete invoice.CheckoutUserId;
-        delete invoice.ComplianceAssetId;
-        delete invoice.IsApproved;
-        delete invoice.MediaServiceKeyPoints;
-        delete invoice.MediaServiceAutoTags;
-        delete invoice.MediaServiceLocation;
-        delete invoice.MediaServiceOCR;
-        delete invoice.OData__CopySource;
-        delete invoice.ServerRedirectedEmbedUri;
-        delete invoice.ServerRedirectedEmbedUrl;
-        delete invoice.SharedWithDetails;
-        delete invoice.AccountAmount1;
-        delete invoice.AuthorId;
-        delete invoice.Created;
-        delete invoice.DocumentSetDescription;
-        delete invoice.EditorId;
-        delete invoice.FileSystemObjectType;
-        delete invoice.Modified;
-        delete invoice.OData__UIVersionString;
-        delete invoice.ScannedFileName;
-        delete invoice.Title;
-
-        return invoice;
-    }
-
-    /**
-     * 
-     * @param invoiceID ID of the invoice we want to add these accounts to.
-     * @param accounts The current accounts of the invoice. 
-     */
-    private APInvoiceSubmit_SaveAccounts = async (invoiceID: number, accounts: any[]) => {
-        debugger;
-        let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
-
-        let output = [];
-        let response;
-
-        for (let index = 0; index < accounts.length; index++) {
-            const account = accounts[index];
-            if (account.ID) {
-                // Update this account.
-                response = await (await accountList.items.getById(account.ID).update(account)).item.get();
-                debugger;
-            } else {
-                // Create a new account. 
-                response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
-                debugger;
-            }
-            output.push(response);
-        }
-
-        debugger;
-        return output;
-    }
-
-    private APInvoiceSubmitEvent = (invoice: IInvoice, event) => {
-        console.log('APInvoiceSubmitEvent');
-        console.log(invoice);
-        console.log('\n');
-
-        let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
-        debugger;
-        invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
-        invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
-
-        if (!invoiceSaveObj.IsChequeReq) {
-            invoiceSaveObj.IsChequeReq = false;
-        }
-
-        debugger;
-        sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID)
-            .update({ ...invoiceSaveObj }).then(value => {
-                console.log('Save worked!');
-                console.log(value);
-                this.APInvoiceSubmit_SaveAccounts(invoice.ID, invoice.Accounts).then(accountRes => {
-                    debugger;
-                    this.setState({
-                        saveWorked: true
-                    });
-                });
-            })
-            .catch(reason => {
-                this.setState({
-                    saveWorked: false
-                });
-                console.log('Save did not work!');
-                console.log(reason);
-                console.log(invoiceSaveObj);
-            });
-    }
-    //#region
-
+    
     public render() {
-        let cardTitleTextAlignSyle = { display: 'inline-block', width: '110px' };
+        let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
         return (
             <Form
                 key={this.state.item.ID}
-                onSubmit={this.APInvoiceSubmitEvent}
+                onSubmit={this.props.onSave}
                 initialValues={this.state.item}
                 validator={formValidator}
                 render={formRenderProps => (
@@ -198,17 +87,17 @@ export class APItemComponent extends React.Component<any, any> {
                                             </div>
                                             <div className='col-xs-12 col-sm-8'>
                                                 <CardTitle>
-                                                    <span title='Invoice Number'><span style={cardTitleTextAlignSyle}>Invoice Number:</span> {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
+                                                    <span title='Invoice Number'><span style={cardTitleTextAlignStyle}>Invoice Number:</span> {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span><span style={cardTitleTextAlignSyle}>Invoice Title:</span> <a title='Click to View or Upload Documents.' target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                    <span><span style={cardTitleTextAlignStyle}>Invoice Title:</span> <a title='Click to View or Upload Documents.' target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span><span style={cardTitleTextAlignSyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))}</span></span>
+                                                    <span><span style={cardTitleTextAlignStyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))}</span></span>
                                                 </CardTitle>
                                                 <CardTitle style={{ height: '22px' }}>
                                                     <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>
-                                                        <span style={cardTitleTextAlignSyle}>Amount Assigned:</span> {
+                                                        <span style={cardTitleTextAlignStyle}>Amount Assigned:</span> {
                                                             formRenderProps.valueGetter('Accounts')
                                                                 ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))
                                                                     ? <Chip
@@ -248,7 +137,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             icon={this.state.showMore ? 'minus' : 'plus'}
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
                                             onClick={e => {
-                                                e.preventDefault();
+                                                e.preventDefault(); // ! Why is this button submitting the form???!!
                                                 this.setState({ showMore: !this.state.showMore });
                                             }}
                                         />
