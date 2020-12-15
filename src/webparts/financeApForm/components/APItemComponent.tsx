@@ -68,7 +68,7 @@ export class APItemComponent extends React.Component<any, any> {
         let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
         return (
             <Form
-                key={this.state.item.ID}
+                key={`${this.state.item.ID}-${this.props.dataItem.Modified}`}
                 onSubmit={this.props.onSave}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
