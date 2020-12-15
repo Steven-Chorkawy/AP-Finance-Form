@@ -62,6 +62,19 @@ interface IFinanceAPFormFilterState {
   searchBoxFilterObject?: any;
 }
 
+const INVOICE_SELECT_STRING = `*, 
+Department/Title, 
+Department/ID,
+Received_x0020_Approval_x0020_From/Id, 
+Received_x0020_Approval_x0020_From/Title, 
+Received_x0020_Approval_x0020_From/EMail,
+Requires_x0020_Approval_x0020_From/Id, 
+Requires_x0020_Approval_x0020_From/Title, 
+Requires_x0020_Approval_x0020_From/EMail
+`;
+
+const INVOICE_EXPAND_STRING = 'Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From';
+
 export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinanceApFormState> {
   constructor(props) {
     super(props);
@@ -88,7 +101,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Private Methods
-
   /**
    * Parse through the invoice that we will be sending to the user. 
    * This method converts the String date to a correct Date object. 
@@ -125,17 +137,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       allInvoices: undefined
     });
     sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
-      .select(`*, 
-      Department/Title, 
-      Department/ID,
-      Received_x0020_Approval_x0020_From/Id, 
-      Received_x0020_Approval_x0020_From/Title, 
-      Received_x0020_Approval_x0020_From/EMail,
-      Requires_x0020_Approval_x0020_From/Id, 
-      Requires_x0020_Approval_x0020_From/Title, 
-      Requires_x0020_Approval_x0020_From/EMail
-      `)
-      .expand('Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From')
+      .select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING)
       .top(2000)
       .getAll().then(value => {
         // We only want folder objects. 
@@ -351,35 +353,27 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Invoice Save Methods
-  public onSave = (invoice: IInvoice, event) => {
+  public onSave = async (invoice: IInvoice, event) => {
     console.log('APInvoiceSubmitEvent');
     console.log(invoice);
 
     console.log('\n');
 
     let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
-    debugger;
+
     invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
     invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
-    // TODO: Try removing this, it was from debugging.
-    if (!invoiceSaveObj.IsChequeReq) {
-      invoiceSaveObj.IsChequeReq = false;
-    }
+    // TODO: What if this fails? 
+    let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+    let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
+    debugger;
+    console.log(invoiceUpdateResponse);
+    console.log(accountUpdateResponse);
 
-    sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj }).then(value => {
-      console.log('Save worked!');
-      console.log(value);
-      this.APInvoiceAccountSave(invoice.ID, invoice.Accounts).then(accountRes => {
-        // this.setState({
-        //   saveWorked: true
-        // });
-      });
-    }).catch(reason => {
-      // this.setState({
-      //   saveWorked: false
-      // });
-    });
+    invoiceUpdateResponse.Accounts = accountUpdateResponse;
+
+    this.InsertNewInvoice(invoiceUpdateResponse);
   }
 
   /**
@@ -388,7 +382,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
      * @param accounts The current accounts of the invoice. 
      */
   private APInvoiceAccountSave = async (invoiceID: number, accounts: any[]) => {
-    debugger;
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
     let output = [];
@@ -398,8 +391,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       const account = accounts[index];
       if (account.ID) {
         // Update this account.
-        response = await (await accountList.items.getById(account.ID).update(account)).item.get();
-        debugger;
+        if (this.IsAccountModified(invoiceID, account)) {
+          response = await (await accountList.items.getById(account.ID).update(account)).item.get();
+        }
+        else {
+          response = account;
+        }
       } else {
         // Create a new account. 
         response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
@@ -457,6 +454,60 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
     return invoice;
   }
+
+  /**
+   * Check to see if the accounts Title or Amount property have been modified compared to the allInvoices state.
+   * @param invoiceID ID of the invoice currently being saved.
+   * @param account The account we're checking to see if it has been modified. 
+   * @returns True if account property has beeen modified.
+   */
+  private IsAccountModified = (invoiceID: number, account: any): boolean => {
+    let allInvoiceIndex = this.state.allInvoices.findIndex(f => f.ID === invoiceID);
+    if (allInvoiceIndex < 0) {
+      throw `Cannot check account! Invoice ID: ${invoiceID} not found.`;
+    }
+
+    let accountIndex = this.state.allInvoices[allInvoiceIndex].Accounts.findIndex(f => f.ID === account.ID);
+    if (accountIndex < 0) {
+      throw `Cannot check account! Account ID: ${account.ID} not found.`;
+    }
+
+    if (this.state.allInvoices[allInvoiceIndex].Accounts[accountIndex].Title !== account.Title) {
+      return true;
+    }
+
+    if (this.state.allInvoices[allInvoiceIndex].Accounts[accountIndex].AmountIncludingTaxes !== account.AmountIncludingTaxes) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Update state variables with the newly modified invoice. 
+   * @param invoice Invoice that was just modified
+   */
+  private InsertNewInvoice = (invoice: IInvoice) => {
+    let visibleInvoices = this.state.visibleInvoices;
+    let allInvoices = this.state.allInvoices;
+
+    let visibleInvoiceIndex = visibleInvoices.findIndex(f => f.ID === invoice.ID);
+    let allInvoiceIndex = allInvoices.findIndex(f => f.ID === invoice.ID);
+
+    if(visibleInvoiceIndex < 0 || allInvoiceIndex < 0) {
+      throw 'Could not insert new invoice.';
+    }
+    
+    debugger;
+    visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...invoice };
+    allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...invoice };
+
+    this.setState({
+      visibleInvoices: visibleInvoices,
+      allInvoices: allInvoices
+    });
+  }
+
   //#endregion
 
   public render(): React.ReactElement<IFinanceApFormProps> {
