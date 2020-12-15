@@ -85,7 +85,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       availableInvoices: undefined,
       loadingMoreAccounts: true, // Disable right away so users cannot change.
       myFilter: {
-        status: 'Approved',   // TODO: Get default status from the web part settings. 
+        status: this.props.description ? this.props.description : 'Approved',
         showChequeReq: false
       }
     };
@@ -324,7 +324,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       <ListViewHeader style={{ padding: '5px' }}>
         <div className='row'>
           <div className='col-sm-4'>
-            <DropDownList data={this.state.invoiceStatus} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.status} onChange={this.statusDropDownChange} style={{ width: '100%' }} />
+            <DropDownList
+              data={this.state.invoiceStatus}
+              disabled={this.state.loadingMoreAccounts}
+              value={this.state.myFilter.status}
+              onChange={this.statusDropDownChange}
+              style={{ width: '100%' }}
+            />
           </div>
           <div className='col-sm-8'>
             <Input onChange={this.searchBoxChange} disabled={this.state.loadingMoreAccounts} placeholder='Search for Invoices' style={{ width: '100%' }} />
@@ -356,26 +362,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
-    console.log('APInvoiceSubmitEvent');
-    console.log(invoice);
+    try {
+      let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
 
-    console.log('\n');
+      invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
+      invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
-    let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
+      let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+      let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
 
-    invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
-    invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
+      invoiceUpdateResponse.Accounts = accountUpdateResponse;
 
-    // TODO: What if this fails? 
-    let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
-    let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
-    debugger;
-    console.log(invoiceUpdateResponse);
-    console.log(accountUpdateResponse);
-
-    invoiceUpdateResponse.Accounts = accountUpdateResponse;
-
-    this.InsertNewInvoice(invoiceUpdateResponse);
+      this.InsertNewInvoice(invoiceUpdateResponse);
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**
@@ -402,12 +403,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       } else {
         // Create a new account. 
         response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
-        debugger;
       }
       output.push(response);
     }
 
-    debugger;
     return output;
   }
   //#endregion
@@ -500,7 +499,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       throw 'Could not insert new invoice.';
     }
 
-    debugger;
     visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
     allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...this.formatInvoiceDates(invoice) };
 
