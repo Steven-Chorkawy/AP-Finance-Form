@@ -224,9 +224,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       // The index of the allInvoices array.  These are the invoices that may or may not have been rendered. 
       // By setting the account in the allInvoices array this prevents us from having to rerun this query again.
       let indexOfAllInvoice: number = allInvoicesState.findIndex(f => f.ID === visibleInvoices[index].ID);
+      
       if (indexOfAllInvoice >= 0) {
         // This will hold the same account for later if needed. 
-        allInvoicesState[indexOfAllInvoice].Accounts = [...accounts];
+        allInvoicesState[indexOfAllInvoice].Accounts = accounts;
       }
     } // End of For loop.
 
@@ -286,12 +287,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       let searchBoxFilterObj = {
         logic: "or",
         filters: [
-          // { field: 'Title', operator: 'contains', value: event.value },
+          { field: 'Title', operator: 'contains', value: event.searchBoxValue },
           { field: 'Vendor_x0020_Number', operator: 'contains', value: event.searchBoxValue },
           { field: 'Vendor_x0020_Name', operator: 'contains', value: event.searchBoxValue },
           { field: 'Invoice_x0020_Number', operator: 'contains', value: event.searchBoxValue },
-          // { field: 'PO_x0020__x0023_', operator: 'contains', value: event.value },
-          // { field: 'Batch_x0020_Number', operator: 'contains', value: event.value },
+          { field: 'PO_x0020__x0023_', operator: 'contains', value: event.searchBoxValue },
+          { field: 'Batch_x0020_Number', operator: 'contains', value: event.searchBoxValue },
         ]
       };
 
@@ -333,7 +334,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
             />
           </div>
           <div className='col-sm-8'>
-            <Input onChange={this.searchBoxChange} disabled={this.state.loadingMoreAccounts} placeholder='Search for Invoices' style={{ width: '100%' }} />
+            <Input onChange={this.searchBoxChange} placeholder='Search by Title, Vendor, Invoice #, PO #, Batch #' style={{ width: '100%' }} />
             <div className='row'>
               <div className='col-sm-6'>
                 <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
