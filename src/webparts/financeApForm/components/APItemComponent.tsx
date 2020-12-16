@@ -64,12 +64,18 @@ export class APItemComponent extends React.Component<any, any> {
 
     public render() {
         let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
+
+        // This can be used to access Form properties as per Kendo support. 
+        // https://www.telerik.com/account/support-tickets/view-ticket/1499256
+        const myForm = React.useRef();
+
         return (
             <Form
                 key={`${this.state.item.ID}-${this.props.dataItem.Modified}`}
                 onSubmit={this.props.onSave}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
+                ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card type={'error'} style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
