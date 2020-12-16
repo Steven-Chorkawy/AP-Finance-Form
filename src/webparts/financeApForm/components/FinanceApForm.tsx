@@ -531,7 +531,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         // [1, 2, 3] is just Shimmer components that we want to load. 
         data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
         item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
-        style={{ width: "100%", height: 780 }}
+        style={{ width: "100%", height: '100%' }}
         header={this.MyListViewHeader}
         footer={this.MyListViewFooter}
       />
