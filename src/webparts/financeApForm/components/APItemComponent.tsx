@@ -67,7 +67,7 @@ export class APItemComponent extends React.Component<any, any> {
 
         // This can be used to access Form properties as per Kendo support. 
         // https://www.telerik.com/account/support-tickets/view-ticket/1499256
-        const myForm = React.useRef();
+        //const myForm = React.useRef();
 
         return (
             <Form
@@ -75,7 +75,7 @@ export class APItemComponent extends React.Component<any, any> {
                 onSubmit={this.props.onSave}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
-                ref={myForm}
+                //ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card type={'error'} style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
