@@ -21,6 +21,7 @@ import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
+import { Pager } from '@progress/kendo-react-data-tools';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -50,6 +51,10 @@ interface IFinanceApFormState {
 
   myFilter: IFinanceAPFormFilterState;
   filter?: any;
+  pager: {
+    skip: number;
+    take: number;
+  }
 }
 
 enum ContentTypes {
@@ -89,6 +94,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         status: this.props.description ? this.props.description : 'Approved',
         showChequeReq: false,
         invoiceDateDesc: true
+      },
+      pager: {
+        skip: 0,
+        take: this.TAKE_N
       }
     };
 
@@ -242,23 +251,32 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region ListView Events
-  public scrollHandler = (event: ListViewEvent) => {
-    const e = event.nativeEvent;
-    /**
-     * If we do not check that e.target.classList.contains('k-listview-content')
-     * then this scroll event will run for any (Drop Down, Calendar, Combo Box)
-     * scroll bar that is nested within the List View.  
-     * 
-     * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
-     */
-    if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
+  // public scrollHandler = (event: ListViewEvent) => {
+  //   const e = event.nativeEvent;
+  //   /**
+  //    * If we do not check that e.target.classList.contains('k-listview-content')
+  //    * then this scroll event will run for any (Drop Down, Calendar, Combo Box)
+  //    * scroll bar that is nested within the List View.  
+  //    * 
+  //    * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
+  //    */
+  //   if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
 
-      const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
-      if (moreData.length > 0) {
-        this.queryAccountForInvoices(this.state.visibleInvoices.concat(moreData));
+  //     const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
+  //     if (moreData.length > 0) {
+  //       this.queryAccountForInvoices(this.state.visibleInvoices.concat(moreData));
+  //     }
+  //   }
+  // }
+  public handlePageChange = (e) => {
+    this.setState({
+      pager: {
+        skip: e.skip,
+        take: e.take
       }
-    }
+    }, () => this.queryAccountForInvoices(this.state.allInvoices.slice(e.skip, e.skip + e.take)));
   }
+
   //#endregion
 
   //#region Filter Methods
@@ -363,7 +381,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private MyListViewFooter = () => {
     return (
       <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
-        {this.state.visibleInvoices ? `Displaying ${this.state.visibleInvoices.length}/${this.state.allInvoices.length} Invoices.` : 'Loading...'}
+        {
+          this.state.allInvoices &&
+          <Pager skip={this.state.pager.skip} take={this.state.pager.take} onPageChange={this.handlePageChange} total={this.state.allInvoices.length} />
+        }
       </ListViewFooter>
     );
   }
@@ -527,11 +548,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
       <ListView
-        onScroll={this.scrollHandler}
+        //onScroll={this.scrollHandler}
         // [1, 2, 3] is just Shimmer components that we want to load. 
         data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
         item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
-        style={{ width: "100%", maxWidth: '1000px', height: '100%', marginRight: 'auto', marginLeft: 'auto' }}
+        style={{ width: "100%", maxWidth: '1000px', height: '100%', maxHeight: '800px', marginRight: 'auto', marginLeft: 'auto' }}
         header={this.MyListViewHeader}
         footer={this.MyListViewFooter}
       />
