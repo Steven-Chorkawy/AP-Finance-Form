@@ -21,7 +21,7 @@ import { MyLoadingComponent } from './MyLoadingComponent';
 import { IInvoice } from '../interfaces/IInvoice';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
-import { Pager } from '@progress/kendo-react-data-tools';
+import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -65,6 +65,7 @@ interface IFinanceAPFormFilterState {
   status: string;           // The Status selected status.
   showChequeReq: boolean;   // If we want to show cheque reqs or not. 
   searchBoxFilterObject?: any;
+  searchBoxLength?: number;
   invoiceDateDesc: boolean; // default to newest to oldest. 
 }
 
@@ -128,18 +129,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * This method queries accounts only for invoice that are being rendered. 
    * @param invoices Invoice after we have filtered the results down.
    * @param allInvoices Optional.  If set this will hold the exising invocies for later. 
+   * @param searchBoxLength The number of characters in the search box.  This is used to determine if we should really be running the query account for invoice method. 
    */
-  private parseInvoiceFolders = (invoices, allInvoices?) => {
+  private parseInvoiceFolders = (invoices, allInvoices?, searchBoxLength?: Number) => {
     invoices = invoices.map(v => this.formatInvoiceDates(v));
 
     // Create a new instance of this object.
     let invoiceHolder = invoices.slice(0);
-    let visibleInvoices = invoiceHolder.splice(0, this.TAKE_N);
-    // We are not setting the visibleInvoices state here.  Instead we will do it in the queryaccountForInvoices method. 
+    // These are the invoices that will be displayed to the user.
+    let visibleInvoices = invoiceHolder.slice(this.state.pager.skip, this.state.pager.skip + this.state.pager.take);
+
+    // We are not setting the visibleInvoices state here.  Instead we will do it in the query AccountForInvoices method. 
     this.setState({
       availableInvoices: invoiceHolder,
       allInvoices: allInvoices ? allInvoices : invoices
-    }, () => this.queryAccountForInvoices(visibleInvoices));
+    }, () => this.queryAccountForInvoices(visibleInvoices, searchBoxLength));
   }
 
   private queryInvoices = () => {
@@ -212,7 +216,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    * This method must be called when loading new invoices. 
    * @param visibleInvoices The invoices that have been rendered. 
    */
-  private queryAccountForInvoices = async (visibleInvoices: IInvoice[]) => {
+  private queryAccountForInvoices = async (visibleInvoices: IInvoice[], searchBoxLength?: Number) => {
     this.setState({ loadingMoreAccounts: true });
     let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
@@ -224,6 +228,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       // If the invoice Accounts property is already set we can skip this loop to avoid running extra queries. 
       if (visibleInvoices[index].Accounts && visibleInvoices[index].Accounts.length > 0) {
         continue;
+      }
+
+      if (this.state.myFilter.searchBoxLength && (this.state.myFilter.searchBoxLength !== searchBoxLength)) {
+        debugger;
+        break;
       }
 
       // If there are not accounts present this will return an empty array.
@@ -251,32 +260,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region ListView Events
-  // public scrollHandler = (event: ListViewEvent) => {
-  //   const e = event.nativeEvent;
-  //   /**
-  //    * If we do not check that e.target.classList.contains('k-listview-content')
-  //    * then this scroll event will run for any (Drop Down, Calendar, Combo Box)
-  //    * scroll bar that is nested within the List View.  
-  //    * 
-  //    * See Kendo Support Ticket: https://www.telerik.com/account/support-tickets/view-ticket/1498451
-  //    */
-  //   if (e.target.scrollTop + 10 >= e.target.scrollHeight - e.target.clientHeight && e.target.classList.contains('k-listview-content')) {
-
-  //     const moreData = this.state.availableInvoices.splice(0, this.TAKE_N);
-  //     if (moreData.length > 0) {
-  //       this.queryAccountForInvoices(this.state.visibleInvoices.concat(moreData));
-  //     }
-  //   }
-  // }
-  public handlePageChange = (e) => {
+  /**
+   * 
+   * @param e PageChangeEvent
+   */
+  public handlePageChange = (e: PageChangeEvent) => {
+    // * This is now we can use the pager to display invoices.
+    // * this.state.allInvoices.slice(e.skip, e.skip + e.take)
     this.setState({
+      visibleInvoices: undefined,
       pager: {
         skip: e.skip,
         take: e.take
       }
-    }, () => this.queryAccountForInvoices(this.state.allInvoices.slice(e.skip, e.skip + e.take)));
+    }, () => this.applyNewFilter(this.state.allInvoices));
   }
-
   //#endregion
 
   //#region Filter Methods
@@ -289,7 +287,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   public searchBoxChange = (event: InputChangeEvent) => {
-    this.applyNewFilter(this.state.allInvoices, { searchBoxValue: event.value });
+    this.setState({
+      visibleInvoices: undefined,
+      myFilter: { ...this.state.myFilter, searchBoxLength: event.value ? event.value.length : 0 }
+    },
+      () => this.applyNewFilter(this.state.allInvoices, { searchBoxValue: event.value })
+    );
   }
 
   public dateOrderChange = () => {
@@ -342,7 +345,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       return this.state.myFilter.invoiceDateDesc ? (bDate - aDate) : (aDate - bDate);
     });
 
-    this.parseInvoiceFolders(filterInvoices, allInvoices);
+    let searchBoxLength = (event && event.searchBoxValue) ?
+      event.searchBoxValue.length :
+      this.state.myFilter.searchBoxLength ?
+        this.state.myFilter.searchBoxLength :
+        0;
+
+    this.parseInvoiceFolders(filterInvoices, allInvoices, searchBoxLength);
   }
   //#endregion
 
@@ -383,7 +392,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       <ListViewFooter style={{ color: 'rgb(160, 160, 160)', fontSize: 14, padding: '5px' }}>
         {
           this.state.allInvoices &&
-          <Pager skip={this.state.pager.skip} take={this.state.pager.take} onPageChange={this.handlePageChange} total={this.state.allInvoices.length} />
+          <Pager
+            skip={this.state.pager.skip}
+            take={this.state.pager.take}
+            onPageChange={this.handlePageChange}
+            total={(this.state.myFilter.searchBoxFilterObject && this.state.visibleInvoices) ? this.state.visibleInvoices.length : this.state.allInvoices.length}
+          />
         }
       </ListViewFooter>
     );
