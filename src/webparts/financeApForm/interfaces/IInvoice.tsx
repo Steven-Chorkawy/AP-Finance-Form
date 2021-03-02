@@ -54,6 +54,7 @@ export interface IInvoice {
     Modified: string;
     Created: string;
     IsChequeReq: boolean;
+    ZeroDollarPayment: boolean;
     GUID: string;
     saveSuccess?: boolean;  // indicates if this record was successfully saved or not.
 }

@@ -18,7 +18,7 @@ import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/k
 import { Button, Chip } from '@progress/kendo-react-buttons';
 import { Form, Field, FormElement, FieldWrapper, FieldArray, FormSubmitClickEvent, FormRenderProps } from '@progress/kendo-react-form';
 import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, MaskedTextBox, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
+import { Input, MaskedTextBox, NumericTextBox, TextArea, Checkbox } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
@@ -48,6 +48,7 @@ const formValidator = value => {
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
+        debugger;
         this.state = {
             item: this.props.dataItem,
             showMore: false
@@ -243,6 +244,18 @@ export class APItemComponent extends React.Component<any, any> {
                                                 {this.state.item.Received_x0020_Approval_x0020_From && this.state.item.Received_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
                                                     return <div>{user.Title}</div>;
                                                 })}
+                                            </FieldWrapper>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-xs-12 col-sm-4'>
+                                            <FieldWrapper>
+                                                <Field name='ZeroDollarPayment' component={Checkbox} defaultChecked={false} label={'Zero Dollar Payment'} labelPlacement={'before'} />
+                                            </FieldWrapper>
+                                        </div>
+                                        <div className='col-xs-12 col-sm-4'>
+                                        <FieldWrapper>
+                                                <Field name='IsChequeReq' component={Checkbox} defaultChecked={false} label={'Cheque Req'} labelPlacement={'before'} />
                                             </FieldWrapper>
                                         </div>
                                     </div>

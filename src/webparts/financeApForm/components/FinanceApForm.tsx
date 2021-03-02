@@ -413,7 +413,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
 
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
-      invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
+      //invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
       let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
       let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
@@ -477,6 +477,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.Received_x0020_Deny_x0020_From_x0020_String;
     delete invoice.HiddenApproversId;
     delete invoice.HiddenApproversStringId;
+    delete invoice.HiddenDepartmentId;
     delete invoice.SharedWithUsersId;
     delete invoice.GUID;
     delete invoice.CheckoutUserId;
