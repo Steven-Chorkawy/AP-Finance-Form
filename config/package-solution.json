@@ -3,7 +3,7 @@
   "solution": {
     "name": "ap-finance-form-client-side-solution",
     "id": "71ed6c7f-53c8-41c4-bf1e-247e659f5527",
-    "version": "1.0.0.4",
+    "version": "1.1.0.4",
     "includeClientSideAssets": true,
     "isDomainIsolated": false
   },
