@@ -146,6 +146,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }, () => this.queryAccountForInvoices(visibleInvoices, searchBoxLength));
   }
 
+  private queryInvoiceById = async (id: number) => {
+    let invoice = await sp.web.lists.getByTitle('Invoices').items.getById(id).select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING).get();
+    invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes').get();
+    debugger;
+    return invoice;
+  }
+
   private queryInvoices = () => {
     console.log('Query Invoices');
     this.setState({
@@ -376,7 +383,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                 <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
               </div>
               <div className='col-sm-6'>
-                <div onClick={() => { (!this.state.loadingMoreAccounts) && this.dateOrderChange(); }} style={{ cursor: !this.state.loadingMoreAccounts && 'pointer' }}>
+                <div onClick={() => { this.state.loadingMoreAccounts ? this.dateOrderChange() : undefined; }} style={{ cursor: !this.state.loadingMoreAccounts && 'pointer' }}>
                   <span className={`k-icon ${this.state.myFilter.invoiceDateDesc ? 'k-i-arrow-chevron-down' : 'k-i-arrow-chevron-up'}`}></span><span>Order By Invoice Date.</span>
                 </div>
               </div>
@@ -420,7 +427,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       invoiceUpdateResponse.Accounts = accountUpdateResponse;
 
-      this.InsertNewInvoice({ ...invoiceUpdateResponse, saveSuccess: true });
+      this.InsertNewInvoice({ ...await this.queryInvoiceById(invoice.ID), saveSuccess: true });
     } catch (error) {
       this.InsertNewInvoice({ ...invoice, saveSuccess: false });
       throw error;

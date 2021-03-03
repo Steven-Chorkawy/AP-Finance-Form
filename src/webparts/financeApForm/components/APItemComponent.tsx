@@ -250,12 +250,12 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='row'>
                                         <div className='col-xs-12 col-sm-4'>
                                             <FieldWrapper>
-                                                <Field name='ZeroDollarPayment' component={Checkbox} defaultChecked={false} label={'Zero Dollar Payment'} labelPlacement={'before'} />
+                                                <Field name='ZeroDollarPayment' component={Checkbox} label={'Zero Dollar Payment'} labelPlacement={'before'} />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-4'>
                                         <FieldWrapper>
-                                                <Field name='IsChequeReq' component={Checkbox} defaultChecked={false} label={'Cheque Req'} labelPlacement={'before'} />
+                                                <Field name='IsChequeReq' component={Checkbox} label={'Cheque Req'} labelPlacement={'before'} />
                                             </FieldWrapper>
                                         </div>
                                     </div>
