@@ -148,8 +148,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   private queryInvoiceById = async (id: number) => {
     let invoice = await sp.web.lists.getByTitle('Invoices').items.getById(id).select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING).get();
-    invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes').get();
-    debugger;
+    invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
+
     return invoice;
   }
 
@@ -238,12 +238,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
 
       if (this.state.myFilter.searchBoxLength && (this.state.myFilter.searchBoxLength !== searchBoxLength)) {
-        debugger;
+
         break;
       }
 
       // If there are not accounts present this will return an empty array.
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes').get();
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
 
       // This will allow the accounts to be rendered. 
       visibleInvoices[index].Accounts = [...accounts];
@@ -535,6 +535,10 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     }
 
     if (this.state.allInvoices[allInvoiceIndex].Accounts[accountIndex].AmountIncludingTaxes !== account.AmountIncludingTaxes) {
+      return true;
+    }
+
+    if (this.state.allInvoices[allInvoiceIndex].Accounts[accountIndex].PO_x0020_Line_x0020_Item_x0020__ !== account.PO_x0020_Line_x0020_Item_x0020__) {
       return true;
     }
 
