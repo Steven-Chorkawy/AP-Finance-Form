@@ -79,7 +79,7 @@ export class APItemComponent extends React.Component<any, any> {
                 //ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        <Card type={'error'} style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
+                        <Card /*type={'error'}*/ style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
                                     <div className='col-xs-10 col-sm-10'>
