@@ -53,6 +53,13 @@ const amountInput = fieldRenderProps => {
         }
     </div>;
 };
+
+const poLineItemInput = fieldRenderProps => {
+    const { validationMessage, visited, ...others } = fieldRenderProps;
+    return <div style={{ minHeight: '43px' }}>
+        <Input  {...others} />
+    </div>;
+}
 //#endregion
 
 //#region Cell Render Methods
@@ -80,6 +87,16 @@ const amountCell = props => {
         </td>
     );
 };
+
+const poLineItemCell = props => {
+    return <td>
+        <Field
+            component={poLineItemInput}
+            name={`Accounts[${props.dataIndex}].${props.field}`}
+            defaultValue={props.dataItem.PO_x0020_Line_x0020_Item_x0020__}
+        />
+    </td>;
+}
 
 const commandCell = (onRemove) => (props) => {
     const onClick = React.useCallback(
@@ -110,7 +127,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
     const onAdd = React.useCallback(
         (e) => {
             e.preventDefault();
-            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: null } });
+            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: null, PO_x0020_Line_x0020_Item_x0020__: '' } });
         },
         [fieldArrayRenderProps.onUnshift]
     );
@@ -132,6 +149,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 </GridToolbar>
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
+                <GridColumn field="PO_x0020_Line_x0020_Item_x0020__" title="PO Line Item #" cell={poLineItemCell} />
                 {/* <GridColumn cell={commandCell(onRemove)} width="50px" /> */}
 
             </Grid>
