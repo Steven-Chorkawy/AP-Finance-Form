@@ -48,7 +48,7 @@ const formValidator = value => {
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
-        debugger;
+        
         this.state = {
             item: this.props.dataItem,
             showMore: false
