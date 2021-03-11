@@ -243,7 +243,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
 
       // If there are not accounts present this will return an empty array.
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes').get();
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
 
       // This will allow the accounts to be rendered. 
       visibleInvoices[index].Accounts = [...accounts];
