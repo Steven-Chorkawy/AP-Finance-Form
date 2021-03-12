@@ -59,7 +59,7 @@ const poLineItemInput = fieldRenderProps => {
     return <div style={{ minHeight: '43px' }}>
         <Input  {...others} />
     </div>;
-}
+};
 //#endregion
 
 //#region Cell Render Methods
@@ -96,7 +96,7 @@ const poLineItemCell = props => {
             defaultValue={props.dataItem.PO_x0020_Line_x0020_Item_x0020__}
         />
     </td>;
-}
+};
 
 const commandCell = (onRemove) => (props) => {
     const onClick = React.useCallback(

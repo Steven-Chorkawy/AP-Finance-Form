@@ -383,7 +383,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                 <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
               </div>
               <div className='col-sm-6'>
-                <div onClick={() => { this.state.loadingMoreAccounts ? this.dateOrderChange() : undefined; }} style={{ cursor: !this.state.loadingMoreAccounts && 'pointer' }}>
+                <div onClick={() => { this.state.loadingMoreAccounts ? this.dateOrderChange() : undefined; }} style={{ cursor: !this.state.loadingMoreAccounts ? 'pointer' : undefined }}>
                   <span className={`k-icon ${this.state.myFilter.invoiceDateDesc ? 'k-i-arrow-chevron-down' : 'k-i-arrow-chevron-up'}`}></span><span>Order By Invoice Date.</span>
                 </div>
               </div>
