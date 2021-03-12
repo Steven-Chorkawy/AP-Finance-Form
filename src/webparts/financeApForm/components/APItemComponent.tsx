@@ -48,7 +48,7 @@ const formValidator = value => {
 export class APItemComponent extends React.Component<any, any> {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             item: this.props.dataItem,
             showMore: false
@@ -94,7 +94,17 @@ export class APItemComponent extends React.Component<any, any> {
                                                     <span title='Invoice Number'><span style={cardTitleTextAlignStyle}>Invoice Number:</span> {formRenderProps.valueGetter('Invoice_x0020_Number')}</span>
                                                 </CardTitle>
                                                 <CardTitle>
-                                                    <span><span style={cardTitleTextAlignStyle}>Invoice Title:</span> <a title='Click to View or Upload Documents.' target='_blank' href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}>{formRenderProps.valueGetter('Title')}</a></span>
+                                                    <span>
+                                                        <span style={cardTitleTextAlignStyle}>Invoice Title:</span>
+                                                        <a
+                                                            title='Click to View or Upload Documents.'
+                                                            target='_blank'
+                                                            data-interception='off'
+                                                            href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?FilterField1=Title&FilterValue1=${formRenderProps.valueGetter('Title')}`}
+                                                        >
+                                                            {formRenderProps.valueGetter('Title')}
+                                                        </a>
+                                                    </span>
                                                 </CardTitle>
                                                 <CardTitle>
                                                     <span><span style={cardTitleTextAlignStyle}>Gross Amount:</span><span>{MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))}</span></span>
@@ -254,7 +264,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-4'>
-                                        <FieldWrapper>
+                                            <FieldWrapper>
                                                 <Field name='IsChequeReq' component={Checkbox} label={'Cheque Req'} labelPlacement={'before'} />
                                             </FieldWrapper>
                                         </div>
