@@ -23,12 +23,14 @@ import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
 import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
+import { WebPartContext } from '@microsoft/sp-webpart-base';
 
 /**
  * Props interface for FinanceApForm component class.
  */
 export interface IFinanceApFormProps {
   description: string;
+  context: WebPartContext;
 }
 
 /**
@@ -439,6 +441,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     departments={this.state.departments}
     invoiceTypes={this.state.invoiceTypes}
     invoiceStatus={this.state.invoiceStatus}
+    context={this.props.context}
     showMore={this.state.showAllInvoicesDetails}
   />;
 

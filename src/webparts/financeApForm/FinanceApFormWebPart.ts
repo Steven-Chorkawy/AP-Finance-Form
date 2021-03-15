@@ -44,7 +44,8 @@ export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinance
     const element: React.ReactElement<IFinanceApFormProps> = React.createElement(
       FinanceApForm,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        context: this.context
       }
     );
 
