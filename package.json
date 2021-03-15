@@ -20,6 +20,7 @@
     "@microsoft/sp-webpart-base": "1.10.0",
     "@pnp/graph": "^2.0.12",
     "@pnp/sp": "^2.0.12",
+    "@pnp/spfx-controls-react": "^2.5.0",
     "@progress/kendo-data-query": "^1.5.4",
     "@progress/kendo-drawing": "^1.9.3",
     "@progress/kendo-licensing": "^1.1.0",
