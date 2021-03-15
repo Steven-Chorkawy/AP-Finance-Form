@@ -120,8 +120,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private formatInvoiceDates = (invoice: IInvoice) => {
     return {
       ...invoice,
-      Invoice_x0020_Date: new Date(invoice.Invoice_x0020_Date),
-      Received_x0020_Date: new Date(invoice.Received_x0020_Date),
+      Invoice_x0020_Date: invoice.Invoice_x0020_Date ? new Date(invoice.Invoice_x0020_Date) : undefined,
+      Received_x0020_Date: invoice.Received_x0020_Date ? new Date(invoice.Received_x0020_Date) : undefined,
       Created: new Date(invoice.Created),
       Modified: new Date(invoice.Modified)
     };
@@ -448,7 +448,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
     try {
+      debugger;
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
+      debugger;
 
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
       //invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
