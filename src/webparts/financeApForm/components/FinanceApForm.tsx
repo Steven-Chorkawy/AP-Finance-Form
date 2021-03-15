@@ -22,6 +22,7 @@ import { IInvoice } from '../interfaces/IInvoice';
 import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
 import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
+import { Button } from '@progress/kendo-react-buttons';
 
 /**
  * Props interface for FinanceApForm component class.
@@ -55,6 +56,8 @@ interface IFinanceApFormState {
     skip: number;
     take: number;
   };
+
+  showAllInvoicesDetails: boolean; // Determines if all invoices details should be visible. 
 }
 
 enum ContentTypes {
@@ -99,7 +102,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       pager: {
         skip: 0,
         take: this.TAKE_N
-      }
+      },
+      showAllInvoicesDetails: false
     };
 
     this.queryInvoices();
@@ -379,13 +383,32 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
           <div className='col-sm-8'>
             <Input onChange={this.searchBoxChange} placeholder='Search by Title, Vendor, Invoice #, PO #, Batch #' style={{ width: '100%' }} />
             <div className='row' style={{ marginTop: '2px' }}>
-              <div className='col-sm-6'>
+              <div className='col-sm-4'>
                 <Checkbox label={'Show Cheque Reqs'} disabled={this.state.loadingMoreAccounts} value={this.state.myFilter.showChequeReq} onChange={this.onChequeReqChange} />
               </div>
-              <div className='col-sm-6'>
-                <div onClick={() => { this.state.loadingMoreAccounts ? this.dateOrderChange() : undefined; }} style={{ cursor: !this.state.loadingMoreAccounts ? 'pointer' : undefined }}>
-                  <span className={`k-icon ${this.state.myFilter.invoiceDateDesc ? 'k-i-arrow-chevron-down' : 'k-i-arrow-chevron-up'}`}></span><span>Order By Invoice Date.</span>
-                </div>
+              <div className='col-sm-4'>
+                <Button
+                  look='flat'
+                  icon={this.state.myFilter.invoiceDateDesc ? 'arrow-chevron-down' : 'arrow-chevron-up'}
+                  onClick={e => {
+                    e.preventDefault();
+                    this.state.loadingMoreAccounts ? undefined : this.dateOrderChange();
+                  }}
+                  disabled={this.state.loadingMoreAccounts}
+                >Order By Invoice Date</Button>
+              </div>
+              <div className='col-sm-4'>
+                <Button
+                  style={{ float: 'right' }}
+                  look='flat'
+                  icon={this.state.showAllInvoicesDetails ? 'minus' : 'plus'}
+                  title={this.state.showAllInvoicesDetails ? 'Hide All Invoice Details' : 'Expand All Invoice Details'}
+                  onClick={e => {
+                    e.preventDefault();
+                    this.setState({ showAllInvoicesDetails: !this.state.showAllInvoicesDetails });
+                  }}
+                  disabled={this.state.loadingMoreAccounts}
+                >{this.state.showAllInvoicesDetails ? 'Hide All Invoice Details' : 'Expand All Invoice Details'}</Button>
               </div>
             </div>
           </div>
@@ -410,7 +433,15 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     );
   }
 
-  private APItemComponentRender = props => <APItemComponent {...props} onSave={this.onSave} departments={this.state.departments} invoiceTypes={this.state.invoiceTypes} invoiceStatus={this.state.invoiceStatus} />;
+  private APItemComponentRender = props => <APItemComponent
+    {...props}
+    onSave={this.onSave}
+    departments={this.state.departments}
+    invoiceTypes={this.state.invoiceTypes}
+    invoiceStatus={this.state.invoiceStatus}
+    showMore={this.state.showAllInvoicesDetails}
+  />;
+
   private APItemLoadingComponentRender = () => <div style={{ paddingLeft: '10px', paddingRight: '10px' }}><MyLoadingComponent /><hr /></div>;
   //#endregion
 
