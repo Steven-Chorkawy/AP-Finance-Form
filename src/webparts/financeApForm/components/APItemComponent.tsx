@@ -16,16 +16,11 @@ import "@pnp/sp/site-users/web";
 // Kendo Imports 
 import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/kendo-react-layout';
 import { Button, Chip } from '@progress/kendo-react-buttons';
-import { Form, Field, FormElement, FieldWrapper, FieldArray, FormSubmitClickEvent, FormRenderProps } from '@progress/kendo-react-form';
-import { Label, Error } from '@progress/kendo-react-labels';
-import { Input, MaskedTextBox, NumericTextBox, TextArea, Checkbox } from '@progress/kendo-react-inputs';
+import { Form, Field, FormElement, FieldWrapper, FieldArray } from '@progress/kendo-react-form';
+import { Label } from '@progress/kendo-react-labels';
+import { Input, NumericTextBox, TextArea, Checkbox } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
-import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
-import { IInvoice } from '../interfaces/IInvoice';
-
-// Fluent UI Imports
-import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 
 const formValidator = value => {
     let output = {};
@@ -51,11 +46,15 @@ export class APItemComponent extends React.Component<any, any> {
 
         this.state = {
             item: this.props.dataItem,
-            showMore: false
+            showMore: this.props.showMore
         };
     }
 
     public componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.showMore !== this.props.showMore) {
+            this.setState({ showMore: this.props.showMore });
+        }
+
         if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
             this.setState({
                 item: this.props.dataItem
@@ -66,13 +65,9 @@ export class APItemComponent extends React.Component<any, any> {
     public render() {
         let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
 
-        // This can be used to access Form properties as per Kendo support. 
-        // https://www.telerik.com/account/support-tickets/view-ticket/1499256
-        //const myForm = React.useRef();
-
         return (
             <Form
-                key={`${this.state.item.ID}-${this.props.dataItem.Modified}`}
+                key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}`}
                 onSubmit={this.props.onSave}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
