@@ -74,14 +74,19 @@ export class APItemComponent extends React.Component<any, any> {
                 //ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        <Card /*type={'error'}*/ style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
+                        <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
                                     <div className='col-xs-10 col-sm-10'>
                                         <div className='row'>
                                             <div className='col-xs-12 col-sm-12'>
                                                 <CardTitle style={{ marginBottom: '7px' }}>
-                                                    <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                    {
+                                                        formRenderProps.valueGetter('Vendor_x0020_Name') && formRenderProps.valueGetter('Vendor_x0020_Number') &&
+                                                        <span>
+                                                            <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                        </span>
+                                                    }
                                                 </CardTitle>
                                             </div>
                                             <div className='col-xs-12 col-sm-8'>
@@ -124,7 +129,11 @@ export class APItemComponent extends React.Component<any, any> {
                                             <div className='col-xs-12 col-sm-4'>
                                                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
                                                     <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span>Date:</span><span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                        <span>Date:</span>
+                                                        {
+                                                            formRenderProps.valueGetter('Invoice_x0020_Date') &&
+                                                            <span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                        }
                                                     </div>
                                                     <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
