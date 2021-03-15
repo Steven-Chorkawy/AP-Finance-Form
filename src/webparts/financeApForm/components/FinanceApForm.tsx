@@ -394,7 +394,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                   icon={this.state.myFilter.invoiceDateDesc ? 'arrow-chevron-down' : 'arrow-chevron-up'}
                   onClick={e => {
                     e.preventDefault();
-                    this.state.loadingMoreAccounts ? undefined : this.dateOrderChange();
+                    this.dateOrderChange();
                   }}
                   disabled={this.state.loadingMoreAccounts}
                 >Order By Invoice Date</Button>
@@ -443,7 +443,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     invoiceStatus={this.state.invoiceStatus}
     context={this.props.context}
     showMore={this.state.showAllInvoicesDetails}
-  />;
+  />
 
   private APItemLoadingComponentRender = () => <div style={{ paddingLeft: '10px', paddingRight: '10px' }}><MyLoadingComponent /><hr /></div>;
   //#endregion
