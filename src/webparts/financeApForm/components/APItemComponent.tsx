@@ -12,6 +12,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
+import { PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
 
 // Kendo Imports 
 import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/kendo-react-layout';
@@ -21,6 +22,7 @@ import { Label } from '@progress/kendo-react-labels';
 import { Input, NumericTextBox, TextArea, Checkbox } from '@progress/kendo-react-inputs';
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
+import { IPersonaProps } from 'office-ui-fabric-react/lib/components/Persona/Persona.types';
 
 const formValidator = value => {
     let output = {};
@@ -55,7 +57,8 @@ export class APItemComponent extends React.Component<any, any> {
             this.setState({ showMore: this.props.showMore });
         }
 
-        if (prevProps.dataItem.ID !== this.props.dataItem.ID) {
+        if (prevProps.dataItem.ID !== this.props.dataItem.ID || prevProps.dataItem.Modified !== this.props.dataItem.Modified) {
+            debugger;
             this.setState({
                 item: this.props.dataItem
             });
@@ -74,14 +77,19 @@ export class APItemComponent extends React.Component<any, any> {
                 //ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
-                        <Card /*type={'error'}*/ style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
+                        <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
                             <CardHeader>
                                 <div className='row'>
                                     <div className='col-xs-10 col-sm-10'>
                                         <div className='row'>
                                             <div className='col-xs-12 col-sm-12'>
                                                 <CardTitle style={{ marginBottom: '7px' }}>
-                                                    <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                    {
+                                                        formRenderProps.valueGetter('Vendor_x0020_Name') && formRenderProps.valueGetter('Vendor_x0020_Number') &&
+                                                        <span>
+                                                            <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                        </span>
+                                                    }
                                                 </CardTitle>
                                             </div>
                                             <div className='col-xs-12 col-sm-8'>
@@ -124,7 +132,11 @@ export class APItemComponent extends React.Component<any, any> {
                                             <div className='col-xs-12 col-sm-4'>
                                                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
                                                     <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span>Date:</span><span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                        <span>Date:</span>
+                                                        {
+                                                            formRenderProps.valueGetter('Invoice_x0020_Date') &&
+                                                            <span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                        }
                                                     </div>
                                                     <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>
@@ -235,12 +247,23 @@ export class APItemComponent extends React.Component<any, any> {
                                                 <Field name='Department' component={MultiSelect} textField='Title' dataItemKey='ID' data={this.props.departments ? [...this.props.departments] : []} />
                                             </FieldWrapper>
                                         </div>
-                                        <div className='col-xs-12 col-sm-4'>
+                                        <div className='col-xs-12 col-sm-4' key={JSON.stringify(this.state.item.Requires_x0020_Approval_x0020_From)}>
                                             <FieldWrapper>
                                                 <Label>Requires Approval From:</Label>
-                                                {this.state.item.Requires_x0020_Approval_x0020_From && this.state.item.Requires_x0020_Approval_x0020_From.sort((a, b) => a.Title < b.Title ? -1 : a.Title > b.Title ? 1 : 0).map(user => {
-                                                    return <div>{user.Title}</div>;
-                                                })}
+                                                <Field
+                                                    name='RequiresApprovalFrom'
+                                                    context={this.props.context}
+                                                    personSelectionLimit={10}
+                                                    defaultSelectedUsers={this.state.item.Requires_x0020_Approval_x0020_From && this.state.item.Requires_x0020_Approval_x0020_From.map(user => user.EMail)}
+                                                    principalTypes={[PrincipalType.User]}
+                                                    resolveDelay={1000}
+                                                    component={PeoplePicker}
+                                                    onChange={(e: IPersonaProps[]) => {
+                                                        MyHelper.GetUsersByLoginName(e).then(users => {
+                                                            formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                        });
+                                                    }}
+                                                />
                                             </FieldWrapper>
                                         </div>
                                         <div className='col-xs-12 col-sm-4'>

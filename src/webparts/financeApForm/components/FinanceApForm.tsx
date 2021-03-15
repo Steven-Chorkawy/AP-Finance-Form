@@ -23,12 +23,14 @@ import { APItemComponent } from './APItemComponent';
 import * as MyHelper from '../MyHelperMethods';
 import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
+import { WebPartContext } from '@microsoft/sp-webpart-base';
 
 /**
  * Props interface for FinanceApForm component class.
  */
 export interface IFinanceApFormProps {
   description: string;
+  context: WebPartContext;
 }
 
 /**
@@ -120,8 +122,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private formatInvoiceDates = (invoice: IInvoice) => {
     return {
       ...invoice,
-      Invoice_x0020_Date: new Date(invoice.Invoice_x0020_Date),
-      Received_x0020_Date: new Date(invoice.Received_x0020_Date),
+      Invoice_x0020_Date: invoice.Invoice_x0020_Date ? new Date(invoice.Invoice_x0020_Date) : undefined,
+      Received_x0020_Date: invoice.Received_x0020_Date ? new Date(invoice.Received_x0020_Date) : undefined,
       Created: new Date(invoice.Created),
       Modified: new Date(invoice.Modified)
     };
@@ -439,6 +441,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     departments={this.state.departments}
     invoiceTypes={this.state.invoiceTypes}
     invoiceStatus={this.state.invoiceStatus}
+    context={this.props.context}
     showMore={this.state.showAllInvoicesDetails}
   />;
 
@@ -449,7 +452,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   public onSave = async (invoice: IInvoice, event) => {
     try {
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
-
+  
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
       //invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
@@ -506,7 +509,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.Accounts;
     delete invoice.Department;
     delete invoice.ContentTypeId;
-    delete invoice.Requires_x0020_Approval_x0020_FromId;
     delete invoice.Received_x0020_Approval_x0020_FromId;
     delete invoice.Requires_x0020_Approval_x0020_From;
     delete invoice.Received_x0020_Approval_x0020_From;
@@ -540,6 +542,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.ScannedFileName;
     delete invoice.Title;
     delete invoice.saveSuccess;
+
+    // Only delete Requires_x0020_Approval_x0020_FromId if the results property is missing. 
+    // If results property is missing that means this field has not been modified. 
+    if(!invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+      delete invoice.Requires_x0020_Approval_x0020_FromId;
+    }
 
     return invoice;
   }
