@@ -451,10 +451,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
     try {
-      debugger;
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
-      debugger;
-
+  
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
       //invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
 
@@ -511,7 +509,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.Accounts;
     delete invoice.Department;
     delete invoice.ContentTypeId;
-    delete invoice.Requires_x0020_Approval_x0020_FromId;
     delete invoice.Received_x0020_Approval_x0020_FromId;
     delete invoice.Requires_x0020_Approval_x0020_From;
     delete invoice.Received_x0020_Approval_x0020_From;
@@ -545,6 +542,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.ScannedFileName;
     delete invoice.Title;
     delete invoice.saveSuccess;
+
+    // Only delete Requires_x0020_Approval_x0020_FromId if the results property is missing. 
+    // If results property is missing that means this field has not been modified. 
+    if(!invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+      delete invoice.Requires_x0020_Approval_x0020_FromId;
+    }
 
     return invoice;
   }
