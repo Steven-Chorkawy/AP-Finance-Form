@@ -23,9 +23,12 @@ import { Input, NumericTextBox, TextArea, Checkbox } from '@progress/kendo-react
 import { DropDownList, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { IPersonaProps } from 'office-ui-fabric-react/lib/components/Persona/Persona.types';
+import { MessageBar } from 'office-ui-fabric-react/lib/components/MessageBar/MessageBar';
+import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 
 const formValidator = value => {
     let output = {};
+    const VALIDATION_SUMMARY = 'Cannot save your changes.  Please review the form for any errors.';
     switch (value.OData__Status) {
         case 'Received':
         case 'Awaiting Approval':
@@ -35,7 +38,7 @@ const formValidator = value => {
             break;
         default:
             if (value.Accounts && value.Accounts.length === 0) {
-                output = { Accounts: "Please add at least one account." };
+                output = { VALIDATION_SUMMARY: VALIDATION_SUMMARY, Accounts: "Please add at least one account." };
             }
             break;
     }
@@ -58,7 +61,6 @@ export class APItemComponent extends React.Component<any, any> {
         }
 
         if (prevProps.dataItem.ID !== this.props.dataItem.ID || prevProps.dataItem.Modified !== this.props.dataItem.Modified) {
-            debugger;
             this.setState({
                 item: this.props.dataItem
             });
@@ -198,9 +200,15 @@ export class APItemComponent extends React.Component<any, any> {
                                 </div>
                                 {
                                     this.props.dataItem && this.props.dataItem.saveSuccess === false &&
-                                    <div style={{ marginTop: '5px' }} className='k-card-body k-state-error'>
-                                        <p>Something went wrong.  Could not save your changes at this time.</p>
-                                    </div>
+                                    <MessageBar messageBarType={MessageBarType.error}>
+                                        Something went wrong.  Could not save your changes at this time.
+                                    </MessageBar>
+                                }
+                                {
+                                    formRenderProps.visited && formRenderProps.errors && formRenderProps.errors.VALIDATION_SUMMARY &&
+                                    <MessageBar messageBarType={MessageBarType.error}>
+                                        {formRenderProps.errors.VALIDATION_SUMMARY}
+                                    </MessageBar>
                                 }
                             </CardHeader>
                             {
