@@ -454,8 +454,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
     
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
-      //invoiceSaveObj.HiddenDepartmentId = invoiceSaveObj.DepartmentId;
-
+    
       let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
       let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
 
