@@ -116,7 +116,8 @@ export class APItemComponent extends React.Component<any, any> {
                                                 </CardTitle>
                                                 <CardTitle style={{ height: '22px' }}>
                                                     <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>
-                                                        <span style={cardTitleTextAlignStyle}>Amount Assigned:</span> {
+                                                        <span style={cardTitleTextAlignStyle}>Amount Assigned:</span>
+                                                        {
                                                             formRenderProps.valueGetter('Accounts')
                                                                 ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))
                                                                     ? <Chip
