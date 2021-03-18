@@ -25,6 +25,8 @@ import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { IPersonaProps } from 'office-ui-fabric-react/lib/components/Persona/Persona.types';
 import { MessageBar } from 'office-ui-fabric-react/lib/components/MessageBar/MessageBar';
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
+import Stack from 'office-ui-fabric-react/lib/components/Stack/Stack';
+import { Spinner, SpinnerSize } from 'office-ui-fabric-react';
 
 const formValidator = value => {
     let output = {};
@@ -116,19 +118,21 @@ export class APItemComponent extends React.Component<any, any> {
                                                 </CardTitle>
                                                 <CardTitle style={{ height: '22px' }}>
                                                     <span title={`Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts`}>
-                                                        <span style={cardTitleTextAlignStyle}>Amount Assigned:</span>
-                                                        {
-                                                            formRenderProps.valueGetter('Accounts')
-                                                                ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))
-                                                                    ? <Chip
-                                                                        style={{ fontSize: '1.25rem', height: '20px' }}
-                                                                        text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
-                                                                        // icon={'warning'}
-                                                                        type={'error'}
-                                                                    />
-                                                                    : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
-                                                                : <span title='Loading Account Details...'>$---.--</span>
-                                                        }
+                                                        <Stack horizontal={true} verticalAlign='center' >
+                                                            <span style={cardTitleTextAlignStyle}>Amount Assigned:</span>
+                                                            {
+                                                                formRenderProps.valueGetter('Accounts')
+                                                                    ? MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts')) !== MyHelper.FormatCurrency(formRenderProps.valueGetter('Gross_x0020_Amount'))
+                                                                        ? <Chip
+                                                                            style={{ fontSize: '1.25rem', height: '20px' }}
+                                                                            text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
+                                                                            // icon={'warning'}
+                                                                            type={'error'}
+                                                                        />
+                                                                        : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
+                                                                    : <span title='Loading Account Details...'>$<Spinner size={SpinnerSize.small} /></span>
+                                                            }
+                                                        </Stack>
                                                     </span>
                                                 </CardTitle>
                                             </div>
