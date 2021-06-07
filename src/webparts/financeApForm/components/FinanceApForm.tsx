@@ -507,7 +507,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.Accounts;
     delete invoice.Department;
     delete invoice.ContentTypeId;
-    delete invoice.Received_x0020_Approval_x0020_FromId;
+    //delete invoice.Received_x0020_Approval_x0020_FromId;
     delete invoice.Requires_x0020_Approval_x0020_From;
     delete invoice.Received_x0020_Approval_x0020_From;
     delete invoice.Requires_x0020_Approval_x0020_FromStringId;
