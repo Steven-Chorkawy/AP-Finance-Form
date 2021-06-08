@@ -450,7 +450,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
-    try {      
+    try {
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
 
@@ -507,7 +507,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.Accounts;
     delete invoice.Department;
     delete invoice.ContentTypeId;
-    delete invoice.Received_x0020_Approval_x0020_FromId;
+    //delete invoice.Received_x0020_Approval_x0020_FromId;
     delete invoice.Requires_x0020_Approval_x0020_From;
     delete invoice.Received_x0020_Approval_x0020_From;
     delete invoice.Requires_x0020_Approval_x0020_FromStringId;
@@ -545,6 +545,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     // If results property is missing that means this field has not been modified.
     if (invoice.Requires_x0020_Approval_x0020_FromId === null || !invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
       delete invoice.Requires_x0020_Approval_x0020_FromId;
+    }
+    if (invoice.Received_x0020_Approval_x0020_FromId === null || !invoice.Received_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+      delete invoice.Received_x0020_Approval_x0020_FromId;
     }
 
     return invoice;
@@ -597,7 +600,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       throw 'Could not insert new invoice.';
     }
 
-    visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
+    /* Steven Chorkawy 06/08/2021
+     * This appears to be what is causing the Req and Rec Approval fields to not update after a save. 
+     */
+    // visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
+    visibleInvoices[visibleInvoiceIndex] = { ...invoice, ...this.formatInvoiceDates(invoice) };
+
     allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...this.formatInvoiceDates(invoice) };
 
     this.setState({
