@@ -272,9 +272,9 @@ export class APItemComponent extends React.Component<any, any> {
                                                     resolveDelay={1000}
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
-                                                        debugger;
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
                                                             formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+
                                                         });
                                                     }}
                                                 />
@@ -287,15 +287,21 @@ export class APItemComponent extends React.Component<any, any> {
                                                     name='ReceivedApprovalFrom'
                                                     context={this.props.context}
                                                     personSelectionLimit={10}
-                                                    defaultSelectedUsers={this.state.item.Received_x0020_Approval_x0020_From && this.state.item.Received_x0020_Approval_x0020_From.map(user => user.EMail)}
+                                                    defaultSelectedUsers={this.state.item.Received_x0020_Approval_x0020_From ? this.state.item.Received_x0020_Approval_x0020_From.map(user => user.EMail) : []}
                                                     principalTypes={[PrincipalType.User]}
                                                     resolveDelay={1000}
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
-                                                        debugger;
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
-                                                            debugger;
                                                             formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                         
+                                                            this.setState({
+                                                                item: {
+                                                                    ...this.state.item, Received_x0020_Approval_x0020_From: [...users.map(user => {
+                                                                        return { EMail: user.Email, Id: user.Id, Title: user.Title }
+                                                                    })]
+                                                                }
+                                                            });
                                                         });
                                                     }}
                                                 />
