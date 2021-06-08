@@ -274,7 +274,6 @@ export class APItemComponent extends React.Component<any, any> {
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
                                                             formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
-
                                                         });
                                                     }}
                                                 />
@@ -294,7 +293,12 @@ export class APItemComponent extends React.Component<any, any> {
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
                                                             formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
-                                                         
+                                                            /**
+                                                             * 06/08/2021 Steven Chorkawy 
+                                                             *  I find it strange that I need to set the state of Received_x0020_Approval_x0020_From 
+                                                             *  but I do not need to set the state of Requires_x0020_Approval_x0020_From in order to prevent 
+                                                             *  a deleted user from reappearing after a save event.  
+                                                             */
                                                             this.setState({
                                                                 item: {
                                                                     ...this.state.item, Received_x0020_Approval_x0020_From: [...users.map(user => {
