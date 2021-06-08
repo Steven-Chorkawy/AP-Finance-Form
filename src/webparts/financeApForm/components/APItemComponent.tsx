@@ -302,7 +302,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                             this.setState({
                                                                 item: {
                                                                     ...this.state.item, Received_x0020_Approval_x0020_From: [...users.map(user => {
-                                                                        return { EMail: user.Email, Id: user.Id, Title: user.Title }
+                                                                        return { EMail: user.Email, Id: user.Id, Title: user.Title };
                                                                     })]
                                                                 }
                                                             });
