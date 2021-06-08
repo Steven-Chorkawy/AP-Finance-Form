@@ -546,6 +546,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     if (invoice.Requires_x0020_Approval_x0020_FromId === null || !invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
       delete invoice.Requires_x0020_Approval_x0020_FromId;
     }
+    if (invoice.Received_x0020_Approval_x0020_FromId === null || !invoice.Received_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+      delete invoice.Received_x0020_Approval_x0020_FromId;
+    }
 
     return invoice;
   }
