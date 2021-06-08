@@ -450,7 +450,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
-    try {      
+    try {
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
 
@@ -597,7 +597,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       throw 'Could not insert new invoice.';
     }
 
-    visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
+    /* Steven Chorkawy 06/08/2021
+     * This appears to be what is causing the Req and Rec Approval fields to not update after a save. 
+     */
+    // visibleInvoices[visibleInvoiceIndex] = { ...visibleInvoices[visibleInvoiceIndex], ...this.formatInvoiceDates(invoice) };
+    visibleInvoices[visibleInvoiceIndex] = { ...invoice, ...this.formatInvoiceDates(invoice) };
+
     allInvoices[allInvoiceIndex] = { ...allInvoices[allInvoiceIndex], ...this.formatInvoiceDates(invoice) };
 
     this.setState({
