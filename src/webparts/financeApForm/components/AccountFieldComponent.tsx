@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Moment from 'react-moment';
 
 // My Imports
 import * as MyHelper from '../MyHelperMethods';

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Moment from 'react-moment';
 
 // My Imports
 import * as MyHelper from '../MyHelperMethods';
@@ -140,10 +139,11 @@ export class APItemComponent extends React.Component<any, any> {
                                                 <CardSubtitle style={{ fontSize: '1.3rem', fontWeight: 600 }}>
                                                     <div title='Invoice Date' style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <span>Date:</span>
-                                                        {
+                                                        DATE....
+                                                        {/* {
                                                             formRenderProps.valueGetter('Invoice_x0020_Date') &&
                                                             <span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
-                                                        }
+                                                        } */}
                                                     </div>
                                                     <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
                                                         <span>Type:</span><span>{formRenderProps.valueGetter('Invoice_x0020_Type')}</span>

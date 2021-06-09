@@ -25,6 +25,12 @@ export interface IFinanceApFormWebPartProps {
 }
 
 export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinanceApFormWebPartProps> {
+  /**
+   *
+   */
+  constructor() {
+    super();    
+  }
 
   protected async onInit(): Promise<void> {
     await super.onInit().then(() => {
