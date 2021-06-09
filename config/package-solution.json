@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
   "solution": {
-    "name": "ap-finance-form-client-side-solution",
-    "id": "71ed6c7f-53c8-41c4-bf1e-247e659f5527",
-    "version": "1.4.2.5",
+    "name": "ap-finance-form-client-side-solution2",
+    "id": "34a7af7b-7a4d-405c-85f4-22e828198c44",
+    "version": "1.4.2.6",
     "includeClientSideAssets": true,
     "isDomainIsolated": false
   },
   "paths": {
-    "zippedPackage": "solution/ap-finance-form.sppkg"
+    "zippedPackage": "solution/ap-finance-form2.sppkg"
   }
 }
