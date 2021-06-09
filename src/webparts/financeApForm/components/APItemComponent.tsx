@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Moment from 'react-moment';
 
 // My Imports
 import * as MyHelper from '../MyHelperMethods';
@@ -142,7 +141,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                         <span>Date:</span>
                                                         {
                                                             formRenderProps.valueGetter('Invoice_x0020_Date') &&
-                                                            <span><Moment date={formRenderProps.valueGetter('Invoice_x0020_Date')} format={'MM/DD/YYYY'} /></span>
+                                                            `${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getMonth()}/${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getDay()}/${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getFullYear()}`
                                                         }
                                                     </div>
                                                     <div title='Invoice Type' style={{ display: 'flex', justifyContent: 'space-between' }}>
