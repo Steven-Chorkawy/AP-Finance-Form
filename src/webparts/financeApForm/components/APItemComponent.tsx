@@ -73,11 +73,10 @@ export class APItemComponent extends React.Component<any, any> {
 
         return (
             <Form
-                key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}`}
+                key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}-${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 'n'}`}
                 onSubmit={this.props.onSave}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
-                //ref={myForm}
                 render={formRenderProps => (
                     <FormElement style={{ marginTop: '0px' }}>
                         <Card style={{ marginBottom: '10px', marginLeft: '2px', marginRight: '2px', fontSize: '1.5rem', paddingTop: '0px' }}>
@@ -125,11 +124,10 @@ export class APItemComponent extends React.Component<any, any> {
                                                                         ? <Chip
                                                                             style={{ fontSize: '1.25rem', height: '20px' }}
                                                                             text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
-                                                                            // icon={'warning'}
                                                                             type={'error'}
                                                                         />
                                                                         : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
-                                                                    : <span title='Loading Account Details...'>$<Spinner size={SpinnerSize.small} /></span>
+                                                                    : <span title='Loading Account Details...'><Spinner size={SpinnerSize.small} /></span>
                                                             }
                                                         </Stack>
                                                     </span>
