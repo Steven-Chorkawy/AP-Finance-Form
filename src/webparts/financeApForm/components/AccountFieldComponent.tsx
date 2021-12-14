@@ -149,7 +149,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
                 <GridColumn field="PO_x0020_Line_x0020_Item_x0020__" title="PO Line Item #" cell={poLineItemCell} />
-                {/* <GridColumn cell={commandCell(onRemove)} width="50px" /> */}
+                <GridColumn cell={commandCell(onRemove)} width="50px" />
 
             </Grid>
         </div>
