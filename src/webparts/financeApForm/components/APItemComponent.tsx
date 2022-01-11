@@ -105,7 +105,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                             title='Click to View or Upload Documents.'
                                                             target='_blank'
                                                             data-interception='off'
-                                                            href={`https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?id=%2Fsites%2FFinance%2FInvoices%2F${formRenderProps.valueGetter('Title')}`}
+                                                            href={this.props.defaultInvoiceLink ? `${this.props.defaultInvoiceLink}&id=%2Fsites%2FFinance%2FInvoices%2F${formRenderProps.valueGetter('Title')}` : `https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/N2.aspx?viewid=a90c5a61-821b-43e6-a9b0-148324fdb09d&id=%2Fsites%2FFinance%2FInvoices%2F${formRenderProps.valueGetter('Title')}`}
                                                         >
                                                             {formRenderProps.valueGetter('Title')}
                                                         </a>

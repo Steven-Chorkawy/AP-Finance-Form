@@ -30,6 +30,7 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
  */
 export interface IFinanceApFormProps {
   description: string;
+  defaultInvoiceLink: string;
   context: WebPartContext;
 }
 
@@ -438,6 +439,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   private APItemComponentRender = props => <APItemComponent
     {...props}
     onSave={this.onSave}
+    defaultInvoiceLink={this.props.defaultInvoiceLink}
     departments={this.state.departments}
     invoiceTypes={this.state.invoiceTypes}
     invoiceStatus={this.state.invoiceStatus}
@@ -620,7 +622,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return (
       <ListView
         //onScroll={this.scrollHandler}
-        // [1, 2, 3] is just Shimmer components that we want to load. 
+        // [1, 2, 3] is just Shimmer components that we want to load.
         data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
         item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
         style={{ width: "100%", maxWidth: '1000px', height: '100%', maxHeight: '800px', marginRight: 'auto', marginLeft: 'auto' }}

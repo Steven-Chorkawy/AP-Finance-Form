@@ -30,7 +30,8 @@
       },
       "officeFabricIconFontName": "Page",
       "properties": {
-        "description": "Approved"
+        "description": "Approved",
+        "defaultInvoiceLink":"https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/AllItems.aspx?viewid=a90c5a61%2D821b%2D43e6%2Da9b0%2D148324fdb09d"
       }
     }
   ]
