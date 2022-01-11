@@ -52,6 +52,7 @@ export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinance
       FinanceApForm,
       {
         description: this.properties.description,
+        defaultInvoiceLink: this.properties.defaultInvoiceLink,
         context: this.context
       }
     );
