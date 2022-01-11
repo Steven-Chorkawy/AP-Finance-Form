@@ -22,6 +22,7 @@ import './bootstrap.min.css';
 
 export interface IFinanceApFormWebPartProps {
   description: string;
+  defaultInvoiceLink: string;
 }
 
 export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinanceApFormWebPartProps> {
@@ -79,6 +80,9 @@ export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinance
               groupFields: [
                 PropertyPaneTextField('description', {
                   label: strings.DescriptionFieldLabel
+                }),
+                PropertyPaneTextField('defaultInvoiceLink', {
+                  label:"Invoice Link"
                 })
               ]
             }
