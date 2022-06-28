@@ -453,10 +453,15 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#region Invoice Save Methods
   public onSave = async (invoice: IInvoice, event) => {
     try {
+      // Remove any extra fields that have been added to this object by SharePoint.
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
+      // Lookup columns need to be formatted 
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
 
+      // Save the AP Invoice.
       let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+
+      // Save/Update any changes made to the accounts.
       let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
 
       invoiceUpdateResponse.Accounts = accountUpdateResponse;
@@ -542,6 +547,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.ScannedFileName;
     delete invoice.Title;
     delete invoice.saveSuccess;
+    delete invoice.OData__ip_UnifiedCompliancePolicyProperties;
+    delete invoice.MediaServiceImageTags;
 
     // Only delete Requires_x0020_Approval_x0020_FromId if the results property is missing. 
     // If results property is missing that means this field has not been modified.
