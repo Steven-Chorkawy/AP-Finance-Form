@@ -7,6 +7,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
+import "@pnp/sp/profiles";
 
 // Kendo Imports 
 import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
@@ -24,6 +25,7 @@ import * as MyHelper from '../MyHelperMethods';
 import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+
 
 /**
  * Props interface for FinanceApForm component class.
@@ -249,7 +251,15 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
 
       // If there are not accounts present this will return an empty array.
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
+      // Since selecting the Author field is not support I have select the AuthorId field instead.
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
+
+      // Using the AuthorId field query the full author information. 
+      for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
+        let author = await sp.web.getUserById(accounts[accountIterator].AuthorId)();
+        accounts[accountIterator]['Author'] = author;
+      }
+      debugger;
 
       // This will allow the accounts to be rendered. 
       visibleInvoices[index].Accounts = [...accounts];
