@@ -162,7 +162,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private queryInvoices = () => {
-    console.log('Query Invoices');
     this.setState({
       visibleInvoices: undefined,
       availableInvoices: undefined,
@@ -256,10 +255,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       // Using the AuthorId field query the full author information. 
       for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
-        let author = await sp.web.getUserById(accounts[accountIterator].AuthorId)();
+        // Catch any errors that occur and log them to the console.  This query is not a critical step and shouldn't prevent the froms from loading.
+        let author = await sp.web.getUserById(accounts[accountIterator].AuthorId)().catch(reason => {
+          console.log(`CANNOT LOAD AUTHOR! ${accounts[accountIterator].AuthorId}`);
+          console.log(reason);
+        });
         accounts[accountIterator]['Author'] = author;
       }
-      debugger;
 
       // This will allow the accounts to be rendered. 
       visibleInvoices[index].Accounts = [...accounts];

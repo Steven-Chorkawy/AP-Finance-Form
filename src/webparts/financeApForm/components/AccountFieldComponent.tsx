@@ -24,7 +24,7 @@ import { IInvoice } from '../interfaces/IInvoice';
 
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
-import { Persona, PersonaSize } from '@fluentui/react';
+import { MessageBar, MessageBarType, Persona, PersonaSize } from '@fluentui/react';
 
 //#region Validators
 const _GLValidator = value => (value && !value.includes('_') && value.length === 21) ? "" : "Please Enter a valid GL Acount Code.";
@@ -99,13 +99,19 @@ const poLineItemCell = props => {
 };
 
 const createdByCell = props => {
-    return <td>
+    const WARNING_MESSAGE = 'Cannot display author at this time...';
+    return props.dataItem.Author ? <td>
         <Persona
             imageUrl={`/_layouts/15/userphoto.aspx?size=L&username=${props.dataItem.Author.Email}`}
-            imageInitials={'SC'}
             text={props.dataItem.Author.Title}
             size={PersonaSize.size32}
         />
+    </td> : <td>
+        <MessageBar
+            messageBarType={MessageBarType.warning}
+            isMultiline={false}
+            title={WARNING_MESSAGE}
+        >{WARNING_MESSAGE}</MessageBar>
     </td>;
 };
 
