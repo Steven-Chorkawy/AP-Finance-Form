@@ -24,6 +24,7 @@ import { IInvoice } from '../interfaces/IInvoice';
 
 // Fluent UI Imports
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
+import { MessageBar, MessageBarType, Persona, PersonaSize } from '@fluentui/react';
 
 //#region Validators
 const _GLValidator = value => (value && !value.includes('_') && value.length === 21) ? "" : "Please Enter a valid GL Acount Code.";
@@ -97,6 +98,23 @@ const poLineItemCell = props => {
     </td>;
 };
 
+const createdByCell = props => {
+    const WARNING_MESSAGE = 'Cannot display author at this time...';
+    return props.dataItem.Author ? <td>
+        <Persona
+            imageUrl={`/_layouts/15/userphoto.aspx?size=L&username=${props.dataItem.Author.Email}`}
+            text={props.dataItem.Author.Title}
+            size={PersonaSize.size32}
+        />
+    </td> : <td>
+        <MessageBar
+            messageBarType={MessageBarType.warning}
+            isMultiline={false}
+            title={WARNING_MESSAGE}
+        >{WARNING_MESSAGE}</MessageBar>
+    </td>;
+};
+
 const commandCell = (onRemove) => (props) => {
     const onClick = React.useCallback(
         (e) => {
@@ -149,6 +167,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
                 <GridColumn field="PO_x0020_Line_x0020_Item_x0020__" title="PO Line Item #" cell={poLineItemCell} />
+                <GridColumn field="CreatedBy" title='Created By' cell={createdByCell} />
                 {/* <GridColumn cell={commandCell(onRemove)} width="50px" /> */}
 
             </Grid>
