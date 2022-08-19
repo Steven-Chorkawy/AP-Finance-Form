@@ -1,4 +1,5 @@
 import { sp } from "@pnp/sp";
+import { ISiteUserInfo } from "@pnp/sp/site-users/types";
 
 
 export const FormatCurrency = (n: number): string => {
@@ -24,3 +25,16 @@ export const GetUsersByLoginName = async (users: Array<any>): Promise<Array<any>
   }
   return returnOutput;
 };
+
+/**
+ * 
+ * @param account An account code list item with the 'Author' field populated.
+ */
+export const GetUserByID = async (userId: any): Promise<void | ISiteUserInfo> => {
+  // Catch any errors that occur and log them to the console.  This query is not a critical step and shouldn't prevent the forms from loading.
+  let author = await sp.web.getUserById(userId)().catch(reason => {
+    console.log(`CANNOT LOAD AUTHOR! ${userId}`);
+    console.log(reason);
+  });
+  return author;
+}
