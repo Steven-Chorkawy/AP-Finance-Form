@@ -88,6 +88,8 @@ Requires_x0020_Approval_x0020_From/Title,
 Requires_x0020_Approval_x0020_From/EMail
 `;
 
+const INVOICE_ACCOUNT_SELECT_STRING = 'ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId';
+
 const INVOICE_EXPAND_STRING = 'Department,Received_x0020_Approval_x0020_From,Requires_x0020_Approval_x0020_From';
 
 export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinanceApFormState> {
@@ -157,7 +159,13 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   private queryInvoiceById = async (id: number) => {
     let invoice = await sp.web.lists.getByTitle('Invoices').items.getById(id).select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING).get();
-    invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
+    //invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
+
+    let accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
+    for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
+      accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId)
+    }
+    invoice.Accounts = accounts;
 
     return invoice;
   }
@@ -246,22 +254,16 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       }
 
       if (this.state.myFilter.searchBoxLength && (this.state.myFilter.searchBoxLength !== searchBoxLength)) {
-
         break;
       }
 
       // If there are not accounts present this will return an empty array.
       // Since selecting the Author field is not support I have select the AuthorId field instead.
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select(INVOICE_ACCOUNT_SELECT_STRING).get();
 
       // Using the AuthorId field query the full author information. 
       for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
-        // Catch any errors that occur and log them to the console.  This query is not a critical step and shouldn't prevent the froms from loading.
-        let author = await sp.web.getUserById(accounts[accountIterator].AuthorId)().catch(reason => {
-          console.log(`CANNOT LOAD AUTHOR! ${accounts[accountIterator].AuthorId}`);
-          console.log(reason);
-        });
-        accounts[accountIterator]['Author'] = author;
+        accounts[accountIterator]['Author'] = await MyHelper.GetUserByID(accounts[accountIterator].AuthorId);
       }
 
       // This will allow the accounts to be rendered. 
@@ -471,13 +473,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
 
       // Save the AP Invoice.
-      let invoiceUpdateResponse = await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+      await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
 
       // Save/Update any changes made to the accounts.
-      let accountUpdateResponse = await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
+      await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
 
-      invoiceUpdateResponse.Accounts = accountUpdateResponse;
-
+      // 'queryInvoiceById' will bring the updated invoice and updated account details back together into one object.
       this.InsertNewInvoice({ ...await this.queryInvoiceById(invoice.ID), saveSuccess: true });
     } catch (error) {
       this.InsertNewInvoice({ ...invoice, saveSuccess: false });
@@ -501,18 +502,21 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       if (account.ID) {
         // Update this account.
         if (this.IsAccountModified(invoiceID, account)) {
-          response = await (await accountList.items.getById(account.ID).update(account)).item.get();
+          // Steven C. 08/19/2022. I am commenting these lines out because the author field will be populated later by the 'queryInvoiceById' method.
+          //let accountAuthor = account.Author;
+          response = await (await accountList.items.getById(account.ID).update(this._DeleteAccountPropertiesBeforeSave(account))).item.get();
+          // response['Author'] = accountAuthor;
         }
         else {
           response = account;
         }
       } else {
         // Create a new account. 
+        // No need to remove extra fields here because they won't exist yet.
         response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
       }
       output.push(response);
     }
-
     return output;
   }
   //#endregion
@@ -574,6 +578,17 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     return invoice;
   }
 
+  /**
+   * Remove ID, Id, Author, AuthorId from the account item to allow it to be saved.
+   * @param account GL/Account Item that is to be saved/ updated.
+   */
+  private _DeleteAccountPropertiesBeforeSave = (account: any) => {
+    delete account.ID;
+    delete account.Id;
+    delete account.Author;
+    delete account.AuthorId;
+    return account;
+  }
   /**
    * Check to see if the accounts Title or Amount property have been modified compared to the allInvoices state.
    * @param invoiceID ID of the invoice currently being saved.
