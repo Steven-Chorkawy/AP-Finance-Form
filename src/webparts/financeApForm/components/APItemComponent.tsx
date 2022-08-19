@@ -52,7 +52,9 @@ export class APItemComponent extends React.Component<any, any> {
 
         this.state = {
             item: this.props.dataItem,
-            showMore: this.props.showMore
+            showMore: this.props.showMore,
+            saveButtonDisabled: false,
+            cancelButtonDisabled: false
         };
     }
 
@@ -74,7 +76,10 @@ export class APItemComponent extends React.Component<any, any> {
         return (
             <Form
                 key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}-${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 'n'}`}
-                onSubmit={this.props.onSave}
+                onSubmit={(values, event) => {
+                    this.setState({ saveButtonDisabled: true, cancelButtonDisabled: true });
+                    this.props.onSave(values);
+                }}
                 initialValues={this.props.dataItem}
                 validator={formValidator}
                 render={formRenderProps => (
@@ -163,7 +168,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
                                             onClick={e => {
                                                 e.preventDefault(); // ! Why is this button submitting the form???!!
-                                                this.setState({ showMore: !this.state.showMore });
+                                                this.setState({ showMore: !this.state.showMore, saveButtonDisabled: false, cancelButtonDisabled: false });
                                             }}
                                         />
                                         {
@@ -174,7 +179,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                 look='flat'
                                                 icon='edit'
                                                 title='Edit Invoice'
-                                                onClick={() => this.setState({ showMore: !this.state.showMore })}
+                                                onClick={() => this.setState({ showMore: !this.state.showMore, saveButtonDisabled: false, cancelButtonDisabled: false })}
                                             />
                                         }
                                         {
@@ -185,6 +190,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                 icon='cancel'
                                                 title='Cancel Changes'
                                                 onClick={formRenderProps.onFormReset}
+                                                disabled={this.state.cancelButtonDisabled}
                                             />
                                         }
                                         {
@@ -196,6 +202,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                 primary={true}
                                                 title='Save Changes'
                                                 type='submit'
+                                                disabled={this.state.saveButtonDisabled}
                                             />
                                         }
                                     </div>
