@@ -65,7 +65,9 @@ export class APItemComponent extends React.Component<any, any> {
 
         if (prevProps.dataItem.ID !== this.props.dataItem.ID || prevProps.dataItem.Modified !== this.props.dataItem.Modified) {
             this.setState({
-                item: this.props.dataItem
+                item: this.props.dataItem,
+                saveButtonDisabled: false,
+                cancelButtonDisabled: false
             });
         }
     }
