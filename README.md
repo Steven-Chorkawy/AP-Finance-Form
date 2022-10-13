@@ -1,6 +1,6 @@
 ## ap-finance-form
 
-nvm use 10.20.1
+nvm use 10.13.0
 gulp local version: 3.9.1
 
 This is where you include your WebPart documentation.
