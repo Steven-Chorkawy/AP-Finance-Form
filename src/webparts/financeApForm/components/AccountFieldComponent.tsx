@@ -144,7 +144,7 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
     const onAdd = React.useCallback(
         (e) => {
             e.preventDefault();
-            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: null, PO_x0020_Line_x0020_Item_x0020__: '' } });
+            fieldArrayRenderProps.onUnshift({ value: { Title: '', AmountIncludingTaxes: null, PO_x0020_Line_x0020_Item_x0020__: '', StrInvoiceFolder: fieldArrayRenderProps.StrInvoiceFolder } });
         },
         [fieldArrayRenderProps.onUnshift]
     );

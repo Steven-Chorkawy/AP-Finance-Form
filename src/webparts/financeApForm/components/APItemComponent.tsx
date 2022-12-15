@@ -382,6 +382,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     name="Accounts"
                                                     component={AccountFieldComponent}
                                                     value={formRenderProps.valueGetter('Accounts')}
+                                                    StrInvoiceFolder={formRenderProps.valueGetter('Title')} // Passing Title here cause I need it to create GL Account Codes and I do not want to have to query the title with in the AccountFieldComponent.
                                                 />
                                             </FieldWrapper>
                                         </div>
