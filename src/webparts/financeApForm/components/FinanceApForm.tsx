@@ -163,7 +163,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
     let accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
     for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
-      accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId)
+      accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId);
     }
     invoice.Accounts = accounts;
 
