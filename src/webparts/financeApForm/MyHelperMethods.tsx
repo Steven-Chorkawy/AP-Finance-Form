@@ -37,4 +37,4 @@ export const GetUserByID = async (userId: any): Promise<void | ISiteUserInfo> =>
     console.log(reason);
   });
   return author;
-}
+};

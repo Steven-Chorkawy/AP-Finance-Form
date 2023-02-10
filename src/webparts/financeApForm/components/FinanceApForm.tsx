@@ -163,7 +163,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
     let accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
     for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
-      accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId)
+      accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId);
     }
     invoice.Accounts = accounts;
 
@@ -329,14 +329,28 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   private applyNewFilter = (allInvoices: any[], event?: any) => {
     // Always apply this filter.
-    const defaultFilter: any = {
-      logic: "and",
-      filters: [
-        { field: 'IsChequeReq', operator: 'eq', value: this.state.myFilter.showChequeReq },
-      ]
-    };
+    let chequeReqFilter: any = {};
 
-    let finalFilterObj: any = defaultFilter;
+    if (this.state.myFilter.showChequeReq === true) {
+      // When true we only want to see cheque reqs.
+      chequeReqFilter = {
+        logic: "and",
+        filters: [
+          { field: 'IsChequeReq', operator: 'eq', value: this.state.myFilter.showChequeReq },
+        ]
+      };
+    }
+    else {
+      // When false we want to see null and false values.  Anything but True values.
+      chequeReqFilter = {
+        logic: "and",
+        filters: [
+          { field: 'IsChequeReq', operator: 'neq', value: true },
+        ]
+      };
+    }
+
+    let finalFilterObj: any = chequeReqFilter;
 
     if (event && event.searchBoxValue !== "") {
       let searchBoxFilterObj = {
@@ -363,8 +377,12 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
     let filterInvoices = filterBy(allInvoices, finalFilterObj);
 
-    // I always want to show these. 
-    filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
+    /**
+     * 02/10/2023 - https://clarington.freshservice.com/a/tickets/27716 - I don't believe this is required anymore now that the chequeReqFilter is using a 'neq' filter.
+     *
+     * */ 
+    // // I always want to show these. 
+    // filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
 
     filterInvoices = filterInvoices.sort((a, b) => {
       //return b.ID - a.ID;
