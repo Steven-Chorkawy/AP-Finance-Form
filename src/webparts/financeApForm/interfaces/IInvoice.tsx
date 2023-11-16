@@ -50,6 +50,7 @@ export interface IInvoice {
     // TODO: Get the ID version of this.
     //Received_x0020_Deny_x0020_From_x0020_String
     ApprovalNotes: string;
+    DocumentSetDescription: string;
     ChequeReturnedNotes: any;
     Modified: string;
     Created: string;
