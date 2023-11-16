@@ -390,6 +390,14 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='row'>
                                         <div className='col-sm-12'>
                                             <FieldWrapper>
+                                                <Label>Notes</Label>
+                                                <Field name='DocumentSetDescription' component={TextArea} />
+                                            </FieldWrapper>
+                                        </div>
+                                    </div>
+                                    <div className='row'>
+                                        <div className='col-sm-12'>
+                                            <FieldWrapper>
                                                 <Label>Approval Notes</Label>
                                                 <Field name='ApprovalNotes' component={TextArea} />
                                             </FieldWrapper>
