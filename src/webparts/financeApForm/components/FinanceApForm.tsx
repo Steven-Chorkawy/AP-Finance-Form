@@ -14,8 +14,6 @@ import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progre
 import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
 import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
-import { filter } from '@progress/kendo-data-query/dist/npm/transducers';
-
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -25,6 +23,7 @@ import * as MyHelper from '../MyHelperMethods';
 import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+import PackageSolutionVersion from './PackageSolutionVersion';
 
 
 /**
@@ -380,7 +379,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     /**
      * 02/10/2023 - https://clarington.freshservice.com/a/tickets/27716 - I don't believe this is required anymore now that the chequeReqFilter is using a 'neq' filter.
      *
-     * */ 
+     * */
     // // I always want to show these. 
     // filterInvoices.push(...allInvoices.filter(f => { return f.IsChequeReq === null; }));
 
@@ -573,7 +572,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.AccountAmount1;
     delete invoice.AuthorId;
     delete invoice.Created;
-    delete invoice.DocumentSetDescription;
+    //delete invoice.DocumentSetDescription;
     delete invoice.EditorId;
     delete invoice.FileSystemObjectType;
     delete invoice.Modified;
@@ -672,15 +671,18 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
   public render(): React.ReactElement<IFinanceApFormProps> {
     return (
-      <ListView
-        //onScroll={this.scrollHandler}
-        // [1, 2, 3] is just Shimmer components that we want to load.
-        data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
-        item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
-        style={{ width: "100%", maxWidth: '1000px', height: '100%', maxHeight: '800px', marginRight: 'auto', marginLeft: 'auto' }}
-        header={this.MyListViewHeader}
-        footer={this.MyListViewFooter}
-      />
+      <div>
+        <ListView
+          //onScroll={this.scrollHandler}
+          // [1, 2, 3] is just Shimmer components that we want to load.
+          data={this.state.visibleInvoices ? this.state.visibleInvoices : [1, 2, 3]}
+          item={this.state.visibleInvoices ? this.APItemComponentRender : this.APItemLoadingComponentRender}
+          style={{ width: "100%", maxWidth: '1000px', height: '100%', maxHeight: '800px', marginRight: 'auto', marginLeft: 'auto' }}
+          header={this.MyListViewHeader}
+          footer={this.MyListViewFooter}
+        />
+        <PackageSolutionVersion />
+      </div>
     );
   }
 }
