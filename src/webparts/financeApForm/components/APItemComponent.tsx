@@ -25,6 +25,7 @@ import { MessageBar } from 'office-ui-fabric-react/lib/components/MessageBar/Mes
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import Stack from 'office-ui-fabric-react/lib/components/Stack/Stack';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react';
+import { minusIcon, plusIcon, cancelIcon, pencilIcon, saveIcon } from '@progress/kendo-svg-icons';
 
 const formValidator = value => {
     let output = {};
@@ -164,7 +165,7 @@ export class APItemComponent extends React.Component<any, any> {
                                         <Button
                                             style={{ float: 'right' }}
                                             fillMode="flat"
-                                            icon={this.state.showMore ? 'minus' : 'plus'}
+                                            svgIcon={this.state.showMore ? minusIcon : plusIcon}
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
                                             onClick={e => {
                                                 e.preventDefault(); // ! Why is this button submitting the form???!!
@@ -177,7 +178,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                 style={{ float: 'right' }}
                                                 themeColor={"primary"}
                                                 fillMode="flat"
-                                                icon='edit'
+                                                svgIcon={pencilIcon}
                                                 title='Edit Invoice'
                                                 onClick={() => this.setState({ showMore: !this.state.showMore, saveButtonDisabled: false, cancelButtonDisabled: false })}
                                             />
@@ -187,7 +188,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             <Button
                                                 style={{ float: 'right' }}
                                                 fillMode="flat"
-                                                icon='cancel'
+                                                svgIcon={cancelIcon}
                                                 title='Cancel Changes'
                                                 onClick={formRenderProps.onFormReset}
                                                 disabled={this.state.cancelButtonDisabled}
@@ -198,7 +199,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             <Button
                                                 style={{ float: 'right' }}
                                                 fillMode="flat"
-                                                icon='save'
+                                                svgIcon={saveIcon}
                                                 themeColor={"primary"}
                                                 title='Save Changes'
                                                 type='submit'
