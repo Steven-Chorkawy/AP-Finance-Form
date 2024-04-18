@@ -80,6 +80,8 @@ export class APItemComponent extends React.Component<any, any> {
                 key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}-${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 'n'}`}
                 onSubmit={(values, event) => {
                     this.setState({ saveButtonDisabled: true, cancelButtonDisabled: true });
+                    console.log('onSave value');
+                    console.log(values);
                     this.props.onSave(values);
                 }}
                 initialValues={this.props.dataItem}
@@ -278,7 +280,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
-                                                            formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                            formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: [...users.map(user => { return user.Id; })] });
                                                         });
                                                     }}
                                                 />
@@ -297,7 +299,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
-                                                            formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                            formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: [...users.map(user => { return user.Id; })] });
                                                             /**
                                                              * 06/08/2021 Steven Chorkawy 
                                                              *  I find it strange that I need to set the state of Received_x0020_Approval_x0020_From 

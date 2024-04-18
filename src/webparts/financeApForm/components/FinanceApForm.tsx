@@ -492,7 +492,11 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       // Remove any extra fields that have been added to this object by SharePoint.
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
       // Lookup columns need to be formatted 
-      invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
+      invoiceSaveObj.DepartmentId = [...invoice.Department.map(d => d.ID)];
+
+      console.log('Final Object before save');
+      console.log(invoiceSaveObj);
+      debugger;
 
       // Save the AP Invoice.
       // await (await getSP().web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
@@ -588,13 +592,20 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.saveSuccess;
     delete invoice.OData__ip_UnifiedCompliancePolicyProperties;
     delete invoice.MediaServiceImageTags;
+    delete invoice['odata.type'];
+    delete invoice['odata.metadata'];
+    delete invoice['odata.id'];
+    delete invoice['odata.etag'];
+    delete invoice['odata.editLink'];
+    delete invoice['Requires_x0020_Approval_x0020_From@odata.navigationLinkUrl'];
+    delete invoice['Received_x0020_Approval_x0020_From@odata.navigationLinkUrl'];
+    delete invoice['Department@odata.navigationLinkUrl'];
 
     // Only delete Requires_x0020_Approval_x0020_FromId if the results property is missing. 
-    // If results property is missing that means this field has not been modified.
-    if (invoice.Requires_x0020_Approval_x0020_FromId === null || !invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+    if (invoice.Requires_x0020_Approval_x0020_FromId === null) {
       delete invoice.Requires_x0020_Approval_x0020_FromId;
     }
-    if (invoice.Received_x0020_Approval_x0020_FromId === null || !invoice.Received_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+    if (invoice.Received_x0020_Approval_x0020_FromId === null) {
       delete invoice.Received_x0020_Approval_x0020_FromId;
     }
 
