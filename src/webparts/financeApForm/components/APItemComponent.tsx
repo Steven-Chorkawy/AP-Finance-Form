@@ -5,7 +5,6 @@ import * as MyHelper from '../MyHelperMethods';
 import { AccountFieldComponent } from './AccountFieldComponent';
 
 // PnP imports. 
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -131,8 +130,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                                         ? <Chip
                                                                             style={{ fontSize: '1.25rem', height: '20px' }}
                                                                             text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
-                                                                            type={'error'}
-                                                                        />
+                                                                            themeColor='error' />
                                                                         : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
                                                                     : <span title='Loading Account Details...'><Spinner size={SpinnerSize.small} /></span>
                                                             }
@@ -165,7 +163,7 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='col-xs-2 col-sm-2'>
                                         <Button
                                             style={{ float: 'right' }}
-                                            look='flat'
+                                            fillMode="flat"
                                             icon={this.state.showMore ? 'minus' : 'plus'}
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
                                             onClick={e => {
@@ -177,8 +175,8 @@ export class APItemComponent extends React.Component<any, any> {
                                             !this.state.showMore && !formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                primary={true}
-                                                look='flat'
+                                                themeColor={"primary"}
+                                                fillMode="flat"
                                                 icon='edit'
                                                 title='Edit Invoice'
                                                 onClick={() => this.setState({ showMore: !this.state.showMore, saveButtonDisabled: false, cancelButtonDisabled: false })}
@@ -188,7 +186,7 @@ export class APItemComponent extends React.Component<any, any> {
                                             formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                look='flat'
+                                                fillMode="flat"
                                                 icon='cancel'
                                                 title='Cancel Changes'
                                                 onClick={formRenderProps.onFormReset}
@@ -199,9 +197,9 @@ export class APItemComponent extends React.Component<any, any> {
                                             formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                look='flat'
+                                                fillMode="flat"
                                                 icon='save'
-                                                primary={true}
+                                                themeColor={"primary"}
                                                 title='Save Changes'
                                                 type='submit'
                                                 disabled={this.state.saveButtonDisabled}
