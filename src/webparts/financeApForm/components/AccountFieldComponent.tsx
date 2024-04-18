@@ -4,7 +4,6 @@ import * as React from 'react';
 import * as MyHelper from '../MyHelperMethods';
 
 // PnP imports. 
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -162,14 +161,12 @@ export const AccountFieldComponent = (fieldArrayRenderProps) => {
             }
             <Grid data={fieldArrayRenderProps.value}>
                 <GridToolbar>
-                    <Button title="Add new" icon='plus' primary={true} look='flat' onClick={onAdd} >Add Account</Button>
+                    <Button title="Add new" icon='plus' themeColor={"primary"} fillMode="flat" onClick={onAdd} >Add Account</Button>
                 </GridToolbar>
                 <GridColumn field="Title" title="Account Code" cell={glCodeCell} />
                 <GridColumn field="AmountIncludingTaxes" title={`Amount Including Taxes (${MyHelper.SumAccounts(fieldArrayRenderProps.value)})`} cell={amountCell} />
                 <GridColumn field="PO_x0020_Line_x0020_Item_x0020__" title="PO Line Item #" cell={poLineItemCell} />
                 <GridColumn field="CreatedBy" title='Created By' cell={createdByCell} />
-                {/* <GridColumn cell={commandCell(onRemove)} width="50px" /> */}
-
             </Grid>
         </div>
     );

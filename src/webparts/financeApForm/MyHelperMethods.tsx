@@ -1,6 +1,17 @@
-import { sp } from "@pnp/sp";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
+import { ISPFXContext, SPFI, SPFx, spfi } from "@pnp/sp";
 import { ISiteUserInfo } from "@pnp/sp/site-users/types";
 
+export const APPROVER_LIST_MODIFIED_WORKFLOW = "https://prod-21.canadacentral.logic.azure.com:443/workflows/b6a3c8936a104ba6af0e21861cbd24b2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2lr1ovb9d-6vLLLefO7fqubhmho_zl3fSitzmWwZWH8";
+
+let _sp: SPFI;
+
+export const getSP = (context?: WebPartContext): SPFI => {
+  if (context) {
+      _sp = spfi().using(SPFx(context as ISPFXContext));
+  }
+  return _sp;
+};
 
 export const FormatCurrency = (n: number): string => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
@@ -14,7 +25,7 @@ export const SumAccounts = (accounts): string => {
 };
 
 export const GetUserByLoginName = async (loginName: string): Promise<any> => {
-  return await sp.web.siteUsers.getByLoginName(loginName).get();
+  return await getSP().web.siteUsers.getByLoginName(loginName)();
 };
 
 export const GetUsersByLoginName = async (users: Array<any>): Promise<Array<any>> => {
@@ -32,7 +43,7 @@ export const GetUsersByLoginName = async (users: Array<any>): Promise<Array<any>
  */
 export const GetUserByID = async (userId: any): Promise<void | ISiteUserInfo> => {
   // Catch any errors that occur and log them to the console.  This query is not a critical step and shouldn't prevent the forms from loading.
-  let author = await sp.web.getUserById(userId)().catch(reason => {
+  let author = await getSP().web.getUserById(userId)().catch(reason => {
     console.log(`CANNOT LOAD AUTHOR! ${userId}`);
     console.log(reason);
   });

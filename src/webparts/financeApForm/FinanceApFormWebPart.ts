@@ -11,14 +11,12 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import * as strings from 'FinanceApFormWebPartStrings';
 import { FinanceApForm, IFinanceApFormProps } from './components/FinanceApForm';
 
-// PnP Imports
-import { sp } from "@pnp/sp";
-
 // Import Bootstrap theme for kendo. 
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 
 // Import Bootstrap
 import './bootstrap.min.css';
+import { getSP } from './MyHelperMethods';
 
 export interface IFinanceApFormWebPartProps {
   description: string;
@@ -26,25 +24,14 @@ export interface IFinanceApFormWebPartProps {
 }
 
 export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinanceApFormWebPartProps> {
-  /**
-   *
-   */
   constructor() {
     super();    
   }
 
   protected async onInit(): Promise<void> {
-    await super.onInit().then(() => {
-      sp.setup({
-        spfxContext: this.context,
-        sp: {
-          headers: {
-            "Accept": "application/json; odata=nometadata"
-          },
-          baseUrl: this.context.pageContext.web.absoluteUrl
-        }
-      });
-    });
+    super.onInit();
+    getSP(this.context);
+    return Promise.resolve();
   }
 
   public render(): void {

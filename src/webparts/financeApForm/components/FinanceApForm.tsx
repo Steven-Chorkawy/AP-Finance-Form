@@ -1,19 +1,20 @@
 import * as React from 'react';
 
 // PnP imports. 
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
 import "@pnp/sp/fields";
 import "@pnp/sp/site-users/web";
 import "@pnp/sp/profiles";
+import "@pnp/sp/items/get-all";
 
 // Kendo Imports 
-import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
-import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
-import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
+import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
+import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent } from '@progress/kendo-react-inputs';
+import { DropDownList, DropDownListChangeEvent } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
+import { chevronDownIcon, chevronUpIcon, minusIcon, plusIcon } from '@progress/kendo-svg-icons';
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -24,6 +25,9 @@ import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import PackageSolutionVersion from './PackageSolutionVersion';
+import { APPROVER_LIST_MODIFIED_WORKFLOW, getSP } from '../MyHelperMethods';
+import { HttpClient, HttpClientResponse, IHttpClientOptions } from '@microsoft/sp-http';
+
 
 
 /**
@@ -157,10 +161,9 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private queryInvoiceById = async (id: number) => {
-    let invoice = await sp.web.lists.getByTitle('Invoices').items.getById(id).select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING).get();
-    //invoice.Accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__').get();
+    let invoice = await getSP().web.lists.getByTitle('Invoices').items.getById(id).select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING)();
 
-    let accounts = await sp.web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId').get();
+    let accounts = await getSP().web.lists.getByTitle('Invoice Accounts').items.filter(`InvoiceFolderID eq ${id}`).select('ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId')();
     for (let accountIndex = 0; accountIndex < accounts.length; accountIndex++) {
       accounts[accountIndex]['Author'] = await MyHelper.GetUserByID(accounts[accountIndex].AuthorId);
     }
@@ -175,16 +178,18 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       availableInvoices: undefined,
       allInvoices: undefined
     });
-    sp.web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
-      .select(INVOICE_SELECT_STRING).expand(INVOICE_EXPAND_STRING)
+    getSP().web.lists.getByTitle('Invoices').items.filter(`OData__Status eq '${this.state.myFilter.status}'`)
+      .select(INVOICE_SELECT_STRING)
+      .expand(INVOICE_EXPAND_STRING)
       .top(2000)
-      .getAll().then(value => {
+      .getAll()
+      .then(value => {
         // We only want folder objects. 
         value = value.filter(f => f.ContentTypeId === ContentTypes.Folder);
         this.applyNewFilter(value);
       }).catch(error => {
         // If you fail at first, try try again.
-        sp.web.lists.getByTitle('Invoices').items
+        getSP().web.lists.getByTitle('Invoices').items
           .select(`*, 
         Department/Title, 
         Received_x0020_Approval_x0020_From/Id, 
@@ -210,7 +215,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private queryDepartments = async () => {
-    sp.web.lists.getByTitle('Departments').items.select('Title, ID').getAll().then(value => {
+    getSP().web.lists.getByTitle('Departments').items.select('Title, ID').getAll().then(value => {
       this.setState({
         departments: value
       });
@@ -218,7 +223,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private queryInvoiceTypes = async () => {
-    sp.web.lists.getByTitle('Invoices').fields.getByTitle('Invoice Type').select('Choices').get().then((value: any) => {
+    getSP().web.lists.getByTitle('Invoices').fields.getByTitle('Invoice Type').select('Choices')().then((value: any) => {
       this.setState({
         invoiceTypes: value.Choices
       });
@@ -226,7 +231,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   }
 
   private queryInvoiceStatus = async () => {
-    sp.web.lists.getByTitle('Invoices').fields.getByTitle('Status').select('Choices').get().then((value: any) => {
+    getSP().web.lists.getByTitle('Invoices').fields.getByTitle('Status').select('Choices')().then((value: any) => {
       this.setState({
         invoiceStatus: value.Choices
       });
@@ -240,7 +245,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
    */
   private queryAccountForInvoices = async (visibleInvoices: IInvoice[], searchBoxLength?: Number) => {
     this.setState({ loadingMoreAccounts: true });
-    let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+    let accountList = getSP().web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
     let allInvoicesState: IInvoice[] = this.state.allInvoices;
 
@@ -258,7 +263,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
 
       // If there are not accounts present this will return an empty array.
       // Since selecting the Author field is not support I have select the AuthorId field instead.
-      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select(INVOICE_ACCOUNT_SELECT_STRING).get();
+      let accounts = await accountList.items.filter(`InvoiceFolderID eq ${visibleInvoices[index].ID}`).select(INVOICE_ACCOUNT_SELECT_STRING)();
 
       // Using the AuthorId field query the full author information. 
       for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
@@ -422,8 +427,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
               </div>
               <div className='col-sm-4'>
                 <Button
-                  look='flat'
-                  icon={this.state.myFilter.invoiceDateDesc ? 'arrow-chevron-down' : 'arrow-chevron-up'}
+                  fillMode='flat'
+                  svgIcon={this.state.myFilter.invoiceDateDesc ? chevronDownIcon : chevronUpIcon}
                   onClick={e => {
                     e.preventDefault();
                     this.dateOrderChange();
@@ -434,8 +439,8 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
               <div className='col-sm-4'>
                 <Button
                   style={{ float: 'right' }}
-                  look='flat'
-                  icon={this.state.showAllInvoicesDetails ? 'minus' : 'plus'}
+                  fillMode='flat'
+                  svgIcon={this.state.showAllInvoicesDetails ? minusIcon : plusIcon}
                   title={this.state.showAllInvoicesDetails ? 'Hide All Invoice Details' : 'Expand All Invoice Details'}
                   onClick={e => {
                     e.preventDefault();
@@ -482,15 +487,56 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Invoice Save Methods
+  private _triggerApprovalWorkflow = async (invoiceID: number): Promise<void> => {
+    const body: string = JSON.stringify({ 'InvoiceID': invoiceID });
+    const requestHeaders: Headers = new Headers();
+    requestHeaders.append('Content-type', 'application/json');
+    const httpClientOptions: IHttpClientOptions = {
+      body: body,
+      headers: requestHeaders
+    };
+    this.props.context.httpClient.post(
+      APPROVER_LIST_MODIFIED_WORKFLOW,
+      HttpClient.configurations.v1,
+      httpClientOptions
+    )
+      .then((response: HttpClientResponse) => {
+        console.log("Workflow Triggered!");
+      }).catch(reason => {
+        console.error('Failed to trigger approval workflow!');
+        console.error(reason);
+        alert('Failed to trigger approval workflow.  Please try again or notify helpdesk@clarington.net');
+      });
+  }
+
+  /**
+   * https://stackoverflow.com/a/53606357
+   */
+  private _ApprovalWorkflowRunChecker = (arr, target) => {
+    return target.every(v => arr?.includes(v));
+  }
+
   public onSave = async (invoice: IInvoice, event) => {
     try {
+      const newApprovers = invoice.Requires_x0020_Approval_x0020_FromId;
+      const oldApprovers = invoice.Requires_x0020_Approval_x0020_FromStringId?.map(f => { return Number(f); });
+      debugger;
+      // If this is false I want to trigger the approval workflow AFTER the invoice metadata has been saved.
+      // Adding a ! before this method so that it will be TRUE when we want to trigger the invoice workflow.
+      let triggerApprovalWorkflow = !this._ApprovalWorkflowRunChecker(oldApprovers, newApprovers);
+
       // Remove any extra fields that have been added to this object by SharePoint.
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
       // Lookup columns need to be formatted 
-      invoiceSaveObj.DepartmentId = { results: [...invoice.Department.map(d => d.ID)] };
+      invoiceSaveObj.DepartmentId = [...invoice.Department.map(d => d.ID)];
 
       // Save the AP Invoice.
-      await (await sp.web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+      // await (await getSP().web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
+      await getSP().web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj });
+
+      if (triggerApprovalWorkflow) {
+        this._triggerApprovalWorkflow(invoiceSaveObj.ID);
+      }
 
       // Save/Update any changes made to the accounts.
       await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
@@ -509,7 +555,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
      * @param accounts The current accounts of the invoice. 
      */
   private APInvoiceAccountSave = async (invoiceID: number, accounts: any[]) => {
-    let accountList = sp.web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
+    let accountList = getSP().web.lists.getById('dc5b951f-f68d-42c4-9371-c5515fcf1cab');
 
     let output = [];
     let response;
@@ -521,7 +567,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
         if (this.IsAccountModified(invoiceID, account)) {
           // Steven C. 08/19/2022. I am commenting these lines out because the author field will be populated later by the 'queryInvoiceById' method.
           //let accountAuthor = account.Author;
-          response = await (await accountList.items.getById(account.ID).update(this._DeleteAccountPropertiesBeforeSave(account))).item.get();
+          response = await (await accountList.items.getById(account.ID).update(this._DeleteAccountPropertiesBeforeSave(account))).item; // TODO: Will this work?
           // response['Author'] = accountAuthor;
         }
         else {
@@ -530,7 +576,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       } else {
         // Create a new account. 
         // No need to remove extra fields here because they won't exist yet.
-        response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item.get();
+        response = await (await accountList.items.add({ ...account, InvoiceFolderIDId: invoiceID })).item; // TODO: Will this work? 
       }
       output.push(response);
     }
@@ -582,13 +628,20 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
     delete invoice.saveSuccess;
     delete invoice.OData__ip_UnifiedCompliancePolicyProperties;
     delete invoice.MediaServiceImageTags;
+    delete invoice['odata.type'];
+    delete invoice['odata.metadata'];
+    delete invoice['odata.id'];
+    delete invoice['odata.etag'];
+    delete invoice['odata.editLink'];
+    delete invoice['Requires_x0020_Approval_x0020_From@odata.navigationLinkUrl'];
+    delete invoice['Received_x0020_Approval_x0020_From@odata.navigationLinkUrl'];
+    delete invoice['Department@odata.navigationLinkUrl'];
 
     // Only delete Requires_x0020_Approval_x0020_FromId if the results property is missing. 
-    // If results property is missing that means this field has not been modified.
-    if (invoice.Requires_x0020_Approval_x0020_FromId === null || !invoice.Requires_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+    if (invoice.Requires_x0020_Approval_x0020_FromId === null) {
       delete invoice.Requires_x0020_Approval_x0020_FromId;
     }
-    if (invoice.Received_x0020_Approval_x0020_FromId === null || !invoice.Received_x0020_Approval_x0020_FromId.hasOwnProperty('results')) {
+    if (invoice.Received_x0020_Approval_x0020_FromId === null) {
       delete invoice.Received_x0020_Approval_x0020_FromId;
     }
 
@@ -666,7 +719,6 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
       allInvoices: allInvoices
     });
   }
-
   //#endregion
 
   public render(): React.ReactElement<IFinanceApFormProps> {

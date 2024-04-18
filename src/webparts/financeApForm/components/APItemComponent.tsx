@@ -5,7 +5,6 @@ import * as MyHelper from '../MyHelperMethods';
 import { AccountFieldComponent } from './AccountFieldComponent';
 
 // PnP imports. 
-import { sp } from "@pnp/sp";
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -26,6 +25,7 @@ import { MessageBar } from 'office-ui-fabric-react/lib/components/MessageBar/Mes
 import { MessageBarType } from 'office-ui-fabric-react/lib/components/MessageBar';
 import Stack from 'office-ui-fabric-react/lib/components/Stack/Stack';
 import { Spinner, SpinnerSize } from 'office-ui-fabric-react';
+import { minusIcon, plusIcon, cancelIcon, pencilIcon, saveIcon } from '@progress/kendo-svg-icons';
 
 const formValidator = value => {
     let output = {};
@@ -80,6 +80,8 @@ export class APItemComponent extends React.Component<any, any> {
                 key={`${this.state.item.ID}-${this.props.dataItem.Modified}-${this.props.showMore}-${this.props.dataItem.Accounts ? this.props.dataItem.Accounts.length : 'n'}`}
                 onSubmit={(values, event) => {
                     this.setState({ saveButtonDisabled: true, cancelButtonDisabled: true });
+                    console.log('onSave value');
+                    console.log(values);
                     this.props.onSave(values);
                 }}
                 initialValues={this.props.dataItem}
@@ -131,8 +133,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                                         ? <Chip
                                                                             style={{ fontSize: '1.25rem', height: '20px' }}
                                                                             text={MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}
-                                                                            type={'error'}
-                                                                        />
+                                                                            themeColor='error' />
                                                                         : <span>{MyHelper.SumAccounts(formRenderProps.valueGetter('Accounts'))}</span>
                                                                     : <span title='Loading Account Details...'><Spinner size={SpinnerSize.small} /></span>
                                                             }
@@ -165,8 +166,8 @@ export class APItemComponent extends React.Component<any, any> {
                                     <div className='col-xs-2 col-sm-2'>
                                         <Button
                                             style={{ float: 'right' }}
-                                            look='flat'
-                                            icon={this.state.showMore ? 'minus' : 'plus'}
+                                            fillMode="flat"
+                                            svgIcon={this.state.showMore ? minusIcon : plusIcon}
                                             title={this.state.showMore ? 'Show Less' : 'Show More'}
                                             onClick={e => {
                                                 e.preventDefault(); // ! Why is this button submitting the form???!!
@@ -177,9 +178,9 @@ export class APItemComponent extends React.Component<any, any> {
                                             !this.state.showMore && !formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                primary={true}
-                                                look='flat'
-                                                icon='edit'
+                                                themeColor={"primary"}
+                                                fillMode="flat"
+                                                svgIcon={pencilIcon}
                                                 title='Edit Invoice'
                                                 onClick={() => this.setState({ showMore: !this.state.showMore, saveButtonDisabled: false, cancelButtonDisabled: false })}
                                             />
@@ -188,8 +189,8 @@ export class APItemComponent extends React.Component<any, any> {
                                             formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                look='flat'
-                                                icon='cancel'
+                                                fillMode="flat"
+                                                svgIcon={cancelIcon}
                                                 title='Cancel Changes'
                                                 onClick={formRenderProps.onFormReset}
                                                 disabled={this.state.cancelButtonDisabled}
@@ -199,9 +200,9 @@ export class APItemComponent extends React.Component<any, any> {
                                             formRenderProps.modified &&
                                             <Button
                                                 style={{ float: 'right' }}
-                                                look='flat'
-                                                icon='save'
-                                                primary={true}
+                                                fillMode="flat"
+                                                svgIcon={saveIcon}
+                                                themeColor={"primary"}
                                                 title='Save Changes'
                                                 type='submit'
                                                 disabled={this.state.saveButtonDisabled}
@@ -279,7 +280,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
-                                                            formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                            formRenderProps.onChange('Requires_x0020_Approval_x0020_FromId', { value: [...users.map(user => { return user.Id; })] });
                                                         });
                                                     }}
                                                 />
@@ -298,7 +299,7 @@ export class APItemComponent extends React.Component<any, any> {
                                                     component={PeoplePicker}
                                                     onChange={(e: IPersonaProps[]) => {
                                                         MyHelper.GetUsersByLoginName(e).then(users => {
-                                                            formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: { results: [...users.map(user => { return user.Id; })] } });
+                                                            formRenderProps.onChange('Received_x0020_Approval_x0020_FromId', { value: [...users.map(user => { return user.Id; })] });
                                                             /**
                                                              * 06/08/2021 Steven Chorkawy 
                                                              *  I find it strange that I need to set the state of Received_x0020_Approval_x0020_From 
