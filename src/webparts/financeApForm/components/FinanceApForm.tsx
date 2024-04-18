@@ -9,14 +9,12 @@ import "@pnp/sp/site-users/web";
 import "@pnp/sp/profiles";
 import "@pnp/sp/items/get-all";
 
-
 // Kendo Imports 
 import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
 import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent } from '@progress/kendo-react-inputs';
 import { DropDownList, DropDownListChangeEvent } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
 import { chevronDownIcon, chevronUpIcon, minusIcon, plusIcon } from '@progress/kendo-svg-icons';
-
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -27,7 +25,9 @@ import { PageChangeEvent, Pager } from '@progress/kendo-react-data-tools';
 import { Button } from '@progress/kendo-react-buttons';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import PackageSolutionVersion from './PackageSolutionVersion';
-import { getSP } from '../MyHelperMethods';
+import { APPROVER_LIST_MODIFIED_WORKFLOW, getSP } from '../MyHelperMethods';
+import { HttpClient, HttpClientResponse, IHttpClientOptions } from '@microsoft/sp-http';
+
 
 
 /**
@@ -487,20 +487,56 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
   //#endregion
 
   //#region Invoice Save Methods
+  private _triggerApprovalWorkflow = async (invoiceID: number): Promise<void> => {
+    const body: string = JSON.stringify({ 'InvoiceID': invoiceID });
+    const requestHeaders: Headers = new Headers();
+    requestHeaders.append('Content-type', 'application/json');
+    const httpClientOptions: IHttpClientOptions = {
+      body: body,
+      headers: requestHeaders
+    };
+    this.props.context.httpClient.post(
+      APPROVER_LIST_MODIFIED_WORKFLOW,
+      HttpClient.configurations.v1,
+      httpClientOptions
+    )
+      .then((response: HttpClientResponse) => {
+        console.log("Workflow Triggered!");
+      }).catch(reason => {
+        console.error('Failed to trigger approval workflow!');
+        console.error(reason);
+        alert('Failed to trigger approval workflow.  Please try again or notify helpdesk@clarington.net');
+      });
+  }
+
+  /**
+   * https://stackoverflow.com/a/53606357
+   */
+  private _ApprovalWorkflowRunChecker = (arr, target) => {
+    return target.every(v => arr?.includes(v));
+  }
+
   public onSave = async (invoice: IInvoice, event) => {
     try {
+      const newApprovers = invoice.Requires_x0020_Approval_x0020_FromId;
+      const oldApprovers = invoice.Requires_x0020_Approval_x0020_FromStringId?.map(f => { return Number(f); });
+      debugger;
+      // If this is false I want to trigger the approval workflow AFTER the invoice metadata has been saved.
+      // Adding a ! before this method so that it will be TRUE when we want to trigger the invoice workflow.
+      let triggerApprovalWorkflow = !this._ApprovalWorkflowRunChecker(oldApprovers, newApprovers);
+
       // Remove any extra fields that have been added to this object by SharePoint.
       let invoiceSaveObj = this._DeletePropertiesBeforeSave({ ...invoice });
       // Lookup columns need to be formatted 
       invoiceSaveObj.DepartmentId = [...invoice.Department.map(d => d.ID)];
 
-      console.log('Final Object before save');
-      console.log(invoiceSaveObj);
-      debugger;
-
       // Save the AP Invoice.
       // await (await getSP().web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj })).item.get();
       await getSP().web.lists.getByTitle('Invoices').items.getById(invoice.ID).update({ ...invoiceSaveObj });
+
+      if (triggerApprovalWorkflow) {
+        this._triggerApprovalWorkflow(invoiceSaveObj.ID);
+      }
 
       // Save/Update any changes made to the accounts.
       await this.APInvoiceAccountSave(invoice.ID, invoice.Accounts);
