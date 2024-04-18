@@ -11,10 +11,12 @@ import "@pnp/sp/items/get-all";
 
 
 // Kendo Imports 
-import { ListView, ListViewHeader, ListViewFooter, ListViewEvent } from '@progress/kendo-react-listview';
-import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent, NumericTextBox, TextArea } from '@progress/kendo-react-inputs';
-import { DropDownList, DropDownListChangeEvent, MultiSelect } from '@progress/kendo-react-dropdowns';
+import { ListView, ListViewHeader, ListViewFooter } from '@progress/kendo-react-listview';
+import { Checkbox, CheckboxChangeEvent, Input, InputChangeEvent } from '@progress/kendo-react-inputs';
+import { DropDownList, DropDownListChangeEvent } from '@progress/kendo-react-dropdowns';
 import { filterBy } from '@progress/kendo-data-query';
+import { chevronDownIcon, chevronUpIcon, minusIcon, plusIcon } from '@progress/kendo-svg-icons';
+
 
 // My Imports 
 import { MyLoadingComponent } from './MyLoadingComponent';
@@ -426,7 +428,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
               <div className='col-sm-4'>
                 <Button
                   fillMode='flat'
-                  icon={this.state.myFilter.invoiceDateDesc ? 'arrow-chevron-down' : 'arrow-chevron-up'}
+                  svgIcon={this.state.myFilter.invoiceDateDesc ? chevronDownIcon : chevronUpIcon}
                   onClick={e => {
                     e.preventDefault();
                     this.dateOrderChange();
@@ -438,7 +440,7 @@ export class FinanceApForm extends React.Component<IFinanceApFormProps, IFinance
                 <Button
                   style={{ float: 'right' }}
                   fillMode='flat'
-                  icon={this.state.showAllInvoicesDetails ? 'minus' : 'plus'}
+                  svgIcon={this.state.showAllInvoicesDetails ? minusIcon : plusIcon}
                   title={this.state.showAllInvoicesDetails ? 'Hide All Invoice Details' : 'Expand All Invoice Details'}
                   onClick={e => {
                     e.preventDefault();
