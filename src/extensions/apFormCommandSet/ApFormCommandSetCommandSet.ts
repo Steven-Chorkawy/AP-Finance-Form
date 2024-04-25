@@ -6,6 +6,7 @@ import {
   type ListViewStateChangedEventArgs
 } from '@microsoft/sp-listview-extensibility';
 import { Dialog } from '@microsoft/sp-dialog';
+import { MyLists, getSP } from '../../webparts/financeApForm/MyHelperMethods';
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -24,6 +25,8 @@ export default class ApFormCommandSetCommandSet extends BaseListViewCommandSet<I
 
   public onInit(): Promise<void> {
     Log.info(LOG_SOURCE, 'Initialized ApFormCommandSetCommandSet');
+
+    getSP(this.context);
 
     // initial state of the command's visibility
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
@@ -56,8 +59,8 @@ export default class ApFormCommandSetCommandSet extends BaseListViewCommandSet<I
 
     const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
     if (compareOneCommand) {
-      // This command should be hidden unless exactly one row is selected.
-      compareOneCommand.visible = this.context.listView.selectedRows?.length === 1;
+      // This command should be hidden unless 1-100 rows are selected in the Invoices library.
+      compareOneCommand.visible = this.context.listView.selectedRows?.length > 0 && this.context.listView.selectedRows?.length <= 100 && this.context.pageContext.list.title === MyLists.Invoices;
     }
 
     // TODO: Add your logic here

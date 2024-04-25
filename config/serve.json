@@ -21,7 +21,7 @@
       }
     },
     "apFormCommandSet": {
-      "pageUrl": "https://{tenantDomain}/SitePages/myPage.aspx",
+      "pageUrl": "https://claringtonnet.sharepoint.com/sites/Finance/Invoices",
       "customActions": {
         "9736f88c-f5e9-4c16-acd8-253c842eed9e": {
           "location": "ClientSideExtension.ListViewCommandSet.CommandBar",

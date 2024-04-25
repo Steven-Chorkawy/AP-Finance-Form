@@ -1,14 +1,19 @@
+import { ListViewCommandSetContext } from "@microsoft/sp-listview-extensibility";
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { ISPFXContext, SPFI, SPFx, spfi } from "@pnp/sp";
 import { ISiteUserInfo } from "@pnp/sp/site-users/types";
 
 export const APPROVER_LIST_MODIFIED_WORKFLOW = "https://prod-21.canadacentral.logic.azure.com:443/workflows/b6a3c8936a104ba6af0e21861cbd24b2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=2lr1ovb9d-6vLLLefO7fqubhmho_zl3fSitzmWwZWH8";
 
+export enum MyLists {
+  Invoices = "Invoices"
+}
+
 let _sp: SPFI;
 
-export const getSP = (context?: WebPartContext): SPFI => {
+export const getSP = (context?: WebPartContext | ListViewCommandSetContext): SPFI => {
   if (context) {
-      _sp = spfi().using(SPFx(context as ISPFXContext));
+    _sp = spfi().using(SPFx(context as ISPFXContext));
   }
   return _sp;
 };
