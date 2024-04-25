@@ -9,7 +9,8 @@ import {
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 
 import * as strings from 'FinanceApFormWebPartStrings';
-import { FinanceApForm, IFinanceApFormProps } from './components/FinanceApForm';
+// import { FinanceApForm, IFinanceApFormProps } from './components/FinanceApForm';
+import { FinanceApForm2, IFinanceApForm2Props } from './components/FinanceApForm2';
 
 // Import Bootstrap theme for kendo. 
 import "@progress/kendo-theme-bootstrap/dist/all.css";
@@ -35,8 +36,8 @@ export default class FinanceApFormWebPart extends BaseClientSideWebPart<IFinance
   }
 
   public render(): void {
-    const element: React.ReactElement<IFinanceApFormProps> = React.createElement(
-      FinanceApForm,
+    const element: React.ReactElement<IFinanceApForm2Props> = React.createElement(
+      FinanceApForm2,
       {
         description: this.properties.description,
         defaultInvoiceLink: this.properties.defaultInvoiceLink,
