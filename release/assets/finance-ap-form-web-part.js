@@ -321,7 +321,7 @@ var getBaseButtonClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* 
     var _a, _b;
     var classNames = Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* getGlobalClassNames */ "s"])(ButtonGlobalClassNames, theme || {});
     var isExpanded = expanded && !isSplit;
-    return Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyleSets */ "A"])({
+    return Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyleSets */ "B"])({
         root: [
             classNames.msButton,
             styles.root,
@@ -982,6 +982,57 @@ function getStyles(props) {
     };
 }
 //# sourceMappingURL=ShimmerLine.styles.js.map
+
+/***/ }),
+
+/***/ "+wvb":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/setter.js ***!
+  \*********************************************************************/
+/*! exports provided: setter */
+/*! exports used: setter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setter; });
+/* harmony import */ var _fieldList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fieldList */ "SkrY");
+
+var setterCache = {};
+setterCache.undefined = function (obj) { return obj; };
+var defaultValue = function (nextField, options) {
+    return options && options.arrays && !isNaN(Number(nextField)) ? [] : {};
+};
+/**
+ * Can be used for setting value to object using field path. For example `users[index].name`.
+ *
+ * @example
+ * ```jsx-no-run
+ * const values = {users:[{lastName: 'Doe'}]};
+ * const firstUserFirstName = setter('user[0].firstName');
+ *
+ * firstUserFirstName(values, 'John');
+ *
+ * console.log(values)
+ *
+ * // result: {users:[{firstName: 'John', lastName: 'Doe'}]}
+ * ```
+ */
+function setter(field) {
+    if (setterCache[field]) {
+        return setterCache[field];
+    }
+    var fields = Object(_fieldList__WEBPACK_IMPORTED_MODULE_0__[/* fieldList */ "a"])(field);
+    setterCache[field] = function (obj, value, options) {
+        var root = obj;
+        var depth = fields.length - 1;
+        for (var idx = 0; idx < depth && root; idx++) {
+            root = root[fields[idx]] = root[fields[idx]] || defaultValue(fields[idx + 1], options);
+        }
+        root[fields[depth]] = value;
+    };
+    return setterCache[field];
+}
+
 
 /***/ }),
 
@@ -1947,6 +1998,33 @@ function _merge(target, source, circularReferences) {
     return target;
 }
 //# sourceMappingURL=merge.js.map
+
+/***/ }),
+
+/***/ "17x9":
+/*!******************************************!*\
+  !*** ./node_modules/prop-types/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/*! exports used: any, arrayOf, bool, func, node, number, object, oneOf, oneOfType, shape, string */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (true) {
+  var ReactIs = __webpack_require__(/*! react-is */ "oHd3");
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(/*! ./factoryWithTypeCheckers */ "sHIV")(ReactIs.isElement, throwOnDirectAccess);
+} else {}
+
 
 /***/ }),
 
@@ -3481,6 +3559,50 @@ var KeyCodes = {
 
 /***/ }),
 
+/***/ "4swm":
+/*!************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/card/interfaces/Enums.js ***!
+  \************************************************************************************/
+/*! exports provided: avatarType, cardOrientation, cardType, cardActionsLayout */
+/*! exports used: cardOrientation, cardType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export avatarType */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return cardOrientation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return cardType; });
+/* unused harmony export cardActionsLayout */
+var avatarType;
+(function (avatarType) {
+    avatarType["TEXT"] = "text";
+    avatarType["IMAGE"] = "image";
+    avatarType["ICON"] = "icon";
+})(avatarType || (avatarType = {}));
+var cardOrientation;
+(function (cardOrientation) {
+    cardOrientation["HORIZONTAL"] = "horizontal";
+    cardOrientation["VERTICAL"] = "vertical";
+})(cardOrientation || (cardOrientation = {}));
+var cardType;
+(function (cardType) {
+    cardType["DEFAULT"] = "default";
+    cardType["primary"] = "primary";
+    cardType["INFO"] = "info";
+    cardType["SUCCESS"] = "success";
+    cardType["WARNING"] = "warning";
+    cardType["ERROR"] = "error";
+})(cardType || (cardType = {}));
+var cardActionsLayout;
+(function (cardActionsLayout) {
+    cardActionsLayout["START"] = "start";
+    cardActionsLayout["CENTER"] = "center";
+    cardActionsLayout["END"] = "end";
+    cardActionsLayout["STRETCHED"] = "stretched";
+})(cardActionsLayout || (cardActionsLayout = {}));
+
+
+/***/ }),
+
 /***/ "50wY":
 /*!******************************************************************!*\
   !*** ./node_modules/@fluentui/theme/lib/effects/FluentDepths.js ***!
@@ -3546,6 +3668,27 @@ var CustomizerContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"]({
 
 /***/ }),
 
+/***/ "5JhY":
+/*!************************************************************************!*\
+  !*** ./node_modules/@fluentui/react/lib/components/Spinner/Spinner.js ***!
+  \************************************************************************/
+/*! exports provided: Spinner */
+/*! exports used: Spinner */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Spinner; });
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Utilities */ "mUxj");
+/* harmony import */ var _Spinner_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Spinner.base */ "VMH+");
+/* harmony import */ var _Spinner_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Spinner.styles */ "Zxkc");
+
+
+
+var Spinner = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* styled */ "a"])(_Spinner_base__WEBPACK_IMPORTED_MODULE_1__[/* SpinnerBase */ "a"], _Spinner_styles__WEBPACK_IMPORTED_MODULE_2__[/* getStyles */ "a"], undefined, { scope: 'Spinner' });
+//# sourceMappingURL=Spinner.js.map
+
+/***/ }),
+
 /***/ "5KJk":
 /*!**********************************************************************!*\
   !*** ./node_modules/@fluentui/dom-utilities/lib/isVirtualElement.js ***!
@@ -3595,7 +3738,7 @@ var getSplitButtonVerticalDividerClassNames = Object(_Utilities__WEBPACK_IMPORTE
 /* eslint-disable deprecation/deprecation */
 function (theme) {
     var _a;
-    return Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* mergeStyleSets */ "A"])(Object(_Divider_VerticalDivider_classNames__WEBPACK_IMPORTED_MODULE_0__[/* getDividerClassNames */ "a"])(theme), {
+    return Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* mergeStyleSets */ "B"])(Object(_Divider_VerticalDivider_classNames__WEBPACK_IMPORTED_MODULE_0__[/* getDividerClassNames */ "a"])(theme), {
         /* eslint-enable deprecation/deprecation */
         wrapper: {
             position: 'absolute',
@@ -3642,7 +3785,7 @@ var getItemClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_3__[/* memoiz
     var _a, _b, _c, _d;
     var styles = Object(_ContextualMenu_cnstyles__WEBPACK_IMPORTED_MODULE_1__[/* getMenuItemStyles */ "b"])(theme);
     var classNames = Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* getGlobalClassNames */ "s"])(GlobalClassNames, theme);
-    return Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* mergeStyleSets */ "A"])({
+    return Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* mergeStyleSets */ "B"])({
         item: [classNames.item, styles.item, itemClassName],
         divider: [classNames.divider, styles.divider, dividerClassName],
         root: [
@@ -4262,6 +4405,25 @@ var ZIndexes;
     ZIndexes.KeytipLayer = 1000001;
 })(ZIndexes || (ZIndexes = {}));
 //# sourceMappingURL=zIndexes.js.map
+
+/***/ }),
+
+/***/ "792I":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-form/dist/es/FormContext.js ***!
+  \************************************************************************/
+/*! exports provided: FormContext */
+/*! exports used: FormContext */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FormContext; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/** @hidden */
+var FormContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"](null);
+
 
 /***/ }),
 
@@ -5514,6 +5676,78 @@ function overrideTarget(ev, target) {
 
 /***/ }),
 
+/***/ "8QmZ":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/clone.js ***!
+  \********************************************************************/
+/*! exports provided: cloneDate, clone, cloneObject, cloneValue, cloneArray */
+/*! exports used: clone, cloneObject */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export cloneDate */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return clone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return cloneObject; });
+/* unused harmony export cloneValue */
+/* unused harmony export cloneArray */
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * @hidden
+ */
+var cloneDate = function (date) { return date ? new Date(date.getTime()) : null; };
+/**
+ * @hidden
+ */
+function clone(obj) {
+    var result = {};
+    cloneObject(obj, result);
+    return result;
+}
+/**
+ * @hidden
+ */
+function cloneObject(obj, result) {
+    for (var field in obj) {
+        if (obj.hasOwnProperty(field)) {
+            var value = obj[field];
+            result[field] = cloneValue(value, result[field]);
+        }
+    }
+}
+/**
+ * @hidden
+ */
+function cloneValue(value, nextValue) {
+    if (Array.isArray(value)) {
+        return cloneArray(value);
+    }
+    else if (value instanceof Date) {
+        return cloneDate(value);
+    }
+    else if (react__WEBPACK_IMPORTED_MODULE_0__["isValidElement"](value)) {
+        return react__WEBPACK_IMPORTED_MODULE_0__["cloneElement"](value, value.props);
+    }
+    else if (value && typeof value === 'object') {
+        var newNextValue = nextValue || {};
+        cloneObject(value, newNextValue);
+        return newNextValue;
+    }
+    else {
+        return value;
+    }
+}
+/**
+ * @hidden
+ */
+function cloneArray(array) {
+    return array.map(function (value) { return cloneValue(value, undefined); });
+}
+
+
+/***/ }),
+
 /***/ "8TYW":
 /*!**************************************************************************!*\
   !*** ./node_modules/@uifabric/merge-styles/lib/transforms/kebabRules.js ***!
@@ -5532,6 +5766,41 @@ function kebabRules(rulePairs, index) {
     }
 }
 //# sourceMappingURL=kebabRules.js.map
+
+/***/ }),
+
+/***/ "8oZF":
+/*!***************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/hooks/useDir.js ***!
+  \***************************************************************************/
+/*! exports provided: useDir */
+/*! exports used: useDir */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return useDir; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * @hidden
+ */
+function useDir(elementRef, initialDir, args) {
+    // Dir prop is read only on initial rendering due to specifics of getComputedStyles - see below
+    var _a = react__WEBPACK_IMPORTED_MODULE_0__["useState"](initialDir), dir = _a[0], setDir = _a[1];
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](function () {
+        if (!dir && window && elementRef.current) {
+            // Note: getComputedStyle forces reflow
+            var rtlCandidate = window.getComputedStyle(elementRef.current).direction;
+            if (rtlCandidate) {
+                // rerender is needed as DOM is read after first render
+                setDir(rtlCandidate);
+            }
+        }
+    }, args);
+    return dir;
+}
+
 
 /***/ }),
 
@@ -7038,6 +7307,34 @@ module.exports = exports;
 
 /***/ }),
 
+/***/ "AJ+T":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/card/CardTitle.js ***!
+  \*****************************************************************************/
+/*! exports provided: CardTitle */
+/*! exports used: CardTitle */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CardTitle; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+
+
+
+var CardTitle = function (props) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: props.style, className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-card-title', props.className) }, props.children));
+};
+CardTitle.propTypes = {
+    className: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"]
+};
+
+
+/***/ }),
+
 /***/ "ANkZ":
 /*!*******************************************************************************!*\
   !*** ./node_modules/@fluentui/style-utilities/lib/utilities/buildClassMap.js ***!
@@ -7685,6 +7982,31 @@ var getStyles = function (props) {
     };
 };
 //# sourceMappingURL=Checkbox.styles.js.map
+
+/***/ }),
+
+/***/ "C6oa":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-form/dist/es/package-metadata.js ***!
+  \*****************************************************************************/
+/*! exports provided: packageMetadata */
+/*! exports used: packageMetadata */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return packageMetadata; });
+/**
+ * @hidden
+ */
+var packageMetadata = {
+    name: '@progress/kendo-react-form',
+    productName: 'KendoReact',
+    productCodes: ['KENDOUIREACT', 'KENDOUICOMPLETE'],
+    publishDate: 1695801520,
+    version: '',
+    licensingDocsUrl: 'https://www.telerik.com/kendo-react-ui/my-license/?utm_medium=product&utm_source=kendoreact&utm_campaign=kendo-ui-react-purchase-license-keys-warning'
+};
+
 
 /***/ }),
 
@@ -9864,6 +10186,83 @@ props, allowedPropNames, excludedPropNames) {
 
 /***/ }),
 
+/***/ "DAl/":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/card/Card.js ***!
+  \************************************************************************/
+/*! exports provided: Card */
+/*! exports used: Card */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Card; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+/* harmony import */ var _interfaces_Enums__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./interfaces/Enums */ "4swm");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @progress/kendo-react-common */ "mfP9");
+/* harmony import */ var _package_metadata__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../package-metadata */ "UYf7");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+
+
+
+
+
+
+var Card = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var _a;
+    Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* validatePackage */ "a"])(_package_metadata__WEBPACK_IMPORTED_MODULE_5__[/* packageMetadata */ "a"]);
+    var children = props.children, dir = props.dir, style = props.style, className = props.className, type = props.type, orientation = props.orientation, customProps = __rest(props, ["children", "dir", "style", "className", "type", "orientation"]);
+    var target = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var chipRef = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](target, function () { return ({
+        element: chipRef.current,
+        props: props
+    }); });
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return target.current; });
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", __assign({ dir: dir, style: style, ref: chipRef, className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-card', className, (_a = {}, _a["k-card-".concat(type)] = type !== _interfaces_Enums__WEBPACK_IMPORTED_MODULE_3__[/* cardType */ "b"].DEFAULT, _a), orientation !== _interfaces_Enums__WEBPACK_IMPORTED_MODULE_3__[/* cardOrientation */ "a"].HORIZONTAL ? 'k-card-vertical' : 'k-card-horizontal') }, customProps), children));
+});
+Card.displayName = 'KendoReactCard';
+Card.propTypes = {
+    children: prop_types__WEBPACK_IMPORTED_MODULE_1__["node"],
+    className: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    dir: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    orientation: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['horizontal', 'vertical']),
+    style: prop_types__WEBPACK_IMPORTED_MODULE_1__["object"],
+    type: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['default', 'primary', 'info', 'success', 'warning', 'error'])
+};
+Card.defaultProps = {
+    type: _interfaces_Enums__WEBPACK_IMPORTED_MODULE_3__[/* cardType */ "b"].DEFAULT,
+    orientation: _interfaces_Enums__WEBPACK_IMPORTED_MODULE_3__[/* cardOrientation */ "a"].VERTICAL
+};
+
+
+/***/ }),
+
 /***/ "DCsi":
 /*!***************************************************************************!*\
   !*** ./node_modules/@fluentui/react/lib/components/Panel/Panel.styles.js ***!
@@ -10322,12 +10721,53 @@ function lifecycle() {
 
 /***/ }),
 
+/***/ "DaYf":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/Chip/data-reducer.js ***!
+  \*********************************************************************************/
+/*! exports provided: CHIP_DATA_ACTION, dataReducer */
+/*! exports used: CHIP_DATA_ACTION, dataReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CHIP_DATA_ACTION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return dataReducer; });
+/**
+ * @hidden
+ */
+var CHIP_DATA_ACTION;
+(function (CHIP_DATA_ACTION) {
+    CHIP_DATA_ACTION["remove"] = "remove";
+    CHIP_DATA_ACTION["add"] = "add";
+    CHIP_DATA_ACTION["reorder"] = "reorder";
+})(CHIP_DATA_ACTION || (CHIP_DATA_ACTION = {}));
+/**
+ * @hidden
+ */
+var dataReducer = function (state, action) {
+    switch (action.type) {
+        case CHIP_DATA_ACTION.add:
+            // TODO v2
+            break;
+        case CHIP_DATA_ACTION.remove:
+            return state.filter(function (i) { return i[action.valueField] !== action.payload; });
+        case CHIP_DATA_ACTION.reorder:
+            // TODO v2
+            break;
+        default:
+            return state;
+    }
+};
+
+
+/***/ }),
+
 /***/ "Dfs8":
 /*!*************************************************************!*\
   !*** ./node_modules/@fluentui/style-utilities/lib/index.js ***!
   \*************************************************************/
 /*! exports provided: AnimationClassNames, FontClassNames, ColorClassNames, AnimationStyles, AnimationVariables, DefaultPalette, DefaultEffects, DefaultFontStyles, registerDefaultFontFaces, FontSizes, FontWeights, IconFontSizes, createFontStyles, getFocusStyle, focusClear, getFocusOutlineStyle, getInputFocusStyle, hiddenContentStyle, PulsingBeaconAnimationStyles, getGlobalClassNames, getThemedContext, ThemeSettingName, getTheme, loadTheme, createTheme, registerOnThemeChangeCallback, removeOnThemeChangeCallback, HighContrastSelector, HighContrastSelectorWhite, HighContrastSelectorBlack, EdgeChromiumHighContrastSelector, ScreenWidthMinSmall, ScreenWidthMinMedium, ScreenWidthMinLarge, ScreenWidthMinXLarge, ScreenWidthMinXXLarge, ScreenWidthMinXXXLarge, ScreenWidthMaxSmall, ScreenWidthMaxMedium, ScreenWidthMaxLarge, ScreenWidthMaxXLarge, ScreenWidthMaxXXLarge, ScreenWidthMinUhfMobile, getScreenSelector, getHighContrastNoAdjustStyle, getEdgeChromiumNoHighContrastAdjustSelector, normalize, noWrap, getFadedOverflowStyle, getPlaceholderStyles, ZIndexes, buildClassMap, getIcon, registerIcons, registerIconAlias, unregisterIcons, setIconOptions, getIconClassName, InjectionMode, Stylesheet, concatStyleSets, concatStyleSetsWithProps, fontFace, keyframes, mergeStyleSets, mergeStyles, FLUENT_CDN_BASE_URL */
-/*! exports used: AnimationClassNames, AnimationVariables, DefaultEffects, FontWeights, HighContrastSelector, HighContrastSelectorWhite, IconFontSizes, ScreenWidthMaxMedium, ScreenWidthMinLarge, ScreenWidthMinMedium, ScreenWidthMinUhfMobile, ScreenWidthMinXLarge, ScreenWidthMinXXLarge, ZIndexes, concatStyleSets, concatStyleSetsWithProps, focusClear, getFocusStyle, getGlobalClassNames, getHighContrastNoAdjustStyle, getIcon, getInputFocusStyle, getPlaceholderStyles, getScreenSelector, getTheme, hiddenContentStyle, mergeStyleSets, mergeStyles, normalize */
+/*! exports used: AnimationClassNames, AnimationVariables, DefaultEffects, FontWeights, HighContrastSelector, HighContrastSelectorWhite, IconFontSizes, ScreenWidthMaxMedium, ScreenWidthMinLarge, ScreenWidthMinMedium, ScreenWidthMinUhfMobile, ScreenWidthMinXLarge, ScreenWidthMinXXLarge, ZIndexes, concatStyleSets, concatStyleSetsWithProps, focusClear, getFocusStyle, getGlobalClassNames, getHighContrastNoAdjustStyle, getIcon, getInputFocusStyle, getPlaceholderStyles, getScreenSelector, getTheme, hiddenContentStyle, keyframes, mergeStyleSets, mergeStyles, normalize */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10379,7 +10819,7 @@ function lifecycle() {
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "z", function() { return _styles_index__WEBPACK_IMPORTED_MODULE_1__["v"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "C", function() { return _styles_index__WEBPACK_IMPORTED_MODULE_1__["w"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "D", function() { return _styles_index__WEBPACK_IMPORTED_MODULE_1__["w"]; });
 
 /* harmony import */ var _utilities_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utilities/index */ "583I");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "u", function() { return _utilities_index__WEBPACK_IMPORTED_MODULE_2__["a"]; });
@@ -10392,6 +10832,8 @@ function lifecycle() {
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "A", function() { return _MergeStyles__WEBPACK_IMPORTED_MODULE_3__["c"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "B", function() { return _MergeStyles__WEBPACK_IMPORTED_MODULE_3__["d"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "C", function() { return _MergeStyles__WEBPACK_IMPORTED_MODULE_3__["e"]; });
 
 /* harmony import */ var _version__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./version */ "YFv9");
 /* harmony import */ var _styles_theme__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./styles/theme */ "L2Vj");
@@ -11417,6 +11859,29 @@ function toResourcePath(url) {
     };
 }
 //# sourceMappingURL=to-resource-path.js.map
+
+/***/ }),
+
+/***/ "G82h":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/IconsContext.js ***!
+  \*********************************************************************************/
+/*! exports provided: IconsContext */
+/*! exports used: IconsContext */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IconsContext; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+;
+/**
+ * Represents a React Context which provides you with the option to configure the KendoReact components icons.
+ */
+var IconsContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"]({ type: 'svg' });
+IconsContext.displayName = 'KendoReactIconsContext';
+
 
 /***/ }),
 
@@ -12922,6 +13387,122 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 
 /***/ }),
 
+/***/ "IE7g":
+/*!****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/SvgIcon.js ***!
+  \****************************************************************************/
+/*! exports provided: SvgIcon */
+/*! exports used: SvgIcon */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SvgIcon; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _classNames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../classNames */ "SlnR");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "rCus");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+
+
+
+/**
+ * Represents the [KendoReact SvgIcon component]({% slug overview_svgicon %}).
+ *
+ * @example
+ * ```jsx
+ * import { accessibility } from '@progress/kendo-svg-icons';
+ *
+ * const App = () => {
+ *   return (
+ *       <SvgIcon icon={accessibility} />
+ *   );
+ * };
+ *    ReactDOM.render(<App />, document.querySelector('my-app'));
+ * ```
+ */
+var SvgIcon = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var children = props.children, className = props.className, svgClassName = props.svgClassName, icon = props.icon, flip = props.flip, id = props.id, tabIndex = props.tabIndex, size = props.size, style = props.style, svgStyle = props.svgStyle, themeColor = props.themeColor, viewBox = props.viewBox, name = props.name, onClick = props.onClick, others = __rest(props, ["children", "className", "svgClassName", "icon", "flip", "id", "tabIndex", "size", "style", "svgStyle", "themeColor", "viewBox", "name", "onClick"]);
+    var elementRef = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return ({
+        element: elementRef.current
+    }); });
+    var iconNameProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return icon ? icon.name : defaultProps.icon; }, [icon]);
+    var sizeProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return size || defaultProps.size; }, [size]);
+    var flipProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return flip || defaultProps.flip; }, [flip]);
+    var viewBoxProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return viewBox || defaultProps.viewBox; }, [viewBox]);
+    var elementClassNames = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () {
+        var _a;
+        return Object(_classNames__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-icon', 'k-svg-icon', 'k-svg-i-' + iconNameProp, (_a = {},
+            _a["k-color-".concat(themeColor)] = themeColor,
+            _a['k-flip-h'] = flipProp === 'horizontal' || flipProp === 'both',
+            _a['k-flip-v'] = flipProp === 'vertical' || flipProp === 'both',
+            _a), _constants__WEBPACK_IMPORTED_MODULE_3__[/* SIZE_CLASSES */ "a"][sizeProp], className);
+    }, [iconNameProp, themeColor, sizeProp, flipProp, className]);
+    var elementStyle = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () {
+        if (props.width && props.height) {
+            return __assign({ width: props.width, height: props.height }, style);
+        }
+        else if (props.width) {
+            return __assign({ width: props.width, height: props.width }, style);
+        }
+        else if (props.height) {
+            return __assign({ width: props.height, height: props.height }, style);
+        }
+        else {
+            return __assign({}, style);
+        }
+    }, [props.width, props.height, style]);
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: elementClassNames, style: elementStyle, ref: elementRef, onClick: onClick },
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("svg", __assign({ id: id, className: svgClassName, style: svgStyle, "aria-hidden": true, tabIndex: tabIndex, focusable: false, xmlns: "http://www.w3.org/2000/svg", viewBox: icon ? icon.viewBox : viewBoxProp, dangerouslySetInnerHTML: icon ? { __html: icon.content } : undefined }, others), icon ? undefined : children)));
+});
+SvgIcon.propTypes = {
+    style: prop_types__WEBPACK_IMPORTED_MODULE_1__["object"],
+    classNames: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    children: prop_types__WEBPACK_IMPORTED_MODULE_1__["any"],
+    icon: prop_types__WEBPACK_IMPORTED_MODULE_1__["object"],
+    themeColor: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([
+        'inherit', 'primary', 'secondary', 'tertiary',
+        'info', 'success', 'error', 'warning',
+        'dark', 'light', 'inverse'
+    ]),
+    size: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['default', 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge']),
+    flip: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['default', 'horizontal', 'vertical', 'both'])
+};
+var defaultProps = {
+    size: 'default',
+    flip: 'default',
+    icon: '',
+    viewBox: '0 0 24 24'
+};
+SvgIcon.displayName = 'KendoSvgIcon';
+
+
+/***/ }),
+
 /***/ "IIvt":
 /*!*****************************************************************************************!*\
   !*** ./node_modules/@uifabric/utilities/lib/customizations/useCustomizationSettings.js ***!
@@ -12965,6 +13546,53 @@ function useForceUpdate() {
     return function () { return setValue(function (value) { return ++value; }); };
 }
 //# sourceMappingURL=useCustomizationSettings.js.map
+
+/***/ }),
+
+/***/ "ISWX":
+/*!**********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/Chip/focus-reducer.js ***!
+  \**********************************************************************************/
+/*! exports provided: FOCUS_ACTION, focusReducer */
+/*! exports used: FOCUS_ACTION, focusReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FOCUS_ACTION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return focusReducer; });
+/**
+ * @hidden
+ */
+var FOCUS_ACTION;
+(function (FOCUS_ACTION) {
+    FOCUS_ACTION["next"] = "next";
+    FOCUS_ACTION["prev"] = "prev";
+    FOCUS_ACTION["current"] = "current";
+    FOCUS_ACTION["reset"] = "reset";
+})(FOCUS_ACTION || (FOCUS_ACTION = {}));
+/**
+ * @hidden
+ */
+var focusReducer = function (state, action) {
+    var currentIndex = action.items.findIndex(function (i) { return i === state; });
+    switch (action.type) {
+        case FOCUS_ACTION.next:
+            return currentIndex === action.items.length - 1
+                ? state
+                : action.items[currentIndex + 1];
+        case FOCUS_ACTION.prev:
+            return currentIndex === 0
+                ? state
+                : action.items[currentIndex - 1];
+        case FOCUS_ACTION.current:
+            return action.payload;
+        case FOCUS_ACTION.reset:
+            return null;
+        default:
+            return state;
+    }
+};
+
 
 /***/ }),
 
@@ -14420,6 +15048,34 @@ function prefixRules(rulePairs, index) {
 
 /***/ }),
 
+/***/ "Jx/d":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/card/CardHeader.js ***!
+  \******************************************************************************/
+/*! exports provided: CardHeader */
+/*! exports used: CardHeader */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CardHeader; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+
+
+
+var CardHeader = function (props) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: props.style, className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-card-header', props.className) }, props.children));
+};
+CardHeader.propTypes = {
+    className: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"]
+};
+
+
+/***/ }),
+
 /***/ "JycL":
 /*!*************************************************************************!*\
   !*** ./node_modules/@fluentui/react/lib/components/Icon/Icon.styles.js ***!
@@ -14435,7 +15091,7 @@ function prefixRules(rulePairs, index) {
 /* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Styling */ "Dfs8");
 
 /** Class names used in themeable and non-themeable Icon components */
-var classNames = Object(_Styling__WEBPACK_IMPORTED_MODULE_0__[/* mergeStyleSets */ "A"])({
+var classNames = Object(_Styling__WEBPACK_IMPORTED_MODULE_0__[/* mergeStyleSets */ "B"])({
     root: {
         display: 'inline-block',
     },
@@ -16915,6 +17571,109 @@ var ShimmerBase = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "MgzW":
+/*!*********************************************!*\
+  !*** ./node_modules/object-assign/index.js ***!
+  \*********************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+
+/* eslint-disable no-unused-vars */
+var getOwnPropertySymbols = Object.getOwnPropertySymbols;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+var propIsEnumerable = Object.prototype.propertyIsEnumerable;
+
+function toObject(val) {
+	if (val === null || val === undefined) {
+		throw new TypeError('Object.assign cannot be called with null or undefined');
+	}
+
+	return Object(val);
+}
+
+function shouldUseNative() {
+	try {
+		if (!Object.assign) {
+			return false;
+		}
+
+		// Detect buggy property enumeration order in older V8 versions.
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=4118
+		var test1 = new String('abc');  // eslint-disable-line no-new-wrappers
+		test1[5] = 'de';
+		if (Object.getOwnPropertyNames(test1)[0] === '5') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test2 = {};
+		for (var i = 0; i < 10; i++) {
+			test2['_' + String.fromCharCode(i)] = i;
+		}
+		var order2 = Object.getOwnPropertyNames(test2).map(function (n) {
+			return test2[n];
+		});
+		if (order2.join('') !== '0123456789') {
+			return false;
+		}
+
+		// https://bugs.chromium.org/p/v8/issues/detail?id=3056
+		var test3 = {};
+		'abcdefghijklmnopqrst'.split('').forEach(function (letter) {
+			test3[letter] = letter;
+		});
+		if (Object.keys(Object.assign({}, test3)).join('') !==
+				'abcdefghijklmnopqrst') {
+			return false;
+		}
+
+		return true;
+	} catch (err) {
+		// We don't expect any of the above to throw, but better to be safe.
+		return false;
+	}
+}
+
+module.exports = shouldUseNative() ? Object.assign : function (target, source) {
+	var from;
+	var to = toObject(target);
+	var symbols;
+
+	for (var s = 1; s < arguments.length; s++) {
+		from = Object(arguments[s]);
+
+		for (var key in from) {
+			if (hasOwnProperty.call(from, key)) {
+				to[key] = from[key];
+			}
+		}
+
+		if (getOwnPropertySymbols) {
+			symbols = getOwnPropertySymbols(from);
+			for (var i = 0; i < symbols.length; i++) {
+				if (propIsEnumerable.call(from, symbols[i])) {
+					to[symbols[i]] = from[symbols[i]];
+				}
+			}
+		}
+	}
+
+	return to;
+};
+
+
+/***/ }),
+
 /***/ "Mqb9":
 /*!*************************************************************************************!*\
   !*** ./node_modules/@fluentui/react/lib/components/Divider/VerticalDivider.base.js ***!
@@ -17654,7 +18413,7 @@ function mergeCssSets(styleSets, options) {
 var getDividerClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* memoizeFunction */ "b"])(
 // eslint-disable-next-line deprecation/deprecation
 function (theme) {
-    return Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyleSets */ "A"])({
+    return Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyleSets */ "B"])({
         wrapper: {
             display: 'inline-flex',
             height: '100%',
@@ -18758,7 +19517,7 @@ class FinanceApFormWebPart extends _microsoft_sp_webpart_base__WEBPACK_IMPORTED_
         });
         return __awaiter(this, void 0, void 0, function* () {
             _super.onInit.call(this);
-            Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_9__[/* getSP */ "c"])(this.context);
+            Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_9__[/* getSP */ "e"])(this.context);
             return Promise.resolve();
         });
     }
@@ -19494,6 +20253,396 @@ Object(_setVersion__WEBPACK_IMPORTED_MODULE_0__[/* setVersion */ "a"])('@uifabri
 
 /***/ }),
 
+/***/ "S7IN":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/Chip/Chip.js ***!
+  \*************************************************************************/
+/*! exports provided: Chip */
+/*! exports used: Chip */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Chip; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _ChipList__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ChipList */ "vsJN");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-react-common */ "8oZF");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @progress/kendo-react-common */ "hIkH");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @progress/kendo-react-common */ "n6+D");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @progress/kendo-react-common */ "XIJ8");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @progress/kendo-react-common */ "uN2g");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @progress/kendo-react-common */ "UB9o");
+/* harmony import */ var _focus_reducer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./focus-reducer */ "ISWX");
+/* harmony import */ var _data_reducer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./data-reducer */ "DaYf");
+/* harmony import */ var _selection_reducer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./selection-reducer */ "biYi");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @progress/kendo-react-common */ "mfP9");
+/* harmony import */ var _package_metadata__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../package-metadata */ "q97n");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @progress/kendo-react-common */ "xM6p");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+
+
+
+
+
+
+
+
+
+/**
+ * Represents the Chip component.
+ */
+var Chip = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var _a;
+    Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_13__[/* validatePackage */ "a"])(_package_metadata__WEBPACK_IMPORTED_MODULE_14__[/* packageMetadata */ "a"]);
+    var target = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var chipRef = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var dir = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__[/* useDir */ "a"])(chipRef, props.dir);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](target, function () { return ({
+        element: chipRef.current,
+        props: props
+    }); });
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return target.current; });
+    var _b = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](_ChipList__WEBPACK_IMPORTED_MODULE_2__[/* ChipListSelectionContext */ "c"]), selection = _b[0], dispatchSelection = _b[1];
+    var _c = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](_ChipList__WEBPACK_IMPORTED_MODULE_2__[/* ChipListFocusContext */ "b"]), focus = _c[0], dispatchFocus = _c[1];
+    var _d = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](_ChipList__WEBPACK_IMPORTED_MODULE_2__[/* ChipListDataContext */ "a"]), dispatchData = _d[1];
+    var selected = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () {
+        return (props.selected || (Array.isArray(selection)
+            ? selection.some(function (i) { return i === props.value; })
+            : selection === props.value));
+    }, [props.selected, props.value, selection]);
+    var focused = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return focus === props.value; }, [props.value, focus]);
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](function () {
+        if (focused && chipRef.current) {
+            chipRef.current.focus();
+        }
+    }, [focused]);
+    var handleClick = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        dispatchSelection({ type: _selection_reducer__WEBPACK_IMPORTED_MODULE_12__[/* SELECTION_ACTION */ "a"].toggle, payload: props.value, event: event });
+    }, [dispatchSelection, props.value]);
+    var handleRemove = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (!props.removable) {
+            return;
+        }
+        dispatchData({ type: _data_reducer__WEBPACK_IMPORTED_MODULE_11__[/* CHIP_DATA_ACTION */ "a"].remove, payload: props.value, event: event });
+        dispatchFocus({ type: _focus_reducer__WEBPACK_IMPORTED_MODULE_10__[/* FOCUS_ACTION */ "a"].reset, payload: props.value, event: event });
+        dispatchSelection({ type: _selection_reducer__WEBPACK_IMPORTED_MODULE_12__[/* SELECTION_ACTION */ "a"].remove, payload: props.value, event: event });
+        if (props.onRemove) {
+            props.onRemove.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [props.onRemove, props.value, props.removable, dispatchData, dispatchFocus, dispatchSelection]);
+    var handleKeyDown = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        switch (event.keyCode) {
+            case _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "a"].left:
+                dispatchFocus({ type: _focus_reducer__WEBPACK_IMPORTED_MODULE_10__[/* FOCUS_ACTION */ "a"].prev, payload: props.value, event: event });
+                break;
+            case _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "a"].right:
+                dispatchFocus({ type: _focus_reducer__WEBPACK_IMPORTED_MODULE_10__[/* FOCUS_ACTION */ "a"].next, payload: props.value, event: event });
+                break;
+            case _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "a"].enter:
+                dispatchSelection({ type: _selection_reducer__WEBPACK_IMPORTED_MODULE_12__[/* SELECTION_ACTION */ "a"].toggle, payload: props.value, event: event });
+                break;
+            case _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* Keys */ "a"].delete:
+                handleRemove(event);
+                break;
+            default:
+                break;
+        }
+        if (props.onKeyDown) {
+            props.onKeyDown.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [props.onKeyDown, props.value, dispatchFocus, dispatchSelection, handleRemove]);
+    var handleFocus = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        dispatchFocus({ payload: props.value, type: _focus_reducer__WEBPACK_IMPORTED_MODULE_10__[/* FOCUS_ACTION */ "a"].current, event: event });
+        if (props.onFocus) {
+            props.onFocus.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [props.onFocus, props.value, dispatchFocus]);
+    var handleBlur = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (props.onBlur) {
+            props.onBlur.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [props.onBlur]);
+    var mouseProps = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_15__[/* useMouse */ "a"])(props, target, { onClick: handleClick });
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", __assign({}, mouseProps, { role: props.role, id: props.value, style: props.style, ref: chipRef, dir: dir, tabIndex: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__[/* getTabIndex */ "a"])(props.tabIndex, props.disabled, undefined), className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__[/* classNames */ "a"])('k-chip', (_a = {
+                'k-rtl': dir === 'rtl',
+                'k-disabled': props.disabled,
+                'k-selected': selected,
+                'k-focus': focused
+            },
+            _a["k-chip-".concat(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__[/* kendoThemeMaps */ "a"].sizeMap[props.size] || props.size)] = props.size,
+            _a["k-rounded-".concat(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__[/* kendoThemeMaps */ "a"].roundedMap[props.rounded] || props.rounded)] = props.rounded,
+            _a["k-chip-".concat(props.fillMode)] = props.fillMode,
+            _a["k-chip-".concat(props.fillMode, "-").concat(props.themeColor)] = Boolean(props.fillMode && props.themeColor),
+            _a), props.className), "aria-checked": selected, "aria-disabled": props.disabled, "aria-describedby": props.ariaDescribedBy, onFocus: handleFocus, onBlur: handleBlur, onKeyDown: handleKeyDown }),
+        (selected && (props.selectedIcon || props.selectedSvgIcon)) &&
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_8__[/* IconWrap */ "a"], { className: 'k-chip-icon', name: props.selectedIcon ? Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* toIconName */ "c"])(props.selectedIcon) : undefined, icon: props.selectedSvgIcon, size: 'small' }),
+        (props.icon || props.svgIcon) &&
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_8__[/* IconWrap */ "a"], { className: 'k-chip-icon', name: props.icon ? Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* toIconName */ "c"])(props.icon) : undefined, icon: props.svgIcon, size: 'small' }),
+        (props.avatar) &&
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "k-chip-avatar k-avatar k-rounded-".concat(props.avatar.rounded, " k-avatar-md k-avatar-solid k-avatar-solid-primary"), style: props.avatar.style },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "k-avatar-image" },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("img", { src: props.avatar.image, alt: props.avatar.imageAlt }))),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: 'k-chip-content' }, props.children !== undefined
+            ? props.children
+            : props.text &&
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { "aria-label": props.ariaLabel || props.text, className: 'k-chip-label' }, props.text)),
+        props.removable && (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "k-chip-actions" },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__[/* classNames */ "a"])('k-chip-action', 'k-chip-remove-action'), onClick: handleRemove },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_8__[/* IconWrap */ "a"], { name: props.removeIcon ? Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* toIconName */ "c"])(props.removeIcon) : undefined, icon: props.removeSvgIcon, size: 'small' }))))));
+});
+var propTypes = {
+    id: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    text: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    value: prop_types__WEBPACK_IMPORTED_MODULE_1__["any"],
+    dir: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['ltr', 'rtl']),
+    removable: prop_types__WEBPACK_IMPORTED_MODULE_1__["bool"],
+    removeIcon: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    removeIconSvg: _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* svgIconPropType */ "a"],
+    disabled: prop_types__WEBPACK_IMPORTED_MODULE_1__["bool"],
+    icon: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    svgIcon: _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* svgIconPropType */ "a"],
+    selectedIcon: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    selectedIconSvg: _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_9__[/* svgIconPropType */ "a"],
+    onRemove: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"],
+    dataItem: prop_types__WEBPACK_IMPORTED_MODULE_1__["any"],
+    selected: prop_types__WEBPACK_IMPORTED_MODULE_1__["bool"],
+    ariaDescribedBy: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    size: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([null, 'small', 'medium', 'large']),
+    rounded: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([null, 'small', 'medium', 'large', 'full']),
+    fillMode: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([null, 'outline', 'solid']),
+    // eslint-disable-next-line max-len
+    themeColor: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([null, 'base', 'info', 'success', 'warning', 'error'])
+};
+var defaultProps = {
+    disabled: false,
+    removable: false,
+    removeIcon: 'k-i-x-circle',
+    dir: 'ltr',
+    size: 'medium',
+    rounded: 'medium',
+    fillMode: 'solid',
+    themeColor: 'base'
+};
+Chip.displayName = 'KendoReactChip';
+// TODO: delete casting when @types/react is updated!
+Chip.propTypes = propTypes;
+Chip.defaultProps = defaultProps;
+
+
+/***/ }),
+
+/***/ "SMhn":
+/*!*********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/getter.js ***!
+  \*********************************************************************/
+/*! exports provided: getter */
+/*! exports used: getter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getter; });
+/* harmony import */ var _fieldList__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fieldList */ "SkrY");
+
+var getterCache = {};
+getterCache.undefined = function () { return undefined; };
+/**
+ * Can be used for getting value from object using field path. For example `users[index].name`.
+ *
+ * @example
+ * ```jsx-no-run
+ * const values = {users:[{lastName: 'Doe'}]};
+ * const firstUserLastName = getter('user[0].lastName');
+ *
+ * console.log(firstUserLastName(values))
+ *
+ * // result: 'Doe'
+ * ```
+ */
+function getter(field) {
+    if (getterCache[field]) {
+        return getterCache[field];
+    }
+    var fields = Object(_fieldList__WEBPACK_IMPORTED_MODULE_0__[/* fieldList */ "a"])(field);
+    getterCache[field] = function (obj) {
+        var result = obj;
+        for (var idx = 0; idx < fields.length && result; idx++) {
+            result = result[fields[idx]];
+        }
+        return result;
+    };
+    return getterCache[field];
+}
+
+
+/***/ }),
+
+/***/ "SkrY":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/fieldList.js ***!
+  \************************************************************************/
+/*! exports provided: fieldList */
+/*! exports used: fieldList */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fieldList; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constants */ "hcMN");
+
+/**
+ * @hidden
+ */
+function fieldList(field) {
+    var fields = [];
+    field.replace(_constants__WEBPACK_IMPORTED_MODULE_0__[/* FIELD_REGEX */ "a"], function (_match, index, indexAccessor, fieldName) {
+        fields.push(index !== undefined ? index : (indexAccessor || fieldName));
+    });
+    return fields;
+}
+
+
+/***/ }),
+
+/***/ "SlnR":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/classNames.js ***!
+  \*************************************************************************/
+/*! exports provided: classNames */
+/*! exports used: classNames */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return classNames; });
+/**
+ * @hidden
+ */
+var classNames = function () {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+    }
+    var result = {};
+    var addLeafKeys = function (arg) { return typeof arg === 'object' ? Object
+        .keys(arg)
+        .forEach(function (key) {
+        result[key] = arg[key];
+    }) : result[arg] = true; };
+    ;
+    var addKeys = function (list) { return list
+        .filter(function (arg) { return arg !== true && !!arg; })
+        .map(function (arg) {
+        return Array.isArray(arg) ?
+            addKeys(arg) :
+            addLeafKeys(arg);
+    }); };
+    ;
+    addKeys(args);
+    return Object
+        .keys(result)
+        .map(function (key) { return (result[key] && key) || null; })
+        .filter(function (el) { return el !== null; })
+        .join(' ');
+};
+
+
+/***/ }),
+
+/***/ "Sy/j":
+/*!************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-form/dist/es/FormElement.js ***!
+  \************************************************************************/
+/*! exports provided: FormElement */
+/*! exports used: FormElement */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FormElement; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "XIJ8");
+/* harmony import */ var _FormContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FormContext */ "792I");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+
+
+/**
+ * Represents the KendoReact FormElement component.
+ * It's small wrapper around HTML form element which automatically attach the
+ * Form component's `onSubmit` render prop and Kendo CSS classes.
+ * Other props are passed to the DOM node.
+ */
+var FormElement = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var _a;
+    var element = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var target = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](target, function () { return ({ element: element.current, props: props }); });
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return target.current; });
+    var form = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](_FormContext__WEBPACK_IMPORTED_MODULE_3__[/* FormContext */ "a"]);
+    var className = props.className, onSubmit = props.onSubmit, style = props.style, horizontal = props.horizontal, size = props.size, others = __rest(props, ["className", "onSubmit", "style", "horizontal", "size"]);
+    var formClassName = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_1__[/* classNames */ "a"])((_a = {
+            'k-form': true
+        },
+        _a["k-form-".concat(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* kendoThemeMaps */ "a"].sizeMap[size] || size)] = size,
+        _a['k-form-horizontal'] = horizontal === true,
+        _a), className);
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("form", __assign({ ref: element }, others, { style: props.style, className: formClassName, onSubmit: form ? form.onSubmit : undefined }), props.children));
+});
+var defaultProps = {
+    size: 'medium'
+};
+FormElement.displayName = 'KendoReactFormElement';
+FormElement.defaultProps = defaultProps;
+
+
+/***/ }),
+
 /***/ "T90h":
 /*!*********************************************************************!*\
   !*** ./node_modules/@fluentui/theme/lib/fonts/DefaultFontStyles.js ***!
@@ -19599,6 +20748,34 @@ var hiddenContentStyle = {
     whiteSpace: 'nowrap',
 };
 //# sourceMappingURL=hiddenContentStyle.js.map
+
+/***/ }),
+
+/***/ "Tbay":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/card/CardSubtitle.js ***!
+  \********************************************************************************/
+/*! exports provided: CardSubtitle */
+/*! exports used: CardSubtitle */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CardSubtitle; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+
+
+
+var CardSubtitle = function (props) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: props.style, className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-card-subtitle', props.className) }, props.children));
+};
+CardSubtitle.propTypes = {
+    className: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"]
+};
+
 
 /***/ }),
 
@@ -20478,6 +21655,41 @@ var ImageIcon = function (props) {
 
 /***/ }),
 
+/***/ "UB9o":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/utils.js ***!
+  \**************************************************************************/
+/*! exports provided: toIconName, toIconClass, svgIconPropType */
+/*! exports used: svgIconPropType, toIconClass, toIconName */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return toIconName; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return toIconClass; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return svgIconPropType; });
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * @hidden
+ */
+var toIconName = function (iconClass) { return iconClass.replace(/^k-i-/, ''); };
+/**
+ * @hidden
+ */
+var toIconClass = function (name) { return 'k-i-' + name; };
+/**
+ * @hidden
+ */
+var svgIconPropType = prop_types__WEBPACK_IMPORTED_MODULE_0__["shape"]({
+    name: prop_types__WEBPACK_IMPORTED_MODULE_0__["string"].isRequired,
+    content: prop_types__WEBPACK_IMPORTED_MODULE_0__["string"].isRequired,
+    viewBox: prop_types__WEBPACK_IMPORTED_MODULE_0__["string"].isRequired
+});
+
+
+/***/ }),
+
 /***/ "UI1s":
 /*!******************************************************************************!*\
   !*** ./node_modules/@fluentui/react/lib/components/KeytipData/KeytipData.js ***!
@@ -20632,7 +21844,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_UWqr__;
 
 var getSplitButtonClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* memoizeFunction */ "b"])(function (styles, disabled, expanded, checked, primaryDisabled) {
     return {
-        root: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "B"])(styles.splitButtonMenuButton, expanded && [styles.splitButtonMenuButtonExpanded], disabled && [styles.splitButtonMenuButtonDisabled], checked && !disabled && [styles.splitButtonMenuButtonChecked], primaryDisabled &&
+        root: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "C"])(styles.splitButtonMenuButton, expanded && [styles.splitButtonMenuButtonExpanded], disabled && [styles.splitButtonMenuButtonDisabled], checked && !disabled && [styles.splitButtonMenuButtonChecked], primaryDisabled &&
             !disabled && [
             {
                 selectors: {
@@ -20640,7 +21852,7 @@ var getSplitButtonClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/*
                 },
             },
         ]),
-        splitButtonContainer: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "B"])(styles.splitButtonContainer, !disabled &&
+        splitButtonContainer: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "C"])(styles.splitButtonContainer, !disabled &&
             checked && [
             styles.splitButtonContainerChecked,
             {
@@ -20657,12 +21869,37 @@ var getSplitButtonClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/*
                 },
             },
         ], disabled && styles.splitButtonContainerDisabled),
-        icon: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "B"])(styles.splitButtonMenuIcon, disabled && styles.splitButtonMenuIconDisabled, !disabled && primaryDisabled && styles.splitButtonMenuIcon),
-        flexContainer: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "B"])(styles.splitButtonFlexContainer),
-        divider: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "B"])(styles.splitButtonDivider, (primaryDisabled || disabled) && styles.splitButtonDividerDisabled),
+        icon: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "C"])(styles.splitButtonMenuIcon, disabled && styles.splitButtonMenuIconDisabled, !disabled && primaryDisabled && styles.splitButtonMenuIcon),
+        flexContainer: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "C"])(styles.splitButtonFlexContainer),
+        divider: Object(_Styling__WEBPACK_IMPORTED_MODULE_1__[/* mergeStyles */ "C"])(styles.splitButtonDivider, (primaryDisabled || disabled) && styles.splitButtonDividerDisabled),
     };
 });
 //# sourceMappingURL=SplitButton.classNames.js.map
+
+/***/ }),
+
+/***/ "UYf7":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-layout/dist/es/package-metadata.js ***!
+  \*******************************************************************************/
+/*! exports provided: packageMetadata */
+/*! exports used: packageMetadata */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return packageMetadata; });
+/**
+ * @hidden
+ */
+var packageMetadata = {
+    name: '@progress/kendo-react-layout',
+    productName: 'KendoReact',
+    productCodes: ['KENDOUIREACT', 'KENDOUICOMPLETE'],
+    publishDate: 1695801122,
+    version: '',
+    licensingDocsUrl: 'https://www.telerik.com/kendo-react-ui/my-license/?utm_medium=product&utm_source=kendoreact&utm_campaign=kendo-ui-react-purchase-license-keys-warning'
+};
+
 
 /***/ }),
 
@@ -21242,6 +22479,71 @@ function concatStyleSets() {
     return mergedSet;
 }
 //# sourceMappingURL=concatStyleSets.js.map
+
+/***/ }),
+
+/***/ "VMH+":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@fluentui/react/lib/components/Spinner/Spinner.base.js ***!
+  \*****************************************************************************/
+/*! exports provided: SpinnerBase */
+/*! exports used: SpinnerBase */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerBase; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _Spinner_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Spinner.types */ "oR7b");
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Utilities */ "9Ppb");
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Utilities */ "D9iZ");
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Utilities */ "Cx0t");
+
+
+
+
+var getClassNames = Object(_Utilities__WEBPACK_IMPORTED_MODULE_3__[/* classNamesFunction */ "a"])();
+var SpinnerBase = /** @class */ (function (_super) {
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __extends */ "c"])(SpinnerBase, _super);
+    function SpinnerBase() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SpinnerBase.prototype.render = function () {
+        // eslint-disable-next-line deprecation/deprecation
+        var _a = this.props, type = _a.type, size = _a.size, ariaLabel = _a.ariaLabel, ariaLive = _a.ariaLive, styles = _a.styles, label = _a.label, theme = _a.theme, className = _a.className, labelPosition = _a.labelPosition;
+        var statusMessage = ariaLabel;
+        var nativeProps = Object(_Utilities__WEBPACK_IMPORTED_MODULE_4__[/* getNativeProps */ "d"])(this.props, _Utilities__WEBPACK_IMPORTED_MODULE_4__[/* divProperties */ "c"], ['size']);
+        // SpinnerType is deprecated. If someone is still using this property, rather than putting the SpinnerType into the
+        // ISpinnerStyleProps, we'll map SpinnerType to its equivalent SpinnerSize and pass that in. Once SpinnerType
+        // finally goes away we should delete this.
+        var styleSize = size;
+        if (styleSize === undefined && type !== undefined) {
+            // eslint-disable-next-line deprecation/deprecation
+            styleSize = type === _Spinner_types__WEBPACK_IMPORTED_MODULE_2__[/* SpinnerType */ "b"].large ? _Spinner_types__WEBPACK_IMPORTED_MODULE_2__[/* SpinnerSize */ "a"].large : _Spinner_types__WEBPACK_IMPORTED_MODULE_2__[/* SpinnerSize */ "a"].medium;
+        }
+        var classNames = getClassNames(styles, {
+            theme: theme,
+            size: styleSize,
+            className: className,
+            labelPosition: labelPosition,
+        });
+        return (react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __assign */ "a"])({}, nativeProps, { className: classNames.root }),
+            react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: classNames.circle }),
+            label && react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: classNames.label }, label),
+            statusMessage && (react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { role: "status", "aria-live": ariaLive },
+                react__WEBPACK_IMPORTED_MODULE_1__["createElement"](_Utilities__WEBPACK_IMPORTED_MODULE_5__[/* DelayedRender */ "a"], null,
+                    react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: classNames.screenReaderText }, statusMessage))))));
+    };
+    SpinnerBase.defaultProps = {
+        size: _Spinner_types__WEBPACK_IMPORTED_MODULE_2__[/* SpinnerSize */ "a"].medium,
+        ariaLive: 'polite',
+        labelPosition: 'bottom',
+    };
+    return SpinnerBase;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]));
+
+//# sourceMappingURL=Spinner.base.js.map
 
 /***/ }),
 
@@ -22114,6 +23416,31 @@ function styled(Component, baseStyles, getProps, customizable, pure) {
 
 /***/ }),
 
+/***/ "WbBG":
+/*!*************************************************************!*\
+  !*** ./node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
+  \*************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+
+module.exports = ReactPropTypesSecret;
+
+
+/***/ }),
+
 /***/ "Wjh3":
 /*!*****************************************************!*\
   !*** ./node_modules/@pnp/sp/behaviors/spbrowser.js ***!
@@ -22395,6 +23722,33 @@ function css() {
     return classes.join(' ');
 }
 //# sourceMappingURL=css.js.map
+
+/***/ }),
+
+/***/ "XIJ8":
+/*!********************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/theme.js ***!
+  \********************************************************************/
+/*! exports provided: kendoThemeMaps */
+/*! exports used: kendoThemeMaps */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return kendoThemeMaps; });
+/** @hidden */
+var kendoThemeMaps = {
+    sizeMap: {
+        small: 'sm',
+        medium: 'md',
+        large: 'lg'
+    },
+    roundedMap: {
+        small: 'sm',
+        medium: 'md',
+        large: 'lg'
+    }
+};
+
 
 /***/ }),
 
@@ -22692,20 +24046,20 @@ function getStyles(props) {
   !*** ./lib/webparts/financeApForm/MyHelperMethods.js ***!
   \*******************************************************/
 /*! exports provided: APPROVER_LIST_MODIFIED_WORKFLOW, getSP, FormatCurrency, SumAccounts, GetUserByLoginName, GetUsersByLoginName, GetUserByID, GetAllInvoices, GetInvoiceByStatus, GetInvoiceStatusColumn */
-/*! exports used: GetInvoiceByStatus, GetInvoiceStatusColumn, getSP */
+/*! exports used: FormatCurrency, GetInvoiceByStatus, GetInvoiceStatusColumn, SumAccounts, getSP */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* unused harmony export APPROVER_LIST_MODIFIED_WORKFLOW */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getSP; });
-/* unused harmony export FormatCurrency */
-/* unused harmony export SumAccounts */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSP; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FormatCurrency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return SumAccounts; });
 /* unused harmony export GetUserByLoginName */
 /* unused harmony export GetUsersByLoginName */
 /* unused harmony export GetUserByID */
 /* unused harmony export GetAllInvoices */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GetInvoiceByStatus; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return GetInvoiceStatusColumn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return GetInvoiceByStatus; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return GetInvoiceStatusColumn; });
 /* harmony import */ var _pnp_sp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/sp */ "UKGb");
 /* harmony import */ var _pnp_sp_webs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/sp/webs */ "6k7F");
 /* harmony import */ var _pnp_sp_site_users_web__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/sp/site-users/web */ "EjWy");
@@ -23347,6 +24701,133 @@ var IconButton = /** @class */ (function (_super) {
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]));
 
 //# sourceMappingURL=IconButton.js.map
+
+/***/ }),
+
+/***/ "Zxkc":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@fluentui/react/lib/components/Spinner/Spinner.styles.js ***!
+  \*******************************************************************************/
+/*! exports provided: getStyles */
+/*! exports used: getStyles */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getStyles; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "mrSG");
+/* harmony import */ var _Spinner_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Spinner.types */ "oR7b");
+/* harmony import */ var _Styling__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Styling */ "Dfs8");
+/* harmony import */ var _Utilities__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Utilities */ "GJV8");
+
+
+
+
+var GlobalClassNames = {
+    root: 'ms-Spinner',
+    circle: 'ms-Spinner-circle',
+    label: 'ms-Spinner-label',
+};
+var spinAnimation = Object(_Utilities__WEBPACK_IMPORTED_MODULE_3__[/* memoizeFunction */ "b"])(function () {
+    return Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* keyframes */ "A"])({
+        '0%': {
+            transform: 'rotate(0deg)',
+        },
+        '100%': {
+            transform: 'rotate(360deg)',
+        },
+    });
+});
+var getStyles = function (props) {
+    var _a;
+    var theme = props.theme, size = props.size, className = props.className, labelPosition = props.labelPosition;
+    var palette = theme.palette;
+    var classNames = Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* getGlobalClassNames */ "s"])(GlobalClassNames, theme);
+    return {
+        root: [
+            classNames.root,
+            {
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+            },
+            labelPosition === 'top' && {
+                flexDirection: 'column-reverse',
+            },
+            labelPosition === 'right' && {
+                flexDirection: 'row',
+            },
+            labelPosition === 'left' && {
+                flexDirection: 'row-reverse',
+            },
+            className,
+        ],
+        circle: [
+            classNames.circle,
+            {
+                boxSizing: 'border-box',
+                borderRadius: '50%',
+                border: '1.5px solid ' + palette.themeLight,
+                borderTopColor: palette.themePrimary,
+                animationName: spinAnimation(),
+                animationDuration: '1.3s',
+                animationIterationCount: 'infinite',
+                animationTimingFunction: 'cubic-bezier(.53,.21,.29,.67)',
+                selectors: (_a = {},
+                    _a[_Styling__WEBPACK_IMPORTED_MODULE_2__[/* HighContrastSelector */ "e"]] = Object(tslib__WEBPACK_IMPORTED_MODULE_0__[/* __assign */ "a"])({ borderTopColor: 'Highlight' }, Object(_Styling__WEBPACK_IMPORTED_MODULE_2__[/* getHighContrastNoAdjustStyle */ "t"])()),
+                    _a),
+            },
+            size === _Spinner_types__WEBPACK_IMPORTED_MODULE_1__[/* SpinnerSize */ "a"].xSmall && [
+                'ms-Spinner--xSmall',
+                {
+                    width: 12,
+                    height: 12,
+                },
+            ],
+            size === _Spinner_types__WEBPACK_IMPORTED_MODULE_1__[/* SpinnerSize */ "a"].small && [
+                'ms-Spinner--small',
+                {
+                    width: 16,
+                    height: 16,
+                },
+            ],
+            size === _Spinner_types__WEBPACK_IMPORTED_MODULE_1__[/* SpinnerSize */ "a"].medium && [
+                'ms-Spinner--medium',
+                {
+                    width: 20,
+                    height: 20,
+                },
+            ],
+            size === _Spinner_types__WEBPACK_IMPORTED_MODULE_1__[/* SpinnerSize */ "a"].large && [
+                'ms-Spinner--large',
+                {
+                    width: 28,
+                    height: 28,
+                },
+            ],
+        ],
+        label: [
+            classNames.label,
+            theme.fonts.small,
+            {
+                color: palette.themePrimary,
+                margin: '8px 0 0',
+                textAlign: 'center',
+            },
+            labelPosition === 'top' && {
+                margin: '0 0 8px',
+            },
+            labelPosition === 'right' && {
+                margin: '0 0 0 8px',
+            },
+            labelPosition === 'left' && {
+                margin: '0 8px 0 0',
+            },
+        ],
+        screenReaderText: _Styling__WEBPACK_IMPORTED_MODULE_2__[/* hiddenContentStyle */ "z"],
+    };
+};
+//# sourceMappingURL=Spinner.styles.js.map
 
 /***/ }),
 
@@ -24397,6 +25878,97 @@ function extendComponent(parent, methods) {
     }
 }
 //# sourceMappingURL=extendComponent.js.map
+
+/***/ }),
+
+/***/ "biYi":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/Chip/selection-reducer.js ***!
+  \**************************************************************************************/
+/*! exports provided: SELECTION_TYPE, SELECTION_ACTION, selectionReducer */
+/*! exports used: SELECTION_ACTION, selectionReducer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export SELECTION_TYPE */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SELECTION_ACTION; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return selectionReducer; });
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+/**
+ * @hidden
+ */
+var SELECTION_TYPE;
+(function (SELECTION_TYPE) {
+    SELECTION_TYPE["single"] = "single";
+    SELECTION_TYPE["multiple"] = "multiple";
+    SELECTION_TYPE["none"] = "none";
+})(SELECTION_TYPE || (SELECTION_TYPE = {}));
+/**
+ * @hidden
+ */
+var SELECTION_ACTION;
+(function (SELECTION_ACTION) {
+    SELECTION_ACTION["toggle"] = "toggle";
+    SELECTION_ACTION["remove"] = "remove";
+})(SELECTION_ACTION || (SELECTION_ACTION = {}));
+/**
+ * @hidden
+ */
+var selectionReducer = function (state, action) {
+    switch (action.selection) {
+        case SELECTION_TYPE.single:
+            switch (action.type) {
+                case SELECTION_ACTION.toggle: {
+                    if (!Array.isArray(state) || state === null) {
+                        return action.payload === state ? null : action.payload;
+                    }
+                    throw new Error('State cannot be an array in single selection');
+                }
+                case SELECTION_ACTION.remove: {
+                    return action.payload === state ? null : state;
+                }
+                default:
+                    return state;
+            }
+        case SELECTION_TYPE.multiple:
+            switch (action.type) {
+                case SELECTION_ACTION.toggle: {
+                    if (Array.isArray(state)) {
+                        return state.some(function (i) { return i === action.payload; })
+                            ? state.filter(function (i) { return i !== action.payload; })
+                            : __spreadArray(__spreadArray([], state, true), [action.payload], false);
+                    }
+                    if (state === null) {
+                        return [action.payload];
+                    }
+                    throw new Error('State cannot be non-array in multiple selection');
+                }
+                case SELECTION_ACTION.remove: {
+                    if (Array.isArray(state)) {
+                        return state.some(function (i) { return i === action.payload; })
+                            ? state.filter(function (i) { return i !== action.payload; })
+                            : __spreadArray(__spreadArray([], state, true), [action.payload], false);
+                    }
+                    return state;
+                }
+                default:
+                    return state;
+            }
+        case SELECTION_TYPE.none:
+            return null;
+        default:
+            return state;
+    }
+};
+
 
 /***/ }),
 
@@ -26269,7 +27841,7 @@ function getStyles(props) {
             multiline && classNames.multiline,
             borderless && classNames.borderless,
             underlined && classNames.underlined,
-            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "C"],
+            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "D"],
             {
                 position: 'relative',
             },
@@ -26309,7 +27881,7 @@ function getStyles(props) {
         ],
         fieldGroup: [
             classNames.fieldGroup,
-            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "C"],
+            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "D"],
             {
                 border: "1px solid ".concat(semanticColors.inputBorder),
                 borderRadius: effects.roundedCorner2,
@@ -26402,7 +27974,7 @@ function getStyles(props) {
         field: [
             fonts.medium,
             classNames.field,
-            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "C"],
+            _Styling__WEBPACK_IMPORTED_MODULE_1__[/* normalize */ "D"],
             {
                 borderRadius: 0,
                 border: 'none',
@@ -28562,6 +30134,40 @@ var DefaultEffects = {
 
 /***/ }),
 
+/***/ "hIkH":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/keys.js ***!
+  \*******************************************************************/
+/*! exports provided: Keys */
+/*! exports used: Keys */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Keys; });
+/**
+ * @hidden
+ */
+var Keys = {
+    backspace: 8,
+    tab: 9,
+    enter: 13,
+    shift: 16,
+    esc: 27,
+    space: 32,
+    pageUp: 33,
+    pageDown: 34,
+    end: 35,
+    home: 36,
+    left: 37,
+    up: 38,
+    right: 39,
+    down: 40,
+    delete: 46
+};
+
+
+/***/ }),
+
 /***/ "hMpi":
 /*!********************************************!*\
   !*** ./node_modules/@pnp/sp/decorators.js ***!
@@ -28681,6 +30287,24 @@ function mergeThemes(theme, partialTheme) {
     return mergedTheme;
 }
 //# sourceMappingURL=mergeThemes.js.map
+
+/***/ }),
+
+/***/ "hcMN":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/constants/index.js ***!
+  \******************************************************************************/
+/*! exports provided: FIELD_REGEX */
+/*! exports used: FIELD_REGEX */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FIELD_REGEX; });
+/**
+ * @hidden
+ */
+var FIELD_REGEX = /\[(?:(\d+)|['"](.*?)['"])\]|((?:(?!\[.*?\]|\.).)+)/g;
+
 
 /***/ }),
 
@@ -29912,6 +31536,106 @@ function warnMutuallyExclusive(componentName, props, exclusiveMap) {
 
 /***/ }),
 
+/***/ "jUAH":
+/*!*************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/Icon.js ***!
+  \*************************************************************************/
+/*! exports provided: Icon */
+/*! exports used: Icon */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Icon; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _classNames__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../classNames */ "SlnR");
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "rCus");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../main */ "UB9o");
+/* harmony import */ var _main__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../main */ "xM6p");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+
+
+
+
+/**
+ * Represents the [KendoReact Icon component]({% slug overview_icon %}).
+ *
+ * @example
+ * ```jsx
+ * const App = () => {
+ *   return (
+ *       <Icon name="home"/>
+ *   );
+ * };
+ *    ReactDOM.render(<App />, document.querySelector('my-app'));
+ * ```
+ */
+var Icon = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var className = props.className, name = props.name, themeColor = props.themeColor, size = props.size, flip = props.flip, style = props.style, id = props.id, tabIndex = props.tabIndex, others = __rest(props, ["className", "name", "themeColor", "size", "flip", "style", "id", "tabIndex"]);
+    var target = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var elementRef = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](target, function () { return ({
+        element: elementRef.current
+    }); });
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return target.current; });
+    var sizeProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return size || defaultProps.size; }, [size]);
+    var flipProp = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return flip || defaultProps.flip; }, [flip]);
+    var fontClassNames = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () {
+        var _a;
+        return Object(_classNames__WEBPACK_IMPORTED_MODULE_2__[/* classNames */ "a"])('k-icon', 'k-font-icon', name && Object(_main__WEBPACK_IMPORTED_MODULE_4__[/* toIconClass */ "b"])(name), (_a = {},
+            _a["k-color-".concat(themeColor)] = themeColor,
+            _a['k-flip-h'] = flipProp === 'horizontal' || flipProp === 'both',
+            _a['k-flip-v'] = flipProp === 'vertical' || flipProp === 'both',
+            _a), _constants__WEBPACK_IMPORTED_MODULE_3__[/* SIZE_CLASSES */ "a"][sizeProp], className);
+    }, [name, themeColor, sizeProp, flipProp, className]);
+    var mouseProps = Object(_main__WEBPACK_IMPORTED_MODULE_5__[/* useMouse */ "a"])(props, target);
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", __assign({ ref: elementRef }, others, mouseProps, { className: fontClassNames, id: id, tabIndex: tabIndex, style: style, role: "presentation" })));
+});
+Icon.propTypes = {
+    style: prop_types__WEBPACK_IMPORTED_MODULE_1__["object"],
+    classNames: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    name: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    themeColor: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([
+        'inherit', 'primary', 'secondary', 'tertiary',
+        'info', 'success', 'error', 'warning',
+        'dark', 'light', 'inverse'
+    ]),
+    size: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['default', 'xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge', 'xxxlarge']),
+    flip: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['default', 'horizontal', 'vertical', 'both'])
+};
+var defaultProps = {
+    size: 'default',
+    flip: 'default'
+};
+Icon.displayName = 'KendoIcon';
+
+
+/***/ }),
+
 /***/ "jibU":
 /*!*******************************************************************************!*\
   !*** ./node_modules/@fluentui/react/lib/components/Dropdown/Dropdown.base.js ***!
@@ -30881,7 +32605,7 @@ var DropdownInternal = /** @class */ (function (_super) {
   !*** ./node_modules/@fluentui/style-utilities/lib/MergeStyles.js ***!
   \*******************************************************************/
 /*! exports provided: InjectionMode, Stylesheet, concatStyleSets, concatStyleSetsWithProps, fontFace, keyframes, mergeStyleSets, mergeStyles */
-/*! exports used: concatStyleSets, concatStyleSetsWithProps, mergeStyleSets, mergeStyles */
+/*! exports used: concatStyleSets, concatStyleSetsWithProps, keyframes, mergeStyleSets, mergeStyles */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -30891,11 +32615,14 @@ var DropdownInternal = /** @class */ (function (_super) {
 /* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fluentui/merge-styles */ "qX3+");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
-/* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fluentui/merge-styles */ "O1zE");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_2__["b"]; });
+/* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fluentui/merge-styles */ "KJUs");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fluentui/merge-styles */ "2w4G");
+/* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fluentui/merge-styles */ "O1zE");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_3__["b"]; });
+
+/* harmony import */ var _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fluentui/merge-styles */ "2w4G");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _fluentui_merge_styles__WEBPACK_IMPORTED_MODULE_4__["b"]; });
 
 
 //# sourceMappingURL=MergeStyles.js.map
@@ -31087,7 +32814,7 @@ var getStyles = function (props) {
         label: globalClassnames.label,
         dropdown: [
             globalClassnames.dropdown,
-            _Styling__WEBPACK_IMPORTED_MODULE_3__[/* normalize */ "C"],
+            _Styling__WEBPACK_IMPORTED_MODULE_3__[/* normalize */ "D"],
             fonts.medium,
             {
                 color: semanticColors.menuItemText,
@@ -31169,7 +32896,7 @@ var getStyles = function (props) {
         ],
         title: [
             globalClassnames.title,
-            _Styling__WEBPACK_IMPORTED_MODULE_3__[/* normalize */ "C"],
+            _Styling__WEBPACK_IMPORTED_MODULE_3__[/* normalize */ "D"],
             {
                 backgroundColor: semanticColors.inputBackground,
                 borderWidth: 1,
@@ -31445,6 +33172,23 @@ var getStyles = function (props) {
     };
 };
 //# sourceMappingURL=CalloutContent.styles.js.map
+
+/***/ }),
+
+/***/ "kk6n":
+/*!******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-licensing/dist/index-esm.js ***!
+  \******************************************************************/
+/*! exports provided: setScriptKey, validatePackage */
+/*! all exports used */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setScriptKey", function() { return setScriptKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validatePackage", function() { return validatePackage; });
+var _0x10f4=['z2v0vgLTzq==','ww91CIbSAwnLBNnLigv4CgLYzwqGB24G','zgf0yq==','uhjVz3jLC3mG','AgvmshG=','u2vLia==','ChjVzhvJDenVzgvZ','C2nYAxb0s2v5','D3rmuhm=','rKjcwKG=','tM8GBgLJzw5ZzsbMB3vUzc4k','CgfJA2fNzu5HBwu=','qvfYAMq=','CgfYC2u=','ChjVzhvJDhm=','igzVCIbTB3jLigLUzM9YBwf0Aw9UlGO=','sgr5sMW=','rg9iAwe=','zxDJr2C=','Du9wCuK=','z2v0rNvSBfLLyxi=','lcb0AguGCgfJA2fNzsb3yxmGChvIBgLZAgvKig9Uia==','C2v0','zxrNsxC=','C29YDa==','EeXMBLu=','AgfZ','s0XeCe8=','rM1Ttxy=','tNvstvG=','ww91CIb0CMLHBcbSAwnLBNnLigv4CgLYzwqGB24G','z2v0rgf0zq==','BgvUz3rO','txPHwe8=','BgLJzw5Zzuv4CgLYyxrPB25eyxrL','DhjPywW=','vejxq3K=','r2Ltv1q=','uhPWBva=','z2v0','vgHLihbYB2r1y3qGAxmGBM90igLUy2X1zgvKigLUihrOzsbSAwnLBNnLlGO=','z2v0tw9UDgG=','s2DnDfK=','DMvYC2LVBG==','rKj6sum=','DgLTzxn0yw1W','B2jQzwn0','DhLWzq==','BgLJzw5ZAw5Nrg9JC1vYBa==','BMfTzq==','DwTXAeq=','zg9JC1vYBa==','z3jVDxbfBMq=','z3jVDxa=','yuDyzhy=','zMLUza==','D2fYBG==','zNvUy3rPB24=','Dw5KzwzPBMvK','ChjVzhvJDe5HBwu=','y29Uy2f0','ChvIBgLZAerHDgu=','zxHWAxj5rgf0zq==','CeDhAfu=','y29Kzq==','Dg9mB2nHBgvtDhjPBMC=','tgLJzw5ZzsbHy3rPDMf0Aw9UigzHAwXLzcbMB3iG'];(function(_0x50aaef,_0x10f4b0){var _0x145713=function(_0x421c90){while(--_0x421c90){_0x50aaef['push'](_0x50aaef['shift']());}};_0x145713(++_0x10f4b0);}(_0x10f4,0x1b7));var _0x1457=function(_0x50aaef,_0x10f4b0){_0x50aaef=_0x50aaef-0x0;var _0x145713=_0x10f4[_0x50aaef];if(_0x1457['aWziBr']===undefined){var _0x421c90=function(_0x1aecb4){var _0x16aa36='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=',_0x27d11b=String(_0x1aecb4)['replace'](/=+$/,'');var _0x46c2e8='';for(var _0x29c8dd=0x0,_0x5ea27f,_0x25dc8b,_0xcce210=0x0;_0x25dc8b=_0x27d11b['charAt'](_0xcce210++);~_0x25dc8b&&(_0x5ea27f=_0x29c8dd%0x4?_0x5ea27f*0x40+_0x25dc8b:_0x25dc8b,_0x29c8dd++%0x4)?_0x46c2e8+=String['fromCharCode'](0xff&_0x5ea27f>>(-0x2*_0x29c8dd&0x6)):0x0){_0x25dc8b=_0x16aa36['indexOf'](_0x25dc8b);}return _0x46c2e8;};_0x1457['XjGMHe']=function(_0x2c6af5){var _0x1b5a14=_0x421c90(_0x2c6af5);var _0x2181c6=[];for(var _0x4e0ecf=0x0,_0x1a2fc4=_0x1b5a14['length'];_0x4e0ecf<_0x1a2fc4;_0x4e0ecf++){_0x2181c6+='%'+('00'+_0x1b5a14['charCodeAt'](_0x4e0ecf)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2181c6);},_0x1457['XQgCdR']={},_0x1457['aWziBr']=!![];}var _0x1b62be=_0x1457['XQgCdR'][_0x50aaef];return _0x1b62be===undefined?(_0x145713=_0x1457['XjGMHe'](_0x145713),_0x1457['XQgCdR'][_0x50aaef]=_0x145713):_0x145713=_0x1b62be,_0x145713;};var context={data:'  {\"timestamp\":1713454011,\"products\":[{\"trial\":false,\"code\":\"KENDOUIREACT\",\"licenseExpirationDate\":1781000398},{\"trial\":false,\"code\":\"KENDOUICOMPLETE\",\"licenseExpirationDate\":1781000398},{\"trial\":false,\"code\":\"KENDOUIVUE\",\"licenseExpirationDate\":1781000398},{\"trial\":false,\"code\":\"KENDOUIANGULAR\",\"licenseExpirationDate\":1781000398}],\"integrity\":\"RKnKZnuExONRkaNqKj+OFgMT4uI=\"}  '},cache=new Map();function setScriptKey(_0x35d548){}function validatePackage(_0x401145){if(cache[_0x1457('0x38')](_0x401145[_0x1457('0xc')])){if(_0x1457('0x3a')!==_0x1457('0x3a')){function _0x40b483(){_0x55416e[_0x1457('0x10')](_0x394293);}}else return cache[_0x1457('0x2')](_0x401145[_0x1457('0xc')]);}var _0x13003c=_0x401145[_0x1457('0x6')]?'\x20v'+_0x401145[_0x1457('0x6')]:'',_0x487465=_0x401145[_0x1457('0xc')]+_0x13003c,_0x5ac69b=JSON[_0x1457('0x2b')](context[_0x1457('0x20')]),_0x12f1b9=!_0x5ac69b[_0x1457('0x25')]&&!_0x5ac69b[_0x1457('0x8')],_0x404bc6=_0x5ac69b[_0x1457('0x25')]&&typeof KendoLicensing===_0x1457('0x15'),_0x21bd47=matchProduct(_0x5ac69b,_0x401145[_0x1457('0x24')]),_0x379487;if(_0x12f1b9||_0x404bc6){if(_0x1457('0x2a')===_0x1457('0x2f')){function _0x32c728(){var _0x210aed=_0x1457('0x21')[_0x1457('0x17')](_0x1ec4d4[_0x1457('0x16')]),_0x5a1943=typeof _0x5077fd[_0x1457('0x10')]===_0x1457('0x14');_0x5a1943?_0x1cbf22[_0x1457('0x10')](_0x210aed):_0x52c64a[_0x1457('0x13')](_0x210aed),_0x19add1[_0x1457('0x13')](_0x2bf2c1(_0x2b5d62)),_0x5a1943&&_0x210919[_0x1457('0xf')]();}}else _0x379487={'type':0x0,'packageName':_0x487465,'docsUrl':_0x401145[_0x1457('0xb')]};}else{if(_0x1457('0x39')===_0x1457('0x39')){if(!_0x21bd47){if(_0x1457('0x1a')!==_0x1457('0x1a')){function _0x118e65(){return _0x388bef[_0x1457('0x38')](_0x14b8a6[_0x1457('0x1b')]);}}else _0x379487={'type':0x1,'packageName':_0x487465,'docsUrl':_0x401145[_0x1457('0xb')]};}else{if(_0x21bd47[_0x1457('0x41')]===!![]&&isExpired(getCurrentDate(),_0x21bd47[_0x1457('0x40')])){if(_0x1457('0x0')===_0x1457('0x0'))_0x379487={'type':0x3,'packageName':_0x487465,'expiryDate':parseDate(_0x21bd47[_0x1457('0x40')]),'docsUrl':_0x401145[_0x1457('0xb')]};else{function _0x2acfd0(){return new _0x538141(_0x6547c3*0x3e8);}}}else{if(isExpired(_0x401145[_0x1457('0x18')],_0x21bd47[_0x1457('0x40')])){if(_0x1457('0x22')!==_0x1457('0x22')){function _0x54738d(){_0xff686d+=_0x1457('0x28');}}else _0x379487={'type':0x2,'packageName':_0x487465,'publishDate':parseDate(_0x401145[_0x1457('0x18')]),'expiryDate':parseDate(_0x21bd47[_0x1457('0x40')]),'docsUrl':_0x401145[_0x1457('0xb')]};}}}}else{function _0x45a77a(){_0x4e0ecf={'type':0x0,'packageName':_0x1a2fc4,'docsUrl':_0x281109[_0x1457('0xb')]};}}}if(_0x379487&&typeof console===_0x1457('0x9')){if(_0x1457('0x5')!==_0x1457('0x5')){function _0x27a0d3(){_0x23dc27[_0x1457('0xf')]();}}else{var _0x3e0d1b=_0x1457('0x21')[_0x1457('0x17')](_0x401145[_0x1457('0x16')]),_0x225671=typeof console[_0x1457('0x10')]===_0x1457('0x14');if(_0x225671){if(_0x1457('0x2e')===_0x1457('0x2e'))console[_0x1457('0x10')](_0x3e0d1b);else{function _0x1c2d92(){if(!_0x3e4ff8)_0x37b223={'type':0x1,'packageName':_0x36e726,'docsUrl':_0x3f80b8[_0x1457('0xb')]};else{if(_0x15d67c[_0x1457('0x41')]===!![]&&_0x3b51a9(_0x102df8(),_0x3171d7[_0x1457('0x40')]))_0x1e0cab={'type':0x3,'packageName':_0x2724db,'expiryDate':_0x33ff27(_0x4eb9e1[_0x1457('0x40')]),'docsUrl':_0x2a3029[_0x1457('0xb')]};else _0x2a1aff(_0x3a6131[_0x1457('0x18')],_0x30ed8b[_0x1457('0x40')])&&(_0x36826b={'type':0x2,'packageName':_0x2a7f61,'publishDate':_0x19d46e(_0x3f1d0c[_0x1457('0x18')]),'expiryDate':_0x18bd78(_0x3231eb[_0x1457('0x40')]),'docsUrl':_0x265a7c[_0x1457('0xb')]});}}}}else{if(_0x1457('0x30')!==_0x1457('0x7'))console[_0x1457('0x13')](_0x3e0d1b);else{function _0x135861(){_0x283aa0+=_0x1457('0x3c')[_0x1457('0x17')](_0x111d35[_0x1457('0x19')][_0x1457('0x1c')](),'.\x0a');}}}console[_0x1457('0x13')](formatError(_0x379487));if(_0x225671){if(_0x1457('0xd')!==_0x1457('0xd')){function _0x21b2c4(){_0x2b9264={'type':0x1,'packageName':_0x346bb2,'docsUrl':_0x2e7146[_0x1457('0xb')]};}}else console[_0x1457('0xf')]();}}}var _0x415e0e=!_0x379487;return cache[_0x1457('0x34')](_0x401145[_0x1457('0xc')],_0x415e0e),_0x415e0e;}function formatError(_0x594e89){var _0x2d7e52=_0x1457('0x1d')[_0x1457('0x17')](_0x594e89[_0x1457('0x29')],'\x0a');if(_0x594e89[_0x1457('0xa')]===0x2){if(_0x1457('0x3f')!==_0x1457('0x1'))_0x2d7e52+=_0x1457('0x1f')[_0x1457('0x17')](_0x594e89[_0x1457('0x19')][_0x1457('0x1c')](),_0x1457('0x33'))[_0x1457('0x17')](_0x594e89[_0x1457('0x18')][_0x1457('0x1c')](),'.\x0a');else{function _0x4205ac(){_0x339f11={'type':0x3,'packageName':_0x324919,'expiryDate':_0x301701(_0xaf8b40[_0x1457('0x40')]),'docsUrl':_0x5b91f9[_0x1457('0xb')]};}}}if(_0x594e89[_0x1457('0xa')]===0x3){if(_0x1457('0x11')===_0x1457('0x11'))_0x2d7e52+=_0x1457('0x3c')[_0x1457('0x17')](_0x594e89[_0x1457('0x19')][_0x1457('0x1c')](),'.\x0a');else{function _0x3e8c99(){_0x3f28ec+=_0x1457('0x1f')[_0x1457('0x17')](_0x4667d4[_0x1457('0x19')][_0x1457('0x1c')](),_0x1457('0x33'))[_0x1457('0x17')](_0x23b5da[_0x1457('0x18')][_0x1457('0x1c')](),'.\x0a');}}}else{if(_0x594e89[_0x1457('0xa')]===0x0){if(_0x1457('0x35')===_0x1457('0x35'))_0x2d7e52+=_0x1457('0x28');else{function _0x3442b2(){_0x5ccb08+=_0x1457('0x3');}}}else{if(_0x594e89[_0x1457('0xa')]===0x1){if(_0x1457('0x26')!==_0x1457('0x26')){function _0x23b1cd(){var _0x5bedaa=_0x465bb0(_0x2ba0db),_0x6c2ce2=new _0x4a6023(_0x5bedaa[_0x1457('0x32')](),_0x5bedaa[_0x1457('0x4')](),_0x5bedaa[_0x1457('0x3d')]()+0x1),_0x34ce8e=_0x6c2ce2[_0x1457('0x1e')]()/0x3e8;return _0x2f1bc7>_0x34ce8e;}}else _0x2d7e52+=_0x1457('0x3');}}}return _0x2d7e52+=_0x1457('0x23')[_0x1457('0x17')](_0x594e89[_0x1457('0xe')],_0x1457('0x2d')),_0x2d7e52;}function matchProduct(_0x408a16,_0x9b416b){var _0x45ca78=_0x408a16[_0x1457('0x2c')];if(!_0x45ca78||!_0x45ca78[_0x1457('0x3e')]){if(_0x1457('0x27')!==_0x1457('0x37'))return null;else{function _0x52a8d4(){return _0x25dc8b[_0x1457('0x2')](_0xcce210[_0x1457('0xc')]);}}}var _0x1880f2=new Set(_0x9b416b);return _0x45ca78[_0x1457('0x36')](function(_0x226118,_0x16f928){if(_0x1457('0x42')!==_0x1457('0x31'))return _0x16f928[_0x1457('0x40')]-_0x226118[_0x1457('0x40')];else{function _0x3dde91(){return null;}}})[_0x1457('0x12')](function(_0x4632fe){if(_0x1457('0x3b')===_0x1457('0x3b'))return _0x1880f2[_0x1457('0x38')](_0x4632fe[_0x1457('0x1b')]);else{function _0x43b66d(){return _0x22688d[_0x1457('0x40')]-_0x522bbc[_0x1457('0x40')];}}});}function parseDate(_0xe99283){return new Date(_0xe99283*0x3e8);}function getCurrentDate(){return new Date()[_0x1457('0x1e')]()/0x3e8;}function isExpired(_0x4b71d2,_0x1df709){var _0x4f97fc=parseDate(_0x1df709),_0xea6b1d=new Date(_0x4f97fc[_0x1457('0x32')](),_0x4f97fc[_0x1457('0x4')](),_0x4f97fc[_0x1457('0x3d')]()+0x1),_0x302664=_0xea6b1d[_0x1457('0x1e')]()/0x3e8;return _0x4b71d2>_0x302664;}
+
 
 /***/ }),
 
@@ -32100,6 +33844,45 @@ function styled(Component, baseStyles, getProps, customizable, pure) {
 
 /***/ }),
 
+/***/ "mfP9":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/validate-package.js ***!
+  \*******************************************************************************/
+/*! exports provided: validatePackage, shouldShowValidationUI */
+/*! exports used: validatePackage */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return validatePackage; });
+/* unused harmony export shouldShowValidationUI */
+/* harmony import */ var _progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @progress/kendo-licensing */ "kk6n");
+
+var allowed = ['telerik.com', 'progress.com', 'stackblitz.io', 'csb.app'];
+/**
+ * @hidden
+ */
+function validatePackage(packageMetadata) {
+    if (typeof _progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__ !== 'undefined') {
+        _progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__["validatePackage"](packageMetadata);
+    }
+    else {
+        var message = "License activation failed for ".concat(packageMetadata.name, "\n");
+        message += 'The @progress/kendo-licensing script is not loaded.\n';
+        message += "See ".concat(packageMetadata.licensingDocsUrl, " for more information.\n");
+        console.warn(message);
+    }
+}
+/**
+ * @hidden
+ */
+function shouldShowValidationUI(packageMetadata) {
+    var skip = allowed.some(function (hostname) { var _a; return (_a = globalThis.document) === null || _a === void 0 ? void 0 : _a.location.hostname.endsWith(hostname); });
+    return !skip && !(_progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__ === null || _progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__ === void 0 ? void 0 : _progress_kendo_licensing__WEBPACK_IMPORTED_MODULE_0__["validatePackage"](packageMetadata));
+}
+
+
+/***/ }),
+
 /***/ "mrSG":
 /*!*****************************************!*\
   !*** ./node_modules/tslib/tslib.es6.js ***!
@@ -32550,6 +34333,43 @@ if(content.locals) module.exports = content.locals;
 
 /***/ }),
 
+/***/ "n6+D":
+/*!**************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/getTabIndex.js ***!
+  \**************************************************************************/
+/*! exports provided: getTabIndex */
+/*! exports used: getTabIndex */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getTabIndex; });
+/* eslint-disable radix */
+/**
+ * @hidden
+ */
+var DISABLED_TABINDEX = -1;
+/**
+ * @hidden
+ */
+var DEFAULT_TABINDEX = 0;
+/**
+ * @hidden
+ */
+var getTabIndex = function (tabIndex, disabled, useDefaultTabIndexWhenDisabled) {
+    var parsedTabIndex = typeof tabIndex === 'string' ? parseInt(tabIndex, undefined) : tabIndex;
+    if (parsedTabIndex === NaN) {
+        return undefined;
+    }
+    return parsedTabIndex !== undefined
+        ? parsedTabIndex
+        : disabled ?
+            (useDefaultTabIndexWhenDisabled ? undefined : DISABLED_TABINDEX)
+            : DEFAULT_TABINDEX;
+};
+
+
+/***/ }),
+
 /***/ "n9dH":
 /*!*******************************************************!*\
   !*** ./node_modules/@fluentui/utilities/lib/getId.js ***!
@@ -32627,6 +34447,37 @@ var hiddenContentStyle = {
 
 /***/ }),
 
+/***/ "nf9j":
+/*!*******************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/guid.js ***!
+  \*******************************************************************/
+/*! exports provided: guid */
+/*! exports used: guid */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return guid; });
+/* eslint-disable no-bitwise */
+/**
+ * @hidden
+ */
+var guid = function () {
+    var id = '';
+    var i;
+    var random;
+    for (i = 0; i < 32; i++) {
+        random = Math.random() * 16 | 0;
+        if (i === 8 || i === 12 || i === 16 || i === 20) {
+            id += '-';
+        }
+        id += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+    }
+    return id;
+};
+
+
+/***/ }),
+
 /***/ "nikm":
 /*!*****************************************************!*\
   !*** ./node_modules/@pnp/sp/behaviors/telemetry.js ***!
@@ -32683,6 +34534,192 @@ var Shimmer = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* styled */ "a"])(
     scope: 'Shimmer',
 });
 //# sourceMappingURL=Shimmer.js.map
+
+/***/ }),
+
+/***/ "oHd3":
+/*!****************************************************************!*\
+  !*** ./node_modules/prop-types/node_modules/react-is/index.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+if (false) {} else {
+  module.exports = __webpack_require__(/*! ./cjs/react-is.development.js */ "ylcK");
+}
+
+
+/***/ }),
+
+/***/ "oR7b":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@fluentui/react/lib/components/Spinner/Spinner.types.js ***!
+  \******************************************************************************/
+/*! exports provided: SpinnerSize, SpinnerType */
+/*! exports used: SpinnerSize, SpinnerType */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpinnerSize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return SpinnerType; });
+/**
+ * Possible variations of the spinner circle size.
+ * {@docCategory Spinner}
+ */
+var SpinnerSize;
+(function (SpinnerSize) {
+    /**
+     * 12px Spinner diameter
+     */
+    SpinnerSize[SpinnerSize["xSmall"] = 0] = "xSmall";
+    /**
+     * 16px Spinner diameter
+     */
+    SpinnerSize[SpinnerSize["small"] = 1] = "small";
+    /**
+     * 20px Spinner diameter
+     */
+    SpinnerSize[SpinnerSize["medium"] = 2] = "medium";
+    /**
+     * 28px Spinner diameter
+     */
+    SpinnerSize[SpinnerSize["large"] = 3] = "large";
+})(SpinnerSize || (SpinnerSize = {}));
+/**
+ * @deprecated Use `SpinnerSize` instead. Will be removed at \>= 2.0.0.
+ * {@docCategory Spinner}
+ */
+var SpinnerType;
+(function (SpinnerType) {
+    /**
+     * @deprecated Use `SpinnerSize.medium` instead. Will be removed at \>= 2.0.0.
+     */
+    SpinnerType[SpinnerType["normal"] = 0] = "normal";
+    /**
+     * @deprecated Use `SpinnerSize.large` instead. Will be removed at \>= 2.0.0.
+     */
+    SpinnerType[SpinnerType["large"] = 1] = "large";
+})(SpinnerType || (SpinnerType = {}));
+//# sourceMappingURL=Spinner.types.js.map
+
+/***/ }),
+
+/***/ "oVyQ":
+/*!***************************************************!*\
+  !*** ./node_modules/prop-types/checkPropTypes.js ***!
+  \***************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var printWarning = function() {};
+
+if (true) {
+  var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "WbBG");
+  var loggedTypeFailures = {};
+  var has = Function.call.bind(Object.prototype.hasOwnProperty);
+
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+/**
+ * Assert that the values match with the type specs.
+ * Error messages are memorized and will only be shown once.
+ *
+ * @param {object} typeSpecs Map of name to a ReactPropType
+ * @param {object} values Runtime values that need to be type-checked
+ * @param {string} location e.g. "prop", "context", "child context"
+ * @param {string} componentName Name of the component for error messages.
+ * @param {?Function} getStack Returns the component stack.
+ * @private
+ */
+function checkPropTypes(typeSpecs, values, location, componentName, getStack) {
+  if (true) {
+    for (var typeSpecName in typeSpecs) {
+      if (has(typeSpecs, typeSpecName)) {
+        var error;
+        // Prop type validation may throw. In case they do, we don't want to
+        // fail the render phase where it didn't fail before. So we log it.
+        // After these have been cleaned up, we'll let them throw.
+        try {
+          // This is intentionally an invariant that gets caught. It's the same
+          // behavior as without this statement except with a better message.
+          if (typeof typeSpecs[typeSpecName] !== 'function') {
+            var err = Error(
+              (componentName || 'React class') + ': ' + location + ' type `' + typeSpecName + '` is invalid; ' +
+              'it must be a function, usually from the `prop-types` package, but received `' + typeof typeSpecs[typeSpecName] + '`.'
+            );
+            err.name = 'Invariant Violation';
+            throw err;
+          }
+          error = typeSpecs[typeSpecName](values, typeSpecName, componentName, location, null, ReactPropTypesSecret);
+        } catch (ex) {
+          error = ex;
+        }
+        if (error && !(error instanceof Error)) {
+          printWarning(
+            (componentName || 'React class') + ': type specification of ' +
+            location + ' `' + typeSpecName + '` is invalid; the type checker ' +
+            'function must return `null` or an `Error` but returned a ' + typeof error + '. ' +
+            'You may have forgotten to pass an argument to the type checker ' +
+            'creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and ' +
+            'shape all require an argument).'
+          );
+        }
+        if (error instanceof Error && !(error.message in loggedTypeFailures)) {
+          // Only monitor this failure once because there tends to be a lot of the
+          // same error.
+          loggedTypeFailures[error.message] = true;
+
+          var stack = getStack ? getStack() : '';
+
+          printWarning(
+            'Failed ' + location + ' type: ' + error.message + (stack != null ? stack : '')
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Resets warning cache when testing.
+ *
+ * @private
+ */
+checkPropTypes.resetWarningCache = function() {
+  if (true) {
+    loggedTypeFailures = {};
+  }
+}
+
+module.exports = checkPropTypes;
+
 
 /***/ }),
 
@@ -33813,6 +35850,31 @@ function getWindow(rootElement) {
 
 /***/ }),
 
+/***/ "q97n":
+/*!********************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/package-metadata.js ***!
+  \********************************************************************************/
+/*! exports provided: packageMetadata */
+/*! exports used: packageMetadata */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return packageMetadata; });
+/**
+ * @hidden
+ */
+var packageMetadata = {
+    name: '@progress/kendo-react-buttons',
+    productName: 'KendoReact',
+    productCodes: ['KENDOUIREACT', 'KENDOUICOMPLETE'],
+    publishDate: 1695801029,
+    version: '',
+    licensingDocsUrl: 'https://www.telerik.com/kendo-react-ui/my-license/?utm_medium=product&utm_source=kendoreact&utm_campaign=kendo-ui-react-purchase-license-keys-warning'
+};
+
+
+/***/ }),
+
 /***/ "qKK/":
 /*!****************************************************************************!*\
   !*** ./node_modules/@fluentui/react-window-provider/lib/WindowProvider.js ***!
@@ -34642,6 +36704,33 @@ function findScrollableParent(startingElement) {
 
 /***/ }),
 
+/***/ "rCus":
+/*!******************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/constants.js ***!
+  \******************************************************************************/
+/*! exports provided: SIZE_CLASSES */
+/*! exports used: SIZE_CLASSES */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SIZE_CLASSES; });
+/**
+ * @hidden
+ */
+var SIZE_CLASSES = {
+    'default': '',
+    'xsmall': 'k-icon-xs',
+    'small': 'k-icon-sm',
+    'medium': 'k-icon-md',
+    'large': 'k-icon-lg',
+    'xlarge': 'k-icon-xl',
+    'xxlarge': 'k-icon-xxl',
+    'xxxlarge': 'k-icon-xxxl'
+};
+
+
+/***/ }),
+
 /***/ "rgVD":
 /*!***************************************************************************!*\
   !*** ./node_modules/@fluentui/dom-utilities/lib/portalContainsElement.js ***!
@@ -34723,9 +36812,18 @@ function getVirtualParent(child) {
 /* harmony import */ var _MyLoadingComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./MyLoadingComponent */ "KEtt");
 /* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @fluentui/react */ "Dfs8");
 /* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @fluentui/react */ "cXmr");
-/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fluentui/react */ "+onJ");
-/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @fluentui/react */ "AR7i");
-/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @fluentui/react */ "9KGv");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @fluentui/react */ "5JhY");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @fluentui/react */ "oR7b");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @fluentui/react */ "+onJ");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @fluentui/react */ "AR7i");
+/* harmony import */ var _fluentui_react__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @fluentui/react */ "9KGv");
+/* harmony import */ var _progress_kendo_react_form__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @progress/kendo-react-form */ "uHGX");
+/* harmony import */ var _progress_kendo_react_form__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @progress/kendo-react-form */ "Sy/j");
+/* harmony import */ var _progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @progress/kendo-react-layout */ "DAl/");
+/* harmony import */ var _progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @progress/kendo-react-layout */ "Jx/d");
+/* harmony import */ var _progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @progress/kendo-react-layout */ "AJ+T");
+/* harmony import */ var _progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! @progress/kendo-react-layout */ "Tbay");
+/* harmony import */ var _progress_kendo_react_buttons__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! @progress/kendo-react-buttons */ "S7IN");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34747,22 +36845,78 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
+
+
+
+
 class FinanceApForm2 extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     constructor(props) {
         super(props);
         this.queryInvoices = () => __awaiter(this, void 0, void 0, function* () {
             console.log('querying invoices');
-            let invoices = yield Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* GetInvoiceByStatus */ "a"])(this.state.myFilter.status);
+            let invoices = yield Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* GetInvoiceByStatus */ "b"])(this.state.myFilter.status);
             console.log('Invoices Found');
             console.log(invoices);
             this.setState({ allInvoices: invoices });
         });
         this.onListRenderCell = (item, index) => {
-            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { boxShadow: _fluentui_react__WEBPACK_IMPORTED_MODULE_10__[/* DefaultEffects */ "c"].elevation8, marginBottom: '15px', padding: '10px' } },
-                "Title: ",
-                item.Title,
-                " | Index: ",
-                index));
+            let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
+            return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { boxShadow: _fluentui_react__WEBPACK_IMPORTED_MODULE_10__[/* DefaultEffects */ "c"].elevation8, margin: '10px' } },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_form__WEBPACK_IMPORTED_MODULE_17__[/* Form */ "a"], { key: `${item.ID}-${item.Modified}`, onSubmit: (value) => {
+                            console.log('on form submit');
+                            console.log(value);
+                        }, initialValues: item, render: (formRenderProps) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_form__WEBPACK_IMPORTED_MODULE_18__[/* FormElement */ "a"], null,
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_19__[/* Card */ "a"], null,
+                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_20__[/* CardHeader */ "a"], null,
+                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'row' },
+                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'col-xs-10 col-sm-10' },
+                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'row' },
+                                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'col-xs-12 col-sm-12' },
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], { style: { marginBottom: '7px' } }, formRenderProps.valueGetter('Vendor_x0020_Name') && formRenderProps.valueGetter('Vendor_x0020_Number') &&
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null,
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Vendor Name' }, formRenderProps.valueGetter('Vendor_x0020_Name')),
+                                                            " | ",
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Vendor ID' }, formRenderProps.valueGetter('Vendor_x0020_Number'))))),
+                                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'col-xs-12 col-sm-8' },
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], null,
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Invoice Number' },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: cardTitleTextAlignStyle }, "Invoice Number:"),
+                                                            " ",
+                                                            formRenderProps.valueGetter('Invoice_x0020_Number'))),
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], null,
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null,
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: cardTitleTextAlignStyle }, "Invoice Title:"),
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { title: 'Click to View or Upload Documents.', target: '_blank', "data-interception": 'off', href: this.props.defaultInvoiceLink ? `${this.props.defaultInvoiceLink}&id=%2Fsites%2FFinance%2FInvoices%2F${formRenderProps.valueGetter('Title')}` : `https://claringtonnet.sharepoint.com/sites/Finance/Invoices/Forms/N2.aspx?viewid=a90c5a61-821b-43e6-a9b0-148324fdb09d&id=%2Fsites%2FFinance%2FInvoices%2F${formRenderProps.valueGetter('Title')}` }, formRenderProps.valueGetter('Title')))),
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], null,
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null,
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: cardTitleTextAlignStyle }, "Gross Amount:"),
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, _MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* FormatCurrency */ "a"](formRenderProps.valueGetter('Gross_x0020_Amount'))))),
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], { style: { height: '22px' } },
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: `Sum of ${formRenderProps.valueGetter('Accounts') ? formRenderProps.valueGetter('Accounts').length : 0} Accounts` },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* Stack */ "a"], { horizontal: true, verticalAlign: 'center' },
+                                                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: cardTitleTextAlignStyle }, "Amount Assigned:"),
+                                                                formRenderProps.valueGetter('Accounts')
+                                                                    ? _MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* SumAccounts */ "d"](formRenderProps.valueGetter('Accounts')) !== _MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* FormatCurrency */ "a"](formRenderProps.valueGetter('Gross_x0020_Amount'))
+                                                                        ? react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_buttons__WEBPACK_IMPORTED_MODULE_23__[/* Chip */ "a"], { style: { fontSize: '1.25rem', height: '20px' }, text: _MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* SumAccounts */ "d"](formRenderProps.valueGetter('Accounts')), themeColor: 'error' })
+                                                                        : react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, _MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* SumAccounts */ "d"](formRenderProps.valueGetter('Accounts')))
+                                                                    : react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Loading Account Details...' },
+                                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_12__[/* Spinner */ "a"], { size: _fluentui_react__WEBPACK_IMPORTED_MODULE_13__[/* SpinnerSize */ "a"].small })))))),
+                                                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'col-xs-12 col-sm-4' },
+                                                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_22__[/* CardSubtitle */ "a"], { style: { fontSize: '1.3rem', fontWeight: 600 } },
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { title: 'Invoice Date', style: { display: 'flex', justifyContent: 'space-between' } },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "Date:"),
+                                                            formRenderProps.valueGetter('Invoice_x0020_Date') &&
+                                                                `${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getMonth()}/${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getDay()}/${new Date(formRenderProps.valueGetter('Invoice_x0020_Date')).getFullYear()}`),
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { title: 'Invoice Type', style: { display: 'flex', justifyContent: 'space-between' } },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "Type:"),
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, formRenderProps.valueGetter('Invoice_x0020_Type'))),
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { title: 'Invoice Status', style: { display: 'flex', justifyContent: 'space-between' } },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "Status:"),
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, formRenderProps.valueGetter('OData__Status'))),
+                                                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { title: 'Batch #', style: { display: 'flex', justifyContent: 'space-between' } },
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "Batch:"),
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, formRenderProps.valueGetter('Batch_x0020_Number')))))))))))) }))));
         };
         this.state = {
             allInvoices: undefined,
@@ -34774,7 +36928,7 @@ class FinanceApForm2 extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
             },
         };
         this.queryInvoices();
-        Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* GetInvoiceStatusColumn */ "b"])().then(value => {
+        Object(_MyHelperMethods__WEBPACK_IMPORTED_MODULE_1__[/* GetInvoiceStatusColumn */ "c"])().then(value => {
             this.setState({ invoiceStatus: value });
         });
     }
@@ -34782,21 +36936,21 @@ class FinanceApForm2 extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { marginRight: '20px', marginLeft: '20px' } },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* Stack */ "a"], { horizontal: true, horizontalAlign: "space-around" },
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* Stack */ "a"].Item, { grow: 1 },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_12__[/* Dropdown */ "a"], { placeholder: 'Filter by Invoice Status', options: this.state.invoiceStatus.map(status => { return { key: status, text: status }; }), defaultSelectedKey: this.state.myFilter.status, onChange: (event, option) => {
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_14__[/* Dropdown */ "a"], { placeholder: 'Filter by Invoice Status', options: this.state.invoiceStatus.map(status => { return { key: status, text: status }; }), defaultSelectedKey: this.state.myFilter.status, onChange: (event, option) => {
                             this.setState({
                                 myFilter: Object.assign(Object.assign({}, this.state.myFilter), { status: option.text }),
                                 allInvoices: undefined
                             }, () => this.queryInvoices());
                         } })),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_11__[/* Stack */ "a"].Item, { grow: 4 },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_13__[/* TextField */ "a"], { placeholder: 'Search by Title, Vendor, Invoice #, PO #, Batch #' }))),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_15__[/* TextField */ "a"], { placeholder: 'Search by Title, Vendor, Invoice #, PO #, Batch #' }))),
             this.state.allInvoices ? react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 this.state.myFilter.status,
                 ": ",
                 this.state.allInvoices.length) : react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_MyLoadingComponent__WEBPACK_IMPORTED_MODULE_9__[/* MyLoadingComponent */ "a"], null),
             this.state.allInvoices ?
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { overflow: 'auto', maxHeight: '800px' }, "data-is-scrollable": true },
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_14__[/* List */ "a"], { items: this.state.allInvoices, onRenderCell: this.onListRenderCell })) :
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fluentui_react__WEBPACK_IMPORTED_MODULE_16__[/* List */ "a"], { items: this.state.allInvoices, onRenderCell: this.onListRenderCell })) :
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_MyLoadingComponent__WEBPACK_IMPORTED_MODULE_9__[/* MyLoadingComponent */ "a"], null)));
     }
 }
@@ -35050,6 +37204,610 @@ function _warnDuplicateIcon(iconName) {
     }
 }
 //# sourceMappingURL=icons.js.map
+
+/***/ }),
+
+/***/ "sHIV":
+/*!************************************************************!*\
+  !*** ./node_modules/prop-types/factoryWithTypeCheckers.js ***!
+  \************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+var ReactIs = __webpack_require__(/*! react-is */ "oHd3");
+var assign = __webpack_require__(/*! object-assign */ "MgzW");
+
+var ReactPropTypesSecret = __webpack_require__(/*! ./lib/ReactPropTypesSecret */ "WbBG");
+var checkPropTypes = __webpack_require__(/*! ./checkPropTypes */ "oVyQ");
+
+var has = Function.call.bind(Object.prototype.hasOwnProperty);
+var printWarning = function() {};
+
+if (true) {
+  printWarning = function(text) {
+    var message = 'Warning: ' + text;
+    if (typeof console !== 'undefined') {
+      console.error(message);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      throw new Error(message);
+    } catch (x) {}
+  };
+}
+
+function emptyFunctionThatReturnsNull() {
+  return null;
+}
+
+module.exports = function(isValidElement, throwOnDirectAccess) {
+  /* global Symbol */
+  var ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
+  var FAUX_ITERATOR_SYMBOL = '@@iterator'; // Before Symbol spec.
+
+  /**
+   * Returns the iterator method function contained on the iterable object.
+   *
+   * Be sure to invoke the function with the iterable as context:
+   *
+   *     var iteratorFn = getIteratorFn(myIterable);
+   *     if (iteratorFn) {
+   *       var iterator = iteratorFn.call(myIterable);
+   *       ...
+   *     }
+   *
+   * @param {?object} maybeIterable
+   * @return {?function}
+   */
+  function getIteratorFn(maybeIterable) {
+    var iteratorFn = maybeIterable && (ITERATOR_SYMBOL && maybeIterable[ITERATOR_SYMBOL] || maybeIterable[FAUX_ITERATOR_SYMBOL]);
+    if (typeof iteratorFn === 'function') {
+      return iteratorFn;
+    }
+  }
+
+  /**
+   * Collection of methods that allow declaration and validation of props that are
+   * supplied to React components. Example usage:
+   *
+   *   var Props = require('ReactPropTypes');
+   *   var MyArticle = React.createClass({
+   *     propTypes: {
+   *       // An optional string prop named "description".
+   *       description: Props.string,
+   *
+   *       // A required enum prop named "category".
+   *       category: Props.oneOf(['News','Photos']).isRequired,
+   *
+   *       // A prop named "dialog" that requires an instance of Dialog.
+   *       dialog: Props.instanceOf(Dialog).isRequired
+   *     },
+   *     render: function() { ... }
+   *   });
+   *
+   * A more formal specification of how these methods are used:
+   *
+   *   type := array|bool|func|object|number|string|oneOf([...])|instanceOf(...)
+   *   decl := ReactPropTypes.{type}(.isRequired)?
+   *
+   * Each and every declaration produces a function with the same signature. This
+   * allows the creation of custom validation functions. For example:
+   *
+   *  var MyLink = React.createClass({
+   *    propTypes: {
+   *      // An optional string or URI prop named "href".
+   *      href: function(props, propName, componentName) {
+   *        var propValue = props[propName];
+   *        if (propValue != null && typeof propValue !== 'string' &&
+   *            !(propValue instanceof URI)) {
+   *          return new Error(
+   *            'Expected a string or an URI for ' + propName + ' in ' +
+   *            componentName
+   *          );
+   *        }
+   *      }
+   *    },
+   *    render: function() {...}
+   *  });
+   *
+   * @internal
+   */
+
+  var ANONYMOUS = '<<anonymous>>';
+
+  // Important!
+  // Keep this list in sync with production version in `./factoryWithThrowingShims.js`.
+  var ReactPropTypes = {
+    array: createPrimitiveTypeChecker('array'),
+    bool: createPrimitiveTypeChecker('boolean'),
+    func: createPrimitiveTypeChecker('function'),
+    number: createPrimitiveTypeChecker('number'),
+    object: createPrimitiveTypeChecker('object'),
+    string: createPrimitiveTypeChecker('string'),
+    symbol: createPrimitiveTypeChecker('symbol'),
+
+    any: createAnyTypeChecker(),
+    arrayOf: createArrayOfTypeChecker,
+    element: createElementTypeChecker(),
+    elementType: createElementTypeTypeChecker(),
+    instanceOf: createInstanceTypeChecker,
+    node: createNodeChecker(),
+    objectOf: createObjectOfTypeChecker,
+    oneOf: createEnumTypeChecker,
+    oneOfType: createUnionTypeChecker,
+    shape: createShapeTypeChecker,
+    exact: createStrictShapeTypeChecker,
+  };
+
+  /**
+   * inlined Object.is polyfill to avoid requiring consumers ship their own
+   * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
+   */
+  /*eslint-disable no-self-compare*/
+  function is(x, y) {
+    // SameValue algorithm
+    if (x === y) {
+      // Steps 1-5, 7-10
+      // Steps 6.b-6.e: +0 != -0
+      return x !== 0 || 1 / x === 1 / y;
+    } else {
+      // Step 6.a: NaN == NaN
+      return x !== x && y !== y;
+    }
+  }
+  /*eslint-enable no-self-compare*/
+
+  /**
+   * We use an Error-like object for backward compatibility as people may call
+   * PropTypes directly and inspect their output. However, we don't use real
+   * Errors anymore. We don't inspect their stack anyway, and creating them
+   * is prohibitively expensive if they are created too often, such as what
+   * happens in oneOfType() for any type before the one that matched.
+   */
+  function PropTypeError(message) {
+    this.message = message;
+    this.stack = '';
+  }
+  // Make `instanceof Error` still work for returned errors.
+  PropTypeError.prototype = Error.prototype;
+
+  function createChainableTypeChecker(validate) {
+    if (true) {
+      var manualPropTypeCallCache = {};
+      var manualPropTypeWarningCount = 0;
+    }
+    function checkType(isRequired, props, propName, componentName, location, propFullName, secret) {
+      componentName = componentName || ANONYMOUS;
+      propFullName = propFullName || propName;
+
+      if (secret !== ReactPropTypesSecret) {
+        if (throwOnDirectAccess) {
+          // New behavior only for users of `prop-types` package
+          var err = new Error(
+            'Calling PropTypes validators directly is not supported by the `prop-types` package. ' +
+            'Use `PropTypes.checkPropTypes()` to call them. ' +
+            'Read more at http://fb.me/use-check-prop-types'
+          );
+          err.name = 'Invariant Violation';
+          throw err;
+        } else if ( true && typeof console !== 'undefined') {
+          // Old behavior for people using React.PropTypes
+          var cacheKey = componentName + ':' + propName;
+          if (
+            !manualPropTypeCallCache[cacheKey] &&
+            // Avoid spamming the console because they are often not actionable except for lib authors
+            manualPropTypeWarningCount < 3
+          ) {
+            printWarning(
+              'You are manually calling a React.PropTypes validation ' +
+              'function for the `' + propFullName + '` prop on `' + componentName  + '`. This is deprecated ' +
+              'and will throw in the standalone `prop-types` package. ' +
+              'You may be seeing this warning due to a third-party PropTypes ' +
+              'library. See https://fb.me/react-warning-dont-call-proptypes ' + 'for details.'
+            );
+            manualPropTypeCallCache[cacheKey] = true;
+            manualPropTypeWarningCount++;
+          }
+        }
+      }
+      if (props[propName] == null) {
+        if (isRequired) {
+          if (props[propName] === null) {
+            return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required ' + ('in `' + componentName + '`, but its value is `null`.'));
+          }
+          return new PropTypeError('The ' + location + ' `' + propFullName + '` is marked as required in ' + ('`' + componentName + '`, but its value is `undefined`.'));
+        }
+        return null;
+      } else {
+        return validate(props, propName, componentName, location, propFullName);
+      }
+    }
+
+    var chainedCheckType = checkType.bind(null, false);
+    chainedCheckType.isRequired = checkType.bind(null, true);
+
+    return chainedCheckType;
+  }
+
+  function createPrimitiveTypeChecker(expectedType) {
+    function validate(props, propName, componentName, location, propFullName, secret) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== expectedType) {
+        // `propValue` being instance of, say, date/regexp, pass the 'object'
+        // check, but we can offer a more precise error message here rather than
+        // 'of type `object`'.
+        var preciseType = getPreciseType(propValue);
+
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + preciseType + '` supplied to `' + componentName + '`, expected ') + ('`' + expectedType + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createAnyTypeChecker() {
+    return createChainableTypeChecker(emptyFunctionThatReturnsNull);
+  }
+
+  function createArrayOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside arrayOf.');
+      }
+      var propValue = props[propName];
+      if (!Array.isArray(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+      }
+      for (var i = 0; i < propValue.length; i++) {
+        var error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+        if (error instanceof Error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!isValidElement(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createElementTypeTypeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      if (!ReactIs.isValidElementType(propValue)) {
+        var propType = getPropType(propValue);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected a single ReactElement type.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createInstanceTypeChecker(expectedClass) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!(props[propName] instanceof expectedClass)) {
+        var expectedClassName = expectedClass.name || ANONYMOUS;
+        var actualClassName = getClassName(props[propName]);
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + actualClassName + '` supplied to `' + componentName + '`, expected ') + ('instance of `' + expectedClassName + '`.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createEnumTypeChecker(expectedValues) {
+    if (!Array.isArray(expectedValues)) {
+      if (true) {
+        if (arguments.length > 1) {
+          printWarning(
+            'Invalid arguments supplied to oneOf, expected an array, got ' + arguments.length + ' arguments. ' +
+            'A common mistake is to write oneOf(x, y, z) instead of oneOf([x, y, z]).'
+          );
+        } else {
+          printWarning('Invalid argument supplied to oneOf, expected an array.');
+        }
+      }
+      return emptyFunctionThatReturnsNull;
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      for (var i = 0; i < expectedValues.length; i++) {
+        if (is(propValue, expectedValues[i])) {
+          return null;
+        }
+      }
+
+      var valuesString = JSON.stringify(expectedValues, function replacer(key, value) {
+        var type = getPreciseType(value);
+        if (type === 'symbol') {
+          return String(value);
+        }
+        return value;
+      });
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of value `' + String(propValue) + '` ' + ('supplied to `' + componentName + '`, expected one of ' + valuesString + '.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createObjectOfTypeChecker(typeChecker) {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (typeof typeChecker !== 'function') {
+        return new PropTypeError('Property `' + propFullName + '` of component `' + componentName + '` has invalid PropType notation inside objectOf.');
+      }
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an object.'));
+      }
+      for (var key in propValue) {
+        if (has(propValue, key)) {
+          var error = typeChecker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+          if (error instanceof Error) {
+            return error;
+          }
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createUnionTypeChecker(arrayOfTypeCheckers) {
+    if (!Array.isArray(arrayOfTypeCheckers)) {
+       true ? printWarning('Invalid argument supplied to oneOfType, expected an instance of array.') : undefined;
+      return emptyFunctionThatReturnsNull;
+    }
+
+    for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+      var checker = arrayOfTypeCheckers[i];
+      if (typeof checker !== 'function') {
+        printWarning(
+          'Invalid argument supplied to oneOfType. Expected an array of check functions, but ' +
+          'received ' + getPostfixForTypeWarning(checker) + ' at index ' + i + '.'
+        );
+        return emptyFunctionThatReturnsNull;
+      }
+    }
+
+    function validate(props, propName, componentName, location, propFullName) {
+      for (var i = 0; i < arrayOfTypeCheckers.length; i++) {
+        var checker = arrayOfTypeCheckers[i];
+        if (checker(props, propName, componentName, location, propFullName, ReactPropTypesSecret) == null) {
+          return null;
+        }
+      }
+
+      return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`.'));
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createNodeChecker() {
+    function validate(props, propName, componentName, location, propFullName) {
+      if (!isNode(props[propName])) {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` supplied to ' + ('`' + componentName + '`, expected a ReactNode.'));
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      for (var key in shapeTypes) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          continue;
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+    return createChainableTypeChecker(validate);
+  }
+
+  function createStrictShapeTypeChecker(shapeTypes) {
+    function validate(props, propName, componentName, location, propFullName) {
+      var propValue = props[propName];
+      var propType = getPropType(propValue);
+      if (propType !== 'object') {
+        return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type `' + propType + '` ' + ('supplied to `' + componentName + '`, expected `object`.'));
+      }
+      // We need to check all keys in case some are required but missing from
+      // props.
+      var allKeys = assign({}, props[propName], shapeTypes);
+      for (var key in allKeys) {
+        var checker = shapeTypes[key];
+        if (!checker) {
+          return new PropTypeError(
+            'Invalid ' + location + ' `' + propFullName + '` key `' + key + '` supplied to `' + componentName + '`.' +
+            '\nBad object: ' + JSON.stringify(props[propName], null, '  ') +
+            '\nValid keys: ' +  JSON.stringify(Object.keys(shapeTypes), null, '  ')
+          );
+        }
+        var error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+        if (error) {
+          return error;
+        }
+      }
+      return null;
+    }
+
+    return createChainableTypeChecker(validate);
+  }
+
+  function isNode(propValue) {
+    switch (typeof propValue) {
+      case 'number':
+      case 'string':
+      case 'undefined':
+        return true;
+      case 'boolean':
+        return !propValue;
+      case 'object':
+        if (Array.isArray(propValue)) {
+          return propValue.every(isNode);
+        }
+        if (propValue === null || isValidElement(propValue)) {
+          return true;
+        }
+
+        var iteratorFn = getIteratorFn(propValue);
+        if (iteratorFn) {
+          var iterator = iteratorFn.call(propValue);
+          var step;
+          if (iteratorFn !== propValue.entries) {
+            while (!(step = iterator.next()).done) {
+              if (!isNode(step.value)) {
+                return false;
+              }
+            }
+          } else {
+            // Iterator will provide entry [k,v] tuples rather than values.
+            while (!(step = iterator.next()).done) {
+              var entry = step.value;
+              if (entry) {
+                if (!isNode(entry[1])) {
+                  return false;
+                }
+              }
+            }
+          }
+        } else {
+          return false;
+        }
+
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  function isSymbol(propType, propValue) {
+    // Native Symbol.
+    if (propType === 'symbol') {
+      return true;
+    }
+
+    // falsy value can't be a Symbol
+    if (!propValue) {
+      return false;
+    }
+
+    // 19.4.3.5 Symbol.prototype[@@toStringTag] === 'Symbol'
+    if (propValue['@@toStringTag'] === 'Symbol') {
+      return true;
+    }
+
+    // Fallback for non-spec compliant Symbols which are polyfilled.
+    if (typeof Symbol === 'function' && propValue instanceof Symbol) {
+      return true;
+    }
+
+    return false;
+  }
+
+  // Equivalent of `typeof` but with special handling for array and regexp.
+  function getPropType(propValue) {
+    var propType = typeof propValue;
+    if (Array.isArray(propValue)) {
+      return 'array';
+    }
+    if (propValue instanceof RegExp) {
+      // Old webkits (at least until Android 4.0) return 'function' rather than
+      // 'object' for typeof a RegExp. We'll normalize this here so that /bla/
+      // passes PropTypes.object.
+      return 'object';
+    }
+    if (isSymbol(propType, propValue)) {
+      return 'symbol';
+    }
+    return propType;
+  }
+
+  // This handles more types than `getPropType`. Only used for error messages.
+  // See `createPrimitiveTypeChecker`.
+  function getPreciseType(propValue) {
+    if (typeof propValue === 'undefined' || propValue === null) {
+      return '' + propValue;
+    }
+    var propType = getPropType(propValue);
+    if (propType === 'object') {
+      if (propValue instanceof Date) {
+        return 'date';
+      } else if (propValue instanceof RegExp) {
+        return 'regexp';
+      }
+    }
+    return propType;
+  }
+
+  // Returns a string that is postfixed to a warning about an invalid type.
+  // For example, "undefined" or "of type array"
+  function getPostfixForTypeWarning(value) {
+    var type = getPreciseType(value);
+    switch (type) {
+      case 'array':
+      case 'object':
+        return 'an ' + type;
+      case 'boolean':
+      case 'date':
+      case 'regexp':
+        return 'a ' + type;
+      default:
+        return type;
+    }
+  }
+
+  // Returns class name of the object, if any.
+  function getClassName(propValue) {
+    if (!propValue.constructor || !propValue.constructor.name) {
+      return ANONYMOUS;
+    }
+    return propValue.constructor.name;
+  }
+
+  ReactPropTypes.checkPropTypes = checkPropTypes;
+  ReactPropTypes.resetWarningCache = checkPropTypes.resetWarningCache;
+  ReactPropTypes.PropTypes = ReactPropTypes;
+
+  return ReactPropTypes;
+};
+
 
 /***/ }),
 
@@ -35958,6 +38716,698 @@ function extractStyleParts() {
 
 /***/ }),
 
+/***/ "uHGX":
+/*!*****************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-form/dist/es/Form.js ***!
+  \*****************************************************************/
+/*! exports provided: Form */
+/*! exports used: Form */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Form; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _FormContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormContext */ "792I");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-react-common */ "nf9j");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @progress/kendo-react-common */ "8QmZ");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @progress/kendo-react-common */ "SMhn");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @progress/kendo-react-common */ "+wvb");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @progress/kendo-react-common */ "mfP9");
+/* harmony import */ var _package_metadata__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./package-metadata */ "C6oa");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var FORCEUPDATE_ACCUMULATOR_TIMEOUT = 0;
+/**
+ * Represents the [KendoReact Form component]({% slug overview_form %}).
+ *
+ * @example
+ * ```jsx
+ * export const FormInput = (fieldRenderProps) => {
+ *     const onValueChange = React.useCallback(
+ *         (event) => fieldRenderProps.onChange(event.target.value),
+ *         [fieldRenderProps.onChange]
+ *     );
+ *     return (
+ *         <input
+ *             className={'k-input'}
+ *             value={fieldRenderProps.value}
+ *             onChange={onValueChange}
+ *         />
+ *     );
+ * };
+ *
+ * export const App = () => {
+ *     const handleSubmit = (dataItem) => alert(JSON.stringify(dataItem));
+ *     return (
+ *         <Form
+ *             initialValues={{title: ''}}
+ *             onSubmit={handleSubmit}
+ *             render={(formRenderProps) => (
+ *                 <div>
+ *                     <Field name={'title'} component={FormInput} />
+ *                     <button
+ *                         className="k-button"
+ *                         disabled={!formRenderProps.allowSubmit}
+ *                         onClick={formRenderProps.onSubmit}
+ *                     >
+ *                         Submit
+ *                     </button>
+ *                 </div>
+ *             )}
+ *         />
+ *     );
+ * };
+ *
+ * ReactDOM.render(<App />, document.querySelector('my-app'));
+ * ```
+ */
+var Form = /** @class */ (function (_super) {
+    __extends(Form, _super);
+    /**
+     * @hidden
+     */
+    function Form(props) {
+        var _this = _super.call(this, props) || this;
+        _this._id = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__[/* guid */ "a"])();
+        _this._touched = {};
+        _this._visited = {};
+        _this._modified = {};
+        _this._validatorsByField = {};
+        _this._values = {};
+        _this._fields = {};
+        _this._unmounted = false;
+        _this._submitted = false;
+        /**
+         * @hidden
+         */
+        _this.isValid = function () {
+            return _this.isFormValid(_this.errors);
+        };
+        /**
+         * @hidden
+         */
+        _this.accumulatedForceUpdate = function () {
+            // IMPORTANT:
+            // Should only be used for updates not comming from editors as it
+            // will cause cursor jump as react will reset the editor to old value
+            if (_this._accumulatorTimeout) {
+                clearTimeout(_this._accumulatorTimeout);
+            }
+            _this._accumulatorTimeout = window.setTimeout(function () {
+                _this._accumulatorTimeout = undefined;
+                _this.forceUpdate();
+            }, FORCEUPDATE_ACCUMULATOR_TIMEOUT);
+        };
+        /**
+         * @hidden
+         */
+        _this.resetForm = function () {
+            _this.values = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* clone */ "a"])(_this.props.initialValues);
+            _this._id = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__[/* guid */ "a"])();
+            _this._touched = {};
+            _this._visited = {};
+            _this._modified = {};
+            _this._validatorsByField = {};
+            _this._fields = {};
+            _this._submitted = false;
+            _this.forceUpdate();
+        };
+        /**
+         * Method for resetting the form state outside the form component.
+         *
+         * > Use `onReset` only if you cannot achieve the desired behavior through the Field component or by FormRenderProps.
+         */
+        _this.onReset = function () { return _this.resetForm(); };
+        /**
+         * @hidden
+         */
+        _this.addField = function (field) {
+            _this._fields[field] = true;
+        };
+        /**
+         * @hidden
+         */
+        _this.onSubmit = function (event) {
+            var touchedVisited = {};
+            var fields = _this.fields;
+            if (event) {
+                if (typeof event.preventDefault === 'function') {
+                    event.preventDefault();
+                }
+                if (typeof event.stopPropagation === 'function') {
+                    event.stopPropagation();
+                }
+            }
+            fields.forEach(function (fieldName) {
+                touchedVisited[fieldName] = true;
+            });
+            // show validations
+            _this.visited = __assign({}, touchedVisited);
+            _this.touched = __assign({}, touchedVisited);
+            var values = _this.values;
+            var isValid = _this.isFormValid(_this.errors);
+            var isModified = _this.isFormModified(_this.modified, fields);
+            if (_this.props.onSubmitClick) {
+                _this.props.onSubmitClick.call(undefined, {
+                    values: values,
+                    isValid: isValid,
+                    isModified: isModified,
+                    event: event
+                });
+            }
+            if (isValid && (_this.props.ignoreModified || isModified) && _this.props.onSubmit) {
+                _this._submitted = true;
+                _this.props.onSubmit.call(undefined, values, event);
+            }
+            _this.forceUpdate();
+        };
+        /**
+         * Method for emiting changes to a specific field outside the form component.
+         *
+         * > Use `onChange` only if you cannot achieve the desired behavior through the Field component by FormRenderProps.
+         */
+        _this.onChange = function (name, options) {
+            var _a;
+            var value = options.value;
+            _this.addField(name);
+            if (!_this.modified[name]) {
+                _this.modified = __assign(__assign({}, _this.modified), (_a = {}, _a[name] = true, _a));
+            }
+            _this.valueSetter(name, value);
+            _this.forceUpdate();
+        };
+        /**
+         * @hidden
+         */
+        _this.onFocus = function (name, skipForceUpdate) {
+            var _a;
+            if (_this.visited[name]) {
+                return;
+            }
+            _this.visited = __assign(__assign({}, _this.visited), (_a = {}, _a[name] = true, _a));
+            if (!skipForceUpdate) {
+                _this.forceUpdate();
+            }
+        };
+        /**
+         * @hidden
+         */
+        _this.onBlur = function (name, skipForceUpdate) {
+            var _a;
+            if (_this.touched[name]) {
+                return;
+            }
+            _this.onFocus(name, skipForceUpdate);
+            _this.touched = __assign(__assign({}, _this.touched), (_a = {}, _a[name] = true, _a));
+            if (!skipForceUpdate) {
+                _this.forceUpdate();
+            }
+        };
+        /**
+         * @hidden
+         */
+        _this.onFieldRegister = function (name, validator) {
+            var _a;
+            _this.addField(name);
+            // The sole reason for using class props over state - nextIndex, needed for destroying validators
+            var oldValidators = (_this.validatorsByField[name] || []);
+            var nextIndex = oldValidators.length;
+            _this.validatorsByField = __assign(__assign({}, _this.validatorsByField), (_a = {}, _a[name] = __spreadArray(__spreadArray([], oldValidators, true), [validator], false), _a));
+            _this.accumulatedForceUpdate();
+            return function () {
+                var _a;
+                // onFieldUnregister:
+                if (_this._unmounted) {
+                    return;
+                }
+                var newValidators = __spreadArray([], (_this.validatorsByField[name] || []), true);
+                var validatorIsUnregistered = Boolean(newValidators[nextIndex]);
+                newValidators[nextIndex] = undefined;
+                _this.validatorsByField = __assign(__assign({}, _this.validatorsByField), (_a = {}, _a[name] = newValidators, _a));
+                if (validatorIsUnregistered) {
+                    _this.accumulatedForceUpdate();
+                }
+            };
+        };
+        /**
+         * @hidden
+         */
+        _this.isFormValid = function (errors) {
+            return !Object.keys(errors).some(function (fieldName) { return Boolean(errors[fieldName]); });
+        };
+        /**
+         * @hidden
+         */
+        _this.isFormModified = function (modified, fields) {
+            return fields.some(function (fieldName) { return modified[fieldName]; });
+        };
+        /**
+         * @hidden
+         */
+        _this.isFormHasNotTouched = function (touched, fields) {
+            return fields.some(function (fieldName) { return !touched[fieldName]; });
+        };
+        /**
+         * @hidden
+         */
+        _this.isFormTouched = function (touched, fields) {
+            return fields.some(function (fieldName) { return touched[fieldName]; });
+        };
+        /**
+         * @hidden
+         */
+        _this.isFormVisited = function (visited, fields) {
+            return fields.some(function (fieldName) { return visited[fieldName]; });
+        };
+        /**
+         * @hidden
+         */
+        _this.valueGetter = function (fieldName) {
+            return Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__[/* getter */ "a"])(fieldName)(_this.values);
+        };
+        /**
+         * @hidden
+         */
+        _this.valueSetter = function (fieldName, value) {
+            return Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__[/* setter */ "a"])(fieldName)(_this.values, value);
+        };
+        /**
+         * @hidden
+         */
+        _this.onArrayAction = function (name) {
+            var _a;
+            _this.addField(name);
+            if (!_this.modified[name]) {
+                _this.modified = __assign(__assign({}, _this.modified), (_a = {}, _a[name] = true, _a));
+            }
+            _this.onBlur(name, true);
+        };
+        /**
+         * @hidden
+         */
+        _this.onInsert = function (name, options) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray([], (_this.valueGetter(name) || []), true);
+            newArray.splice(options.index, 0, options.value);
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+        };
+        /**
+         * @hidden
+         */
+        _this.onUnshift = function (name, options) {
+            _this.onInsert(name, {
+                value: options.value,
+                index: 0
+            });
+        };
+        /**
+         * @hidden
+         */
+        _this.onPush = function (name, options) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray(__spreadArray([], (_this.valueGetter(name) || []), true), [options.value], false);
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+        };
+        /**
+         * @hidden
+         */
+        _this.onPop = function (name) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray([], (_this.valueGetter(name) || []), true);
+            var value = newArray.pop();
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+            return value;
+        };
+        /**
+         * @hidden
+         */
+        _this.onRemove = function (name, options) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray([], (_this.valueGetter(name) || []), true);
+            var value = newArray.splice(options.index, 1);
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+            return value;
+        };
+        /**
+         * @hidden
+         */
+        _this.onReplace = function (name, options) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray([], (_this.valueGetter(name) || []), true);
+            newArray.splice(options.index, 1, options.value);
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+        };
+        /**
+         * @hidden
+         */
+        _this.onMove = function (name, options) {
+            _this.onArrayAction(name);
+            var newArray = __spreadArray([], (_this.valueGetter(name) || []), true);
+            var value = newArray[options.prevIndex];
+            newArray.splice(options.prevIndex, 1);
+            newArray.splice(options.nextIndex, 0, value);
+            _this.valueSetter(name, newArray);
+            _this.forceUpdate();
+        };
+        Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__[/* validatePackage */ "a"])(_package_metadata__WEBPACK_IMPORTED_MODULE_8__[/* packageMetadata */ "a"]);
+        _this.values = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* clone */ "a"])(props.initialValues);
+        return _this;
+    }
+    Object.defineProperty(Form.prototype, "touched", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._touched;
+        },
+        /**
+         * @hidden
+         */
+        set: function (value) {
+            this._touched = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "visited", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._visited;
+        },
+        /**
+         * @hidden
+         */
+        set: function (value) {
+            this._visited = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "modified", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._modified;
+        },
+        /**
+         * @hidden
+         */
+        set: function (value) {
+            this._modified = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "validatorsByField", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._validatorsByField;
+        },
+        /**
+         * @hidden
+         */
+        set: function (value) {
+            this._validatorsByField = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "values", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return this._values;
+        },
+        /**
+         * @hidden
+         */
+        set: function (value) {
+            this._values = value;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "fields", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            return Object.keys(this._fields);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "formErrors", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            if (this.props.validator) {
+                return this.props.validator(this.values, this.valueGetter);
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(Form.prototype, "errors", {
+        /**
+         * @hidden
+         */
+        get: function () {
+            var _this = this;
+            var errors = {};
+            var fields = this.fields;
+            var validatorsByField = this.validatorsByField;
+            fields.forEach(function (fieldName) {
+                errors[fieldName] = '';
+                if (validatorsByField[fieldName]) {
+                    var validators_1 = [];
+                    validatorsByField[fieldName].forEach(function (validator) {
+                        if (Array.isArray(validator)) {
+                            validators_1.push.apply(validators_1, validator);
+                        }
+                        else {
+                            validators_1.push(validator);
+                        }
+                    });
+                    // find first validation error
+                    validators_1.find(function (validator) {
+                        if (validator) {
+                            var result = validator(_this.valueGetter(fieldName), _this.valueGetter, { name: fieldName });
+                            if (result) {
+                                errors[fieldName] = result;
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                }
+            });
+            var formErrors = this.formErrors;
+            if (formErrors) {
+                Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* cloneObject */ "b"])(this.formErrors, errors);
+            }
+            return errors;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    /**
+     * @hidden
+     */
+    Form.prototype.componentWillUnmount = function () {
+        this._unmounted = true;
+        if (this._accumulatorTimeout) {
+            clearTimeout(this._accumulatorTimeout);
+        }
+    };
+    /**
+     * @hidden
+     */
+    Form.prototype.render = function () {
+        var render = this.props.render;
+        var touched = this.touched;
+        var visited = this.visited;
+        var modified = this.modified;
+        var fields = this.fields;
+        var errors = this.errors;
+        var formValid = this.isFormValid(errors);
+        var formModified = this.isFormModified(modified, fields);
+        var formTouched = this.isFormTouched(touched, fields);
+        var formVisited = this.isFormVisited(visited, fields);
+        var formHasNotTouched = this.isFormHasNotTouched(touched, fields);
+        // 1. The form is not touched, but has errors - allow submit to force validation.
+        // 2. The form is valid and modified - if not modified, disable submit.
+        var allowSubmit = (formHasNotTouched && !formValid) || (formValid && (this.props.ignoreModified || formModified));
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_FormContext__WEBPACK_IMPORTED_MODULE_2__[/* FormContext */ "a"].Provider, { key: this._id, value: {
+                id: this._id,
+                valueGetter: this.valueGetter,
+                errors: errors,
+                modified: modified,
+                touched: touched,
+                visited: visited,
+                registerField: this.onFieldRegister,
+                onSubmit: this.onSubmit,
+                onChange: this.onChange,
+                onFocus: this.onFocus,
+                onBlur: this.onBlur,
+                onUnshift: this.onUnshift,
+                onPush: this.onPush,
+                onInsert: this.onInsert,
+                onPop: this.onPop,
+                onRemove: this.onRemove,
+                onReplace: this.onReplace,
+                onMove: this.onMove
+            } }, render({
+            valid: formValid,
+            modified: formModified,
+            touched: formTouched,
+            visited: formVisited,
+            submitted: this._submitted,
+            valueGetter: this.valueGetter,
+            errors: errors,
+            allowSubmit: allowSubmit,
+            onChange: this.onChange,
+            onSubmit: this.onSubmit,
+            onFormReset: this.resetForm
+        })));
+    };
+    /**
+     * @hidden
+     */
+    Form.displayName = 'KendoReactForm';
+    /**
+     * @hidden
+     */
+    Form.propTypes = {
+        initialValues: prop_types__WEBPACK_IMPORTED_MODULE_1__["any"],
+        onSubmit: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"],
+        onSubmitClick: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"],
+        render: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"].isRequired
+    };
+    return Form;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
+
+
+
+/***/ }),
+
+/***/ "uN2g":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/icons/IconWrap.js ***!
+  \*****************************************************************************/
+/*! exports provided: IconWrap */
+/*! exports used: IconWrap */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return IconWrap; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Icon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Icon */ "jUAH");
+/* harmony import */ var _SvgIcon__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SvgIcon */ "IE7g");
+/* harmony import */ var _IconsContext__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./IconsContext */ "G82h");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (undefined && undefined.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
+
+
+
+
+/**
+ * @hidden
+ */
+var IconWrap = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var _a, _b;
+    var _c = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](_IconsContext__WEBPACK_IMPORTED_MODULE_3__[/* IconsContext */ "a"]), type = _c.type, icons = _c.icons;
+    var icon = props.icon, fontIconProps = __rest(props, ["icon"]);
+    var name = type === 'svg' ? (((_a = props.icon) === null || _a === void 0 ? void 0 : _a.name) || props.name) : (props.name || ((_b = props.icon) === null || _b === void 0 ? void 0 : _b.name));
+    name = (name && icons && icons[name] && typeof icons[name] === 'string') ? icons[name] : name;
+    var svg = (name && icons && icons[name] && typeof icons[name] !== 'string') ? icons[name] : icon;
+    return (type === 'svg' && svg) ?
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_SvgIcon__WEBPACK_IMPORTED_MODULE_2__[/* SvgIcon */ "a"], __assign({}, props, { icon: svg, ref: ref })) :
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Icon__WEBPACK_IMPORTED_MODULE_1__[/* Icon */ "a"], __assign({}, fontIconProps, { name: name, ref: ref }));
+});
+IconWrap.displayName = 'KendoIconWrap';
+
+
+/***/ }),
+
 /***/ "udT0":
 /*!**********************************************************!*\
   !*** ./node_modules/@pnp/queryable/behaviors/parsers.js ***!
@@ -36833,6 +40283,216 @@ module.exports = g;
 
 /***/ }),
 
+/***/ "vsJN":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-buttons/dist/es/Chip/ChipList.js ***!
+  \*****************************************************************************/
+/*! exports provided: ChipListSelectionContext, ChipListFocusContext, ChipListDataContext, ChipList */
+/*! exports used: ChipListDataContext, ChipListFocusContext, ChipListSelectionContext */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ChipListSelectionContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ChipListFocusContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChipListDataContext; });
+/* unused harmony export ChipList */
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "17x9");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @progress/kendo-react-common */ "8oZF");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @progress/kendo-react-common */ "SMhn");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @progress/kendo-react-common */ "xM6p");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @progress/kendo-react-common */ "n6+D");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @progress/kendo-react-common */ "SlnR");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @progress/kendo-react-common */ "XIJ8");
+/* harmony import */ var _selection_reducer__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./selection-reducer */ "biYi");
+/* harmony import */ var _focus_reducer__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./focus-reducer */ "ISWX");
+/* harmony import */ var _data_reducer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./data-reducer */ "DaYf");
+/* harmony import */ var _Chip__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./Chip */ "S7IN");
+/* harmony import */ var _progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @progress/kendo-react-common */ "mfP9");
+/* harmony import */ var _package_metadata__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../package-metadata */ "q97n");
+var __assign = (undefined && undefined.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+
+
+
+
+
+
+
+
+
+/**
+ * @hidden
+ */
+var ChipListSelectionContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"]([null, function (_args) {
+        /**/
+    }]);
+/**
+ * @hidden
+ */
+var ChipListFocusContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"]([null, function (_args) {
+        /**/
+    }]);
+/**
+ * @hidden
+ */
+var ChipListDataContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"]([null, function (_args) {
+        /**/
+    }]);
+/**
+ * @hidden
+ */
+var useSelection = function (defaultValue, args, callback) {
+    var _a = react__WEBPACK_IMPORTED_MODULE_0__["useState"](defaultValue), state = _a[0], setState = _a[1];
+    var handleDispatchSelection = function (action) {
+        var newState = Object(_selection_reducer__WEBPACK_IMPORTED_MODULE_8__[/* selectionReducer */ "b"])(args.state || state, __assign(__assign({}, action), args));
+        if (callback) {
+            callback(newState, action.event);
+        }
+        setState(newState);
+    };
+    return [state, handleDispatchSelection];
+};
+/**
+ * @hidden
+ */
+var useFocus = function (args) {
+    var _a = react__WEBPACK_IMPORTED_MODULE_0__["useState"](null), state = _a[0], setState = _a[1];
+    var handleDispatchFocus = function (action) {
+        var newState = Object(_focus_reducer__WEBPACK_IMPORTED_MODULE_9__[/* focusReducer */ "b"])(action.payload, __assign(__assign({}, action), args));
+        setState(newState);
+    };
+    return [state, handleDispatchFocus];
+};
+/**
+ * @hidden
+ */
+var useData = function (defaultData, args, callback) {
+    var _a = react__WEBPACK_IMPORTED_MODULE_0__["useState"](defaultData), state = _a[0], setState = _a[1];
+    var handleDispatchData = function (action) {
+        var newState = Object(_data_reducer__WEBPACK_IMPORTED_MODULE_10__[/* dataReducer */ "b"])(args.state || state, __assign(__assign({}, action), args));
+        if (callback) {
+            callback(newState, action.event);
+        }
+        setState(newState);
+    };
+    return [state, handleDispatchData];
+};
+/**
+ * Represents the ChipList component.
+ */
+var ChipList = react__WEBPACK_IMPORTED_MODULE_0__["forwardRef"](function (props, ref) {
+    var _a;
+    Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_12__[/* validatePackage */ "a"])(_package_metadata__WEBPACK_IMPORTED_MODULE_13__[/* packageMetadata */ "a"]);
+    var target = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var chipListRef = react__WEBPACK_IMPORTED_MODULE_0__["useRef"](null);
+    var dir = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_2__[/* useDir */ "a"])(chipListRef, props.dir);
+    var chip = props.chip, id = props.id, style = props.style, tabIndex = props.tabIndex, disabled = props.disabled, size = props.size, className = props.className, ariaDescribedBy = props.ariaDescribedBy, ariaLabelledBy = props.ariaLabelledBy, _b = props.selection, selection = _b === void 0 ? defaultProps.selection : _b, _c = props.value, value = _c === void 0 ? defaultProps.defaultValue : _c, _d = props.defaultData, defaultData = _d === void 0 ? defaultProps.defaultData : _d, _e = props.valueField, valueField = _e === void 0 ? defaultProps.valueField : _e, _f = props.textField, textField = _f === void 0 ? defaultProps.textField : _f, onChange = props.onChange, onDataChange = props.onDataChange;
+    var ChipComponent = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return chip || _Chip__WEBPACK_IMPORTED_MODULE_11__[/* Chip */ "a"]; }, [chip, _Chip__WEBPACK_IMPORTED_MODULE_11__[/* Chip */ "a"]]);
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](target, function () { return ({
+        element: chipListRef.current,
+        props: props
+    }); });
+    react__WEBPACK_IMPORTED_MODULE_0__["useImperativeHandle"](ref, function () { return target.current; });
+    var handleChange = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (newValue, event) {
+        if (onChange && target.current) {
+            onChange.call(undefined, {
+                value: newValue,
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [onChange]);
+    var _g = useSelection(value, {
+        selection: selection,
+        state: value
+    }, handleChange), stateValue = _g[0], dispatchStateValue = _g[1];
+    var handleDataChange = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (newData, event) {
+        if (onDataChange && target.current) {
+            onDataChange.call(undefined, {
+                value: newData,
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [onDataChange]);
+    var _h = useData(props.data || defaultData, {
+        state: props.data,
+        valueField: valueField
+    }, handleDataChange), stateData = _h[0], dispatchData = _h[1];
+    var itemsReducer = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (acc, current) {
+        acc.push(current[valueField]);
+        return acc;
+    }, [valueField]);
+    var data = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return props.data || stateData; }, [props.data, stateData]);
+    var chipValue = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return value || stateValue; }, [value, stateValue]);
+    var items = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](function () { return data.reduce(itemsReducer, []); }, [data, itemsReducer]);
+    var valueGetter = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (item) { return Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__[/* getter */ "a"])(valueField)(item); }, [valueField]);
+    var textGetter = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (item) { return Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_3__[/* getter */ "a"])(textField)(item); }, [textField]);
+    var _j = useFocus({ items: items }), focus = _j[0], dispatchFocus = _j[1];
+    var mouseProps = Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_4__[/* useMouse */ "a"])(props, target);
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ChipListSelectionContext.Provider, { value: [chipValue, dispatchStateValue] },
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ChipListFocusContext.Provider, { value: [focus, dispatchFocus] },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ChipListDataContext.Provider, { value: [data, dispatchData] },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", __assign({ ref: chipListRef }, mouseProps, { role: 'listbox', id: id, dir: dir, style: style, tabIndex: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_5__[/* getTabIndex */ "a"])(tabIndex, disabled, undefined), className: Object(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_6__[/* classNames */ "a"])('k-chip-list', (_a = {
+                            'k-rtl': dir === 'rtl',
+                            'k-disabled': disabled
+                        },
+                        _a["k-chip-list-".concat(_progress_kendo_react_common__WEBPACK_IMPORTED_MODULE_7__[/* kendoThemeMaps */ "a"].sizeMap[size] || size)] = size,
+                        _a), className), "aria-labelledby": ariaLabelledBy, "aria-describedby": ariaDescribedBy }), data.map(function (item, index) {
+                    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ChipComponent, { role: 'option', dataItem: item, size: size, key: [valueGetter(item), index].join('-'), text: textGetter(item), value: valueGetter(item), ariaLabel: item.ariaLabel }));
+                }))))));
+});
+var propTypes = {
+    id: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    className: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    tabIndex: prop_types__WEBPACK_IMPORTED_MODULE_1__["number"],
+    data: prop_types__WEBPACK_IMPORTED_MODULE_1__["any"],
+    defaultData: prop_types__WEBPACK_IMPORTED_MODULE_1__["arrayOf"](prop_types__WEBPACK_IMPORTED_MODULE_1__["any"]),
+    onDataChange: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"],
+    value: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOfType"]([prop_types__WEBPACK_IMPORTED_MODULE_1__["any"], prop_types__WEBPACK_IMPORTED_MODULE_1__["arrayOf"](prop_types__WEBPACK_IMPORTED_MODULE_1__["any"])]),
+    defaultValue: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOfType"]([prop_types__WEBPACK_IMPORTED_MODULE_1__["any"], prop_types__WEBPACK_IMPORTED_MODULE_1__["arrayOf"](prop_types__WEBPACK_IMPORTED_MODULE_1__["any"])]),
+    onChange: prop_types__WEBPACK_IMPORTED_MODULE_1__["func"],
+    selection: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['single', 'none', 'multiple']),
+    textField: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    valueField: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    disabled: prop_types__WEBPACK_IMPORTED_MODULE_1__["bool"],
+    dir: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"](['ltr', 'rtl']),
+    ariaLabelledBy: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    ariaDescribedBy: prop_types__WEBPACK_IMPORTED_MODULE_1__["string"],
+    size: prop_types__WEBPACK_IMPORTED_MODULE_1__["oneOf"]([null, 'small', 'medium', 'large'])
+};
+var defaultProps = {
+    chip: _Chip__WEBPACK_IMPORTED_MODULE_11__[/* Chip */ "a"],
+    size: 'medium',
+    disabled: false,
+    defaultValue: null,
+    defaultData: [],
+    dir: 'ltr',
+    selection: 'none',
+    textField: 'text',
+    valueField: 'value',
+    removable: 'removable'
+};
+ChipList.displayName = 'KendoReactChipList';
+// TODO: delete casting when @types/react is updated!
+ChipList.propTypes = propTypes;
+ChipList.defaultProps = defaultProps;
+
+
+/***/ }),
+
 /***/ "vyAo":
 /*!********************************************************************!*\
   !*** ./node_modules/@fluentui/react-hooks/lib/useEventCallback.js ***!
@@ -37564,6 +41224,139 @@ function _createNode() {
     };
 }
 //# sourceMappingURL=memoize.js.map
+
+/***/ }),
+
+/***/ "xM6p":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/@progress/kendo-react-common/dist/es/hooks/useMouse.js ***!
+  \*****************************************************************************/
+/*! exports provided: useMouse */
+/*! exports used: useMouse */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return useMouse; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "cDcd");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * @hidden
+ */
+var useMouse = function (props, target, extend) {
+    if (extend === void 0) { extend = {}; }
+    var handleMouseDown = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseDown) {
+            extend.onMouseDown.call(undefined, event);
+        }
+        if (props.onMouseDown) {
+            props.onMouseDown.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseDown, props.onMouseDown, target]);
+    var handleMouseUp = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseUp) {
+            extend.onMouseUp.call(undefined, event);
+        }
+        if (props.onMouseUp) {
+            props.onMouseUp.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseUp, props.onMouseUp, target]);
+    var handleClick = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onClick) {
+            extend.onClick.call(undefined, event);
+        }
+        if (props.onClick) {
+            props.onClick.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onClick, props.onClick, target]);
+    var handleDoubleClick = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onDoubleClick) {
+            extend.onDoubleClick.call(undefined, event);
+        }
+        if (props.onDoubleClick) {
+            props.onDoubleClick.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onDoubleClick, props.onDoubleClick, target]);
+    var handleMouseEnter = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseEnter) {
+            extend.onMouseEnter.call(undefined, event);
+        }
+        if (props.onMouseEnter) {
+            props.onMouseEnter.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseEnter, props.onMouseEnter, target]);
+    var handleMouseLeave = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseLeave) {
+            extend.onMouseLeave.call(undefined, event);
+        }
+        if (props.onMouseLeave) {
+            props.onMouseLeave.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseLeave, props.onMouseLeave, target]);
+    var handelMouseMove = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseMove) {
+            extend.onMouseMove.call(undefined, event);
+        }
+        if (props.onMouseMove) {
+            props.onMouseMove.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseMove, props.onMouseMove, target]);
+    var handleMouseOut = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseOut) {
+            extend.onMouseOut.call(undefined, event);
+        }
+        if (props.onMouseOut) {
+            props.onMouseOut.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseOut, props.onMouseOut, target]);
+    var handleMouseOver = react__WEBPACK_IMPORTED_MODULE_0__["useCallback"](function (event) {
+        if (extend.onMouseOver) {
+            extend.onMouseOver.call(undefined, event);
+        }
+        if (props.onMouseOver) {
+            props.onMouseOver.call(undefined, {
+                target: target.current,
+                syntheticEvent: event
+            });
+        }
+    }, [extend.onMouseOver, props.onMouseOver, target]);
+    return {
+        onClick: handleClick,
+        onMouseUp: handleMouseUp,
+        onMouseDown: handleMouseDown,
+        onDoubleClick: handleDoubleClick,
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onMouseMove: handelMouseMove,
+        onMouseOut: handleMouseOut,
+        onMouseOver: handleMouseOver
+    };
+};
+
 
 /***/ }),
 
@@ -38831,6 +42624,200 @@ var Overlay = Object(_Utilities__WEBPACK_IMPORTED_MODULE_0__[/* styled */ "a"])(
     scope: 'Overlay',
 });
 //# sourceMappingURL=Overlay.js.map
+
+/***/ }),
+
+/***/ "ylcK":
+/*!***********************************************************************************!*\
+  !*** ./node_modules/prop-types/node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/** @license React v16.13.1
+ * react-is.development.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+
+
+
+
+if (true) {
+  (function() {
+'use strict';
+
+// The Symbol used to tag the ReactElement-like types. If there is no native Symbol
+// nor polyfill, then a plain number is used for performance.
+var hasSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
+var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
+var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
+var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
+var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
+var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
+var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
+var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
+var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
+var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
+var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
+var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_BLOCK_TYPE = hasSymbol ? Symbol.for('react.block') : 0xead9;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
+
+function isValidElementType(type) {
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE || type.$$typeof === REACT_BLOCK_TYPE);
+}
+
+function typeOf(object) {
+  if (typeof object === 'object' && object !== null) {
+    var $$typeof = object.$$typeof;
+
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        var type = object.type;
+
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_CONCURRENT_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+          case REACT_SUSPENSE_TYPE:
+            return type;
+
+          default:
+            var $$typeofType = type && type.$$typeof;
+
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_LAZY_TYPE:
+              case REACT_MEMO_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+
+              default:
+                return $$typeof;
+            }
+
+        }
+
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
+
+  return undefined;
+} // AsyncMode is deprecated along with isAsyncMode
+
+var AsyncMode = REACT_ASYNC_MODE_TYPE;
+var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
+var ContextConsumer = REACT_CONTEXT_TYPE;
+var ContextProvider = REACT_PROVIDER_TYPE;
+var Element = REACT_ELEMENT_TYPE;
+var ForwardRef = REACT_FORWARD_REF_TYPE;
+var Fragment = REACT_FRAGMENT_TYPE;
+var Lazy = REACT_LAZY_TYPE;
+var Memo = REACT_MEMO_TYPE;
+var Portal = REACT_PORTAL_TYPE;
+var Profiler = REACT_PROFILER_TYPE;
+var StrictMode = REACT_STRICT_MODE_TYPE;
+var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
+
+function isAsyncMode(object) {
+  {
+    if (!hasWarnedAboutDeprecatedIsAsyncMode) {
+      hasWarnedAboutDeprecatedIsAsyncMode = true; // Using console['warn'] to evade Babel and ESLint
+
+      console['warn']('The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+    }
+  }
+
+  return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
+}
+function isConcurrentMode(object) {
+  return typeOf(object) === REACT_CONCURRENT_MODE_TYPE;
+}
+function isContextConsumer(object) {
+  return typeOf(object) === REACT_CONTEXT_TYPE;
+}
+function isContextProvider(object) {
+  return typeOf(object) === REACT_PROVIDER_TYPE;
+}
+function isElement(object) {
+  return typeof object === 'object' && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
+}
+function isForwardRef(object) {
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
+}
+function isFragment(object) {
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
+}
+function isLazy(object) {
+  return typeOf(object) === REACT_LAZY_TYPE;
+}
+function isMemo(object) {
+  return typeOf(object) === REACT_MEMO_TYPE;
+}
+function isPortal(object) {
+  return typeOf(object) === REACT_PORTAL_TYPE;
+}
+function isProfiler(object) {
+  return typeOf(object) === REACT_PROFILER_TYPE;
+}
+function isStrictMode(object) {
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
+}
+function isSuspense(object) {
+  return typeOf(object) === REACT_SUSPENSE_TYPE;
+}
+
+exports.AsyncMode = AsyncMode;
+exports.ConcurrentMode = ConcurrentMode;
+exports.ContextConsumer = ContextConsumer;
+exports.ContextProvider = ContextProvider;
+exports.Element = Element;
+exports.ForwardRef = ForwardRef;
+exports.Fragment = Fragment;
+exports.Lazy = Lazy;
+exports.Memo = Memo;
+exports.Portal = Portal;
+exports.Profiler = Profiler;
+exports.StrictMode = StrictMode;
+exports.Suspense = Suspense;
+exports.isAsyncMode = isAsyncMode;
+exports.isConcurrentMode = isConcurrentMode;
+exports.isContextConsumer = isContextConsumer;
+exports.isContextProvider = isContextProvider;
+exports.isElement = isElement;
+exports.isForwardRef = isForwardRef;
+exports.isFragment = isFragment;
+exports.isLazy = isLazy;
+exports.isMemo = isMemo;
+exports.isPortal = isPortal;
+exports.isProfiler = isProfiler;
+exports.isStrictMode = isStrictMode;
+exports.isSuspense = isSuspense;
+exports.isValidElementType = isValidElementType;
+exports.typeOf = typeOf;
+  })();
+}
+
 
 /***/ }),
 
