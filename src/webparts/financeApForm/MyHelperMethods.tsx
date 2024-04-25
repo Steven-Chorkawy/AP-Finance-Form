@@ -107,3 +107,17 @@ export const GetInvoiceStatusColumn = async (): Promise<string[]> => {
   let output = await getSP().web.lists.getByTitle(MyLists.Invoices).fields.getByTitle('Status').select('Choices')();
   return output.Choices;
 }
+
+export const QueryAccountForInvoice = async (invoiceId: number): Promise<any> => {
+  const INVOICE_ACCOUNT_SELECT_STRING = 'ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId';
+
+  const ACCOUNT_LIST = getSP().web.lists.getById(MyLists.InvoiceAccountCode_ID);
+
+  let accounts = await ACCOUNT_LIST.items.filter(`InvoiceFolderID eq ${invoiceId}`).select(INVOICE_ACCOUNT_SELECT_STRING)();
+  // Using the AuthorId field query the full author information. 
+  for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
+    accounts[accountIterator]['Author'] = await GetUserByID(accounts[accountIterator].AuthorId);
+  }
+
+  return accounts;
+}

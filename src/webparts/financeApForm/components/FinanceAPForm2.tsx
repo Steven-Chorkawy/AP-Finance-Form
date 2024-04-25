@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import * as MyHelper from '../MyHelperMethods';
-import { IAPInvoiceQueryItem } from '../interfaces/IInvoice';
+import { IAPInvoiceQueryItem, IInvoice } from '../interfaces/IInvoice';
 import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/items";
@@ -11,11 +11,12 @@ import "@pnp/sp/profiles";
 import "@pnp/sp/items/get-all";
 import './MyLoadingComponent';
 import { MyLoadingComponent } from './MyLoadingComponent';
-import { DefaultEffects, Dropdown, List, Spinner, SpinnerSize, Stack, TextField } from '@fluentui/react';
+import { DefaultEffects, Dropdown, IPage, IRenderFunction, List, Spinner, SpinnerSize, Stack, TextField } from '@fluentui/react';
 import { Form, Field, FormElement, FieldWrapper, FieldArray, FormRenderProps } from '@progress/kendo-react-form';
 import { Card, CardTitle, CardHeader, CardBody, CardSubtitle } from '@progress/kendo-react-layout';
 import { GetInvoiceByStatus, GetInvoiceStatusColumn } from '../MyHelperMethods';
 import { Chip } from '@progress/kendo-react-buttons';
+import { useState } from 'react';
 
 
 
@@ -72,7 +73,7 @@ export class FinanceApForm2 extends React.Component<IFinanceApForm2Props, IFinan
 
     private onListRenderCell = (item: IAPInvoiceQueryItem, index: number | undefined) => {
         let cardTitleTextAlignStyle = { display: 'inline-block', width: '110px' };
-
+        
         return (<div style={{ boxShadow: DefaultEffects.elevation8, margin: '10px' }}>
             <div>
                 <Form
@@ -94,7 +95,7 @@ export class FinanceApForm2 extends React.Component<IFinanceApForm2Props, IFinan
                                                         {
                                                             formRenderProps.valueGetter('Vendor_x0020_Name') && formRenderProps.valueGetter('Vendor_x0020_Number') &&
                                                             <span>
-                                                                <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
+                                                                <span title='List Index'>{index + 1}/{this.state.allInvoices.length}</span> | <span title='Vendor Name'>{formRenderProps.valueGetter('Vendor_x0020_Name')}</span> | <span title='Vendor ID'>{formRenderProps.valueGetter('Vendor_x0020_Number')}</span>
                                                             </span>
                                                         }
                                                     </CardTitle>
@@ -253,13 +254,25 @@ export class FinanceApForm2 extends React.Component<IFinanceApForm2Props, IFinan
                 {
                     this.state.allInvoices ? <div>{this.state.myFilter.status}: {this.state.allInvoices.length}</div> : <MyLoadingComponent />
                 }
-
                 {
                     this.state.allInvoices ?
                         <div style={{ overflow: 'auto', maxHeight: '800px' }} data-is-scrollable>
                             <List
                                 items={this.state.allInvoices}
                                 onRenderCell={this.onListRenderCell}
+                            // onPageAdded={(page: IPage) => {
+                            //     console.log('page added');
+                            //     console.log(page);
+                            //     page.items.map((f, index) => {
+                            //         MyHelper.QueryAccountForInvoice(f.ID).then(value => {
+                            //             let s = this.state.allInvoices;
+                            //             debugger;
+                            //             s[page.startIndex + index].Accounts = value;
+                            //             this.setState({ allInvoices: s });
+                            //         });
+                            //     });
+                            //     debugger;
+                            // }}
                             />
                         </div> :
                         <MyLoadingComponent />

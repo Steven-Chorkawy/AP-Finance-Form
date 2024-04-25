@@ -104,4 +104,6 @@ export interface IAPInvoiceQueryItem {
     Vendor_x0020_Number: string;
     Voucher_x0020_Number: any;
     ZeroDollarPayment: boolean;
+
+    Accounts?: any[];
 }

@@ -1692,6 +1692,7 @@ function setVersion(packageName, packageVersion) {
 var MyLists;
 (function (MyLists) {
     MyLists["Invoices"] = "Invoices";
+    MyLists["InvoiceAccountCode_ID"] = "dc5b951f-f68d-42c4-9371-c5515fcf1cab";
 })(MyLists || (MyLists = {}));
 
 
@@ -24045,7 +24046,7 @@ function getStyles(props) {
 /*!*******************************************************!*\
   !*** ./lib/webparts/financeApForm/MyHelperMethods.js ***!
   \*******************************************************/
-/*! exports provided: APPROVER_LIST_MODIFIED_WORKFLOW, getSP, FormatCurrency, SumAccounts, GetUserByLoginName, GetUsersByLoginName, GetUserByID, GetAllInvoices, GetInvoiceByStatus, GetInvoiceStatusColumn */
+/*! exports provided: APPROVER_LIST_MODIFIED_WORKFLOW, getSP, FormatCurrency, SumAccounts, GetUserByLoginName, GetUsersByLoginName, GetUserByID, GetAllInvoices, GetInvoiceByStatus, GetInvoiceStatusColumn, QueryAccountForInvoice */
 /*! exports used: FormatCurrency, GetInvoiceByStatus, GetInvoiceStatusColumn, SumAccounts, getSP */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -24060,6 +24061,7 @@ function getStyles(props) {
 /* unused harmony export GetAllInvoices */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return GetInvoiceByStatus; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return GetInvoiceStatusColumn; });
+/* unused harmony export QueryAccountForInvoice */
 /* harmony import */ var _pnp_sp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @pnp/sp */ "UKGb");
 /* harmony import */ var _pnp_sp_webs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pnp/sp/webs */ "6k7F");
 /* harmony import */ var _pnp_sp_site_users_web__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @pnp/sp/site-users/web */ "EjWy");
@@ -24166,6 +24168,16 @@ const GetInvoiceByStatus = (status) => __awaiter(void 0, void 0, void 0, functio
 const GetInvoiceStatusColumn = () => __awaiter(void 0, void 0, void 0, function* () {
     let output = yield getSP().web.lists.getByTitle(_enums_MyLists__WEBPACK_IMPORTED_MODULE_8__[/* MyLists */ "a"].Invoices).fields.getByTitle('Status').select('Choices')();
     return output.Choices;
+});
+const QueryAccountForInvoice = (invoiceId) => __awaiter(void 0, void 0, void 0, function* () {
+    const INVOICE_ACCOUNT_SELECT_STRING = 'ID, Title, AmountIncludingTaxes, PO_x0020_Line_x0020_Item_x0020__, AuthorId';
+    const ACCOUNT_LIST = getSP().web.lists.getById(_enums_MyLists__WEBPACK_IMPORTED_MODULE_8__[/* MyLists */ "a"].InvoiceAccountCode_ID);
+    let accounts = yield ACCOUNT_LIST.items.filter(`InvoiceFolderID eq ${invoiceId}`).select(INVOICE_ACCOUNT_SELECT_STRING)();
+    // Using the AuthorId field query the full author information. 
+    for (let accountIterator = 0; accountIterator < accounts.length; accountIterator++) {
+        accounts[accountIterator]['Author'] = yield GetUserByID(accounts[accountIterator].AuthorId);
+    }
+    return accounts;
 });
 
 
@@ -36875,6 +36887,11 @@ class FinanceApForm2 extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
                                                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: 'col-xs-12 col-sm-12' },
                                                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_progress_kendo_react_layout__WEBPACK_IMPORTED_MODULE_21__[/* CardTitle */ "a"], { style: { marginBottom: '7px' } }, formRenderProps.valueGetter('Vendor_x0020_Name') && formRenderProps.valueGetter('Vendor_x0020_Number') &&
                                                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null,
+                                                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'List Index' },
+                                                                index + 1,
+                                                                "/",
+                                                                this.state.allInvoices.length),
+                                                            " | ",
                                                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Vendor Name' }, formRenderProps.valueGetter('Vendor_x0020_Name')),
                                                             " | ",
                                                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: 'Vendor ID' }, formRenderProps.valueGetter('Vendor_x0020_Number'))))),
