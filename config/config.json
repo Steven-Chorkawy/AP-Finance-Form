@@ -9,11 +9,20 @@
           "manifest": "./src/webparts/financeApForm/FinanceApFormWebPart.manifest.json"
         }
       ]
+    },
+    "ap-form-command-set-command-set": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/apFormCommandSet/ApFormCommandSetCommandSet.js",
+          "manifest": "./src/extensions/apFormCommandSet/ApFormCommandSetCommandSet.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
     "FinanceApFormWebPartStrings": "lib/webparts/financeApForm/loc/{locale}.js",
-    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "ApFormCommandSetCommandSetStrings": "lib/extensions/apFormCommandSet/loc/{locale}.js"
   }
 }

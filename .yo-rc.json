@@ -1,12 +1,19 @@
 {
   "@microsoft/generator-sharepoint": {
-    "isCreatingSolution": true,
+    "isCreatingSolution": false,
     "environment": "spo",
     "version": "1.10.0",
     "libraryName": "ap-finance-form",
     "libraryId": "71ed6c7f-53c8-41c4-bf1e-247e659f5527",
     "packageManager": "npm",
     "isDomainIsolated": false,
-    "componentType": "webpart"
+    "plusBeta": false,
+    "nodeVersion": "16.18.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.12.0"
+    },
+    "componentType": "extension",
+    "extensionType": "ListViewCommandSet"
   }
 }
