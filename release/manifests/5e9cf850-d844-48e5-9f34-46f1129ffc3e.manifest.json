@@ -1,0 +1,52 @@
+{
+  "id": "5e9cf850-d844-48e5-9f34-46f1129ffc3e",
+  "alias": "ApFormCommandSetCommandSet",
+  "componentType": "Extension",
+  "extensionType": "ListViewCommandSet",
+  "version": "0.1.0",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "items": {
+    "COMMAND_1": {
+      "title": {
+        "default": "Command One"
+      },
+      "iconImageUrl": "icons/request.png",
+      "type": "command"
+    },
+    "COMMAND_2": {
+      "title": {
+        "default": "Command Two"
+      },
+      "iconImageUrl": "icons/cancel.png",
+      "type": "command"
+    }
+  },
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "<!-- PATH TO CDN -->"
+    ],
+    "entryModuleId": "ap-form-command-set-command-set",
+    "scriptResources": {
+      "ap-form-command-set-command-set": {
+        "type": "path",
+        "path": "ap-form-command-set-command-set.js"
+      },
+      "@microsoft/sp-dialog": {
+        "type": "component",
+        "id": "c0c518b8-701b-4f6f-956d-5782772bb731",
+        "version": "1.18.2"
+      },
+      "@microsoft/sp-listview-extensibility": {
+        "type": "component",
+        "id": "d37b65ee-c7d8-4570-bc74-2b294ff3b380",
+        "version": "1.18.2"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.18.2"
+      }
+    }
+  }
+}
