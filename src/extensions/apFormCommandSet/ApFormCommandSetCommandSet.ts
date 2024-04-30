@@ -5,8 +5,12 @@ import {
   type IListViewCommandSetExecuteEventParameters,
   type ListViewStateChangedEventArgs
 } from '@microsoft/sp-listview-extensibility';
-import { Dialog } from '@microsoft/sp-dialog';
 import { MyLists, getSP } from '../../webparts/financeApForm/MyHelperMethods';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
+import APFormSidePanel, { IAPFormSidePanelProps } from '../../Components/APFormSidePanel';
+
 
 /**
  * If your command set uses the ClientSideComponentProperties JSON input,
@@ -39,15 +43,17 @@ export default class ApFormCommandSetCommandSet extends BaseListViewCommandSet<I
 
   public onExecute(event: IListViewCommandSetExecuteEventParameters): void {
     switch (event.itemId) {
-      case 'COMMAND_1':
-        Dialog.alert(`${this.properties.sampleTextOne}`).catch(() => {
-          /* handle error */
-        });
-        break;
-      case 'COMMAND_2':
-        Dialog.alert(`${this.properties.sampleTextTwo}`).catch(() => {
-          /* handle error */
-        });
+      case 'AP_FORM':
+        const AP_FORM_DIV = document.createElement('div');
+        const AP_FORM_ELEMENT: React.ReactElement<IAPFormSidePanelProps> = React.createElement(
+          APFormSidePanel,
+          {
+            isOpen: true,
+            context: this.context
+          }
+        );
+
+        ReactDOM.render(AP_FORM_ELEMENT, AP_FORM_DIV);
         break;
       default:
         throw new Error('Unknown command');
@@ -56,11 +62,14 @@ export default class ApFormCommandSetCommandSet extends BaseListViewCommandSet<I
 
   private _onListViewStateChanged = (args: ListViewStateChangedEventArgs): void => {
     Log.info(LOG_SOURCE, 'List view state changed');
+    debugger;
 
-    const compareOneCommand: Command = this.tryGetCommand('COMMAND_1');
+    const compareOneCommand: Command = this.tryGetCommand('AP_FORM');
     if (compareOneCommand) {
       // This command should be hidden unless 1-100 rows are selected in the Invoices library.
-      compareOneCommand.visible = this.context.listView.selectedRows?.length > 0 && this.context.listView.selectedRows?.length <= 100 && this.context.pageContext.list.title === MyLists.Invoices;
+      const v = this.context.listView.selectedRows?.length > 0 && this.context.listView.selectedRows?.length <= 100 && this.context.pageContext.list.title === MyLists.Invoices;
+      debugger;
+      compareOneCommand.visible = v;
     }
 
     // TODO: Add your logic here

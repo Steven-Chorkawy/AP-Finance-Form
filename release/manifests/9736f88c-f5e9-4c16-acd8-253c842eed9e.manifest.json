@@ -7,9 +7,9 @@
   "manifestVersion": 2,
   "requiresCustomScript": false,
   "items": {
-    "COMMAND_1": {
+    "AP_FORM": {
       "title": {
-        "default": "Command One"
+        "default": "AP Form"
       },
       "iconImageUrl": "icons/request.png",
       "type": "command"
@@ -25,11 +25,6 @@
         "type": "path",
         "path": "ap-form-command-set-command-set.js"
       },
-      "@microsoft/sp-dialog": {
-        "type": "component",
-        "id": "c0c518b8-701b-4f6f-956d-5782772bb731",
-        "version": "1.18.2"
-      },
       "@microsoft/sp-listview-extensibility": {
         "type": "component",
         "id": "d37b65ee-c7d8-4570-bc74-2b294ff3b380",
@@ -39,6 +34,16 @@
         "type": "component",
         "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
         "version": "1.18.2"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "17.0.1"
+      },
+      "react-dom": {
+        "type": "component",
+        "id": "aa0a46ec-1505-43cd-a44a-93f3a5aa460a",
+        "version": "17.0.1"
       }
     }
   }
