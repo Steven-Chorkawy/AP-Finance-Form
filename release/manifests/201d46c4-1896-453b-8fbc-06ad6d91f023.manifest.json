@@ -37,7 +37,7 @@
     "scriptResources": {
       "finance-ap-form-web-part": {
         "type": "path",
-        "path": "finance-ap-form-web-part_872192239e8ab74c9dd0.js"
+        "path": "finance-ap-form-web-part_43d1a7592f5343804e03.js"
       },
       "@microsoft/sp-property-pane": {
         "type": "component",
